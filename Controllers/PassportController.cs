@@ -51,7 +51,7 @@ namespace GovSchedulaWeb.Controllers
             var viewModel = new PassportRenewalViewModel();
             return View(viewModel); // Pass the blank model to the view
         }
-        
+
         // POST: /Passport/Renew
         // Handles submission of the verification form
         [HttpPost]
@@ -62,7 +62,36 @@ namespace GovSchedulaWeb.Controllers
             {
                 return View(model);
             }
-        return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
+        }
+        
+        // POST: /Passport/SubmitApplication
+        // This action is called AFTER the user confirms details on the review page
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitApplication(/* Pass necessary data via hidden fields or TempData */)
+        {
+        // --- TODO: Actual Backend Logic ---
+        // 1. Retrieve the complete application data (from TempData, Session, or hidden form fields).
+        // 2. Validate the data one last time.
+        // 3. Save the application data to the database.
+        // 4. Generate a unique Booking ID.
+        // 5. Generate a QR Code for the Booking ID.
+        // 6. Save the Booking ID and maybe QR code reference with the application record.
+        // --- End TODO ---
+
+        // --- For Now: Redirect to Confirmation Page ---
+        // We'll pass mock data for now. Later, we'll pass the *actual* Booking ID
+        // and details, maybe using TempData.
+
+        // Example using TempData (requires setup in Program.cs if not default)
+        // TempData["BookingId"] = generatedBookingId;
+        // TempData["QrCodeUrl"] = generatedQrCodeUrl;
+        // TempData["ServiceName"] = "New Passport Application";
+        // ... set other details for confirmation page ...
+
+        // Redirect to the Confirmation action in the BookingController
+        return RedirectToAction("Confirmation", "Booking"); 
         }
 
         public IActionResult Replace()

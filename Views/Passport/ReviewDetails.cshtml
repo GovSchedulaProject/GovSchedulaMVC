@@ -44,12 +44,14 @@
             <dt>Full Name:</dt><dd>@Model.EmergencyName ?? "N/A"</dd>
             <dt>Phone Number:</dt><dd>@Model.EmergencyPhone ?? "N/A"</dd>
         </dl>
-
+<div class="formSection">
+    <div class="formContainer">
         <form asp-action="SubmitApplication" asp-controller="Passport" method="post"> 
              @Html.AntiForgeryToken()
              <div class="buttonContainer">
                 <a asp-action="Create" asp-controller="Passport" class="formButton cancelButton">Edit Details</a> 
-                <button type="submit" class="formButton submitButton">Confirm & Proceed</button> </div>
+                <button type="submit" class="formButton submitButton">Confirm & Proceed</button> 
+            </div>
         </form>
     </div>
 </div>
