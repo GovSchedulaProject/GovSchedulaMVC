@@ -50,7 +50,7 @@ namespace GovSchedulaWeb.Controllers
                     Id = "nia", Name = "National Identification Authority", Hours = "9:00AM - 4:00PM",
                     LogoUrl = "~/images/nia-logo.png",
                     Services = new List<ServiceViewModel> {
-                        new ServiceViewModel { Name = "Ghana Card Registration", Link = "#" }
+                        new ServiceViewModel { Name = "Ghana Card Registration", Link = Url.Action("Register", "Nia")! }
                     }
                 },
                 new DepartmentViewModel {
