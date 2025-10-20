@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GovSchedulaWeb.Models
+namespace GovSchedulaWeb.Models.ViewModels
 {
     // ViewModel for NEW NHIS Registration
     public class NhisRegistrationViewModel

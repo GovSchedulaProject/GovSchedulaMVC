@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GovSchedulaWeb.Models
+namespace GovSchedulaWeb.Models.ViewModels
 {
     // ViewModel for NEW Driver's License Application
     public class DvlaNewLicenseViewModel

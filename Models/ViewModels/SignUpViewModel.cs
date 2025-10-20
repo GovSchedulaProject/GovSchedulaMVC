@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GovSchedulaWeb.Models
+namespace GovSchedulaWeb.Models.ViewModels
 {
     public class SignUpViewModel
     {

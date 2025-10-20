@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using GovSchedulaWeb.Models; // Include the ViewModel
+using GovSchedulaWeb.Models.ViewModels; // Include the ViewModel
 
 namespace GovSchedulaWeb.Controllers
 {
