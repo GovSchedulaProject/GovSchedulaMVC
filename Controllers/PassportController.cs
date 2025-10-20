@@ -7,6 +7,20 @@ namespace GovSchedulaWeb.Controllers
     {
         // GET: /Passport/Create
         // This action displays the blank form for a new application
+
+
+        // GET: /Passport/VerifyIdentity
+        // Displays the identity verification placeholder page
+        [HttpGet]
+        public IActionResult VerifyIdentity(/* We might pass an ID here later */)
+        {
+            var viewModel = new VerifyIdentityViewModel
+            {
+            Message = "Placeholder for identity verification step (e.g., upload photo, answer questions)."
+            // Pass any needed data from the previous step if required
+            };
+            return View(viewModel);
+        }
         public IActionResult Create()
         {
             var viewModel = new PassportApplicationViewModel();
@@ -72,7 +86,7 @@ namespace GovSchedulaWeb.Controllers
             // and storing the reason/police report number.
 
             // For now, redirect home after "submission"
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("VerifyIdentity" /*, pass any needed route data here */);
         }
     }
 }

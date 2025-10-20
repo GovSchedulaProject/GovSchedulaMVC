@@ -1,7 +1,5 @@
-using System.ComponentModel.DataAnnotations; // For potential future validation attributes
-
 namespace GovSchedulaWeb.Models
-{
+{   
     public class PassportApplicationViewModel
     {
         // Personal Details
@@ -31,5 +29,26 @@ namespace GovSchedulaWeb.Models
         // Add lists for dropdowns if needed later
         // public List<SelectListItem> GenderOptions { get; set; } = new();
         // public List<SelectListItem> MaritalStatusOptions { get; set; } = new();
+    }
+    public class PassportReplacementViewModel
+    {
+        public string? OldPassportNumber { get; set; }
+        public string? PoliceReportNumber { get; set; } // Optional field
+        public string? ReasonForReplacement { get; set; }
+    }
+
+    public class PassportRenewalViewModel
+    {
+        // Properties needed for initial verification
+        public string? OldPassportNumber { get; set; }
+        public string? PhoneNumber { get; set; }
+    }
+
+    // ViewModel for the Identity Verification step
+    public class VerifyIdentityViewModel
+    {
+        // We might pass the OldPassportNumber or a temporary ID here later
+        public string? OldPassportNumber { get; set; }
+        public string? Message { get; set; } // To display instructions
     }
 }
