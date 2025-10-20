@@ -1,0 +1,42 @@
+@model GovSchedulaWeb.Models.NhisRenewalViewModel
+@{
+    ViewData["Title"] = "NHIS Membership Renewal";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">NHIS Membership Renewal</h1>
+    <p class="heroSubtitle">Enter your details to renew your membership.</p>
+     <button type="button" onclick="window.history.back();" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="Renew" asp-controller="Nhis" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+             <h2 class="formSubtitle">Renewal Details</h2>
+
+             <div>
+                <label asp-for="NhisNumber" class="formLabel"></label>
+                <input asp-for="NhisNumber" class="formInput" placeholder="Enter your 8-digit NHIS number" />
+                <span asp-validation-for="NhisNumber" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="PhoneNumber" class="formLabel"></label>
+                <input asp-for="PhoneNumber" class="formInput" placeholder="Enter phone number linked to NHIS" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Renew Membership</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+ @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

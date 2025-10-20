@@ -1,0 +1,50 @@
+@model GovSchedulaWeb.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Log In";
+    Layout = "_AuthLayout"; // Specify to use the Auth layout
+}
+
+<div class="formBox">
+    <h2 class="formTitle">Log In</h2>
+
+    <form class="form" asp-action="Login" asp-controller="Account" method="post">
+        @Html.AntiForgeryToken()
+
+        <div>
+            <label asp-for="LoginIdentifier" class="formLabel"></label>
+            <input asp-for="LoginIdentifier" class="formInput" placeholder="e.g., user@example.com" />
+            <span asp-validation-for="LoginIdentifier" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="formLabel"></label>
+            <input asp-for="Password" class="formInput" placeholder="Enter your password" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="footerText" style="text-align: right; margin-top: 0;">
+            <a href="#" class="footerLink">
+                Forgot password?
+            </a>
+        </div>
+
+        <div>
+            <button type="submit" class="submitButton">
+                Log In
+            </button>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-align: center; margin-top: 1rem;"></div>
+
+        <p class="footerText">
+            Don't have an account?
+            <a asp-action="SignUp" asp-controller="Account" class="footerLink">
+                SignUp
+            </a>
+        </p>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

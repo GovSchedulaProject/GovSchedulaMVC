@@ -1,0 +1,242 @@
+/* --- Global Styles --- */
+.container {
+  container-type: inline-size;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+/* --- Hero Section --- */
+.hero {
+  background-color: #003366;
+  text-align: center;
+  padding-top: 2rem; /* Adjusted padding */
+  padding-bottom: 2rem; /* Adjusted padding */
+}
+
+.heroTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+.heroSubtitle {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: white;
+}
+
+/* --- CTA Button Style --- */
+.ctaButton {
+  display: inline-block;
+  margin-top: 2rem;
+  background-color: white;
+  color: #003366;
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.ctaButton:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Featured Departments Section --- */
+.featuredSection {
+  background-color: white;
+  padding: 2.5rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.featuredTitle {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+.logoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Default: 3 columns */
+  gap: 2rem;
+  align-items: center;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.logoGrid img {
+  max-height: 40px;
+  margin: auto;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.logoGrid img:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* --- Latest Updates (Slideshow) --- */
+.latestUpdates {
+  background-color: #f9fafb;
+}
+
+.slideshowContainer {
+  max-width: 896px;
+  margin: 2rem auto 0 auto;
+  padding: 0 1rem;
+}
+
+.slide {
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+.slideTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #003366;
+  margin-bottom: 0.75rem;
+}
+
+.slideSummary {
+  font-size: 1rem;
+  color: #374151;
+  flex-grow: 1;
+}
+
+.readMoreLink {
+  font-weight: 600;
+  color: #003366;
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.readMoreLink:hover {
+  text-decoration: underline;
+}
+
+/* --- How It Works --- */
+.howItWorks {
+  background-color: #f9fafb;
+}
+
+.stepsGrid {
+  margin-top: 3rem;
+  display: grid;
+  /* Default: Single column layout for steps */
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.stepCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stepIcon {
+  display: flex;
+  height: 5rem;
+  width: 5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: #003366;
+  color: white;
+}
+
+.arrow {
+  display: none; /* Hidden by default */
+  color: #003366;
+}
+
+.stepTitle {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* --- Why Use --- */
+.whyUse {
+  background-color: white;
+}
+
+.featuresGrid {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr)); /* Default: 1 column */
+  gap: 2rem;
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+  color: #374151;
+}
+
+.checkIcon {
+  color: #22c55e;
+}
+
+/* --- Combined Media Query for Responsive Grids --- */
+@media (min-width: 768px) { /* md: */
+  .logoGrid {
+    grid-template-columns: repeat(6, 1fr); /* 6 columns for logos */
+  }
+
+  .stepsGrid {
+    /* 7 columns for steps + arrows */
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    column-gap: 2rem; /* Spacing for steps */
+  }
+
+  .arrow {
+    display: block; /* Show arrows */
+  }
+
+  .featuresGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columns for features */
+  }
+}

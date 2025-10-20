@@ -1,0 +1,53 @@
+@model GovSchedulaWeb.Models.PassportReplacementViewModel
+@{
+    ViewData["Title"] = "Passport Replacement";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Passport Replacement</h1>
+    <p class="heroSubtitle">
+        For lost, stolen, or damaged passports.
+    </p>
+    <button type="button" onclick="window.history.back();" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="Replace" asp-controller="Passport" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+            <h2 class="formSubtitle">Verification & Reason</h2>
+
+            <div>
+                <label asp-for="OldPassportNumber" class="formLabel"></label>
+                <input asp-for="OldPassportNumber" class="formInput" placeholder="GXXXXXXX" />
+                <span asp-validation-for="OldPassportNumber" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="PoliceReportNumber" class="formLabel"></label>
+                <input asp-for="PoliceReportNumber" class="formInput" placeholder="(If lost or stolen)" />
+                <span asp-validation-for="PoliceReportNumber" class="text-danger"></span>
+            </div>
+
+            <div class="colSpan2">
+                <label asp-for="ReasonForReplacement" class="formLabel"></label>
+                <textarea asp-for="ReasonForReplacement" class="formTextarea" rows="4" placeholder="Please describe how your passport was lost, stolen, or damaged..."></textarea>
+                <span asp-validation-for="ReasonForReplacement" class="text-danger"></span>
+            </div>
+
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">
+                    Next: Verify Identity
+                </button>
+            </div>
+        </div>
+         @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

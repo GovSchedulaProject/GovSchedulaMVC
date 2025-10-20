@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GovSchedula</title>
+
+    <link rel="stylesheet" href="~/css/layout.css" /> 
+    <link rel="stylesheet" href="~/css/home.css" /> 
+    <link rel="stylesheet" href="~/css/departments.css" /> 
+    <link rel="stylesheet" href="~/css/form.css" /> 
+
+    @* <link rel="stylesheet" href="~/css/auth.css" />  *@
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" ... />
+</head>
+<body>
+    <div class="layout">
+
+        <header class="header">
+            <div class="navContainer">
+                <a class="logoLink" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="Logo" class="logoImage" />
+                    <span>GovSchedula</span>
+                </a>
+                <nav class="navLinks">
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                    <a asp-controller="Booking" asp-action="Index">Book Appointments</a>
+                    <a asp-controller="Account" asp-action="Login">Sign In</a>
+                    <a href="#">Help</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="mainContent">
+            @RenderBody() </main>
+
+        <footer class="footer">
+             <div class="footerContainer">
+                <div class="footerLinks">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div>
+                    &copy; @DateTime.Now.Year GovSchedula
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

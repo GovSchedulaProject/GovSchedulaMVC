@@ -1,0 +1,47 @@
+@model GovSchedulaWeb.Models.PassportRenewalViewModel
+@{
+    ViewData["Title"] = "Passport Renewal";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Passport Renewal</h1>
+    <p class="heroSubtitle">
+        Please provide your old passport details to begin.
+    </p>
+    <button type="button" onclick="window.history.back();" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="Renew" asp-controller="Passport" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+            <h2 class="formSubtitle">Verification</h2>
+
+            <div>
+                <label asp-for="OldPassportNumber" class="formLabel"></label>
+                <input asp-for="OldPassportNumber" class="formInput" placeholder="GXXXXXXX" />
+                <span asp-validation-for="OldPassportNumber" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="PhoneNumber" class="formLabel"></label>
+                <input asp-for="PhoneNumber" class="formInput" placeholder="Phone number used for last application" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">
+                    Find Application
+                </button>
+            </div>
+        </div>
+        @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,195 @@
+.container {
+  container-type: inline-size;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* --- Hero Section --- */
+.hero {
+  background-color: #003366; /* brand-blue */
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.heroTitle {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: 700;
+}
+
+.heroSubtitle {
+  margin-top: 1rem; /* mt-4 */
+  font-size: 1.125rem; /* text-lg */
+}
+
+/* --- Form Section --- */
+.formSection {
+  background-color: #f9fafb; /* bg-gray-50 */
+  padding: 3rem 1rem; /* py-12 px-4 */
+}
+
+.formContainer {
+  max-width: 900px; /* max-w-4xl */
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  padding: 4rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 3rem; /* gap-y-8 gap-x-12 */
+}
+
+/* --- Form Elements --- */
+.formLabel {
+  display: block;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-medium */
+  color: #111827; /* text-gray-900 */
+  margin-bottom: 0.5rem; /* mt-2 from original tailwind */
+}
+
+.formInput,
+.formSelect {
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid #d1d5db; /* ring-gray-300 */
+  padding: 0.75rem 1rem; /* py-3 */
+  font-size: 1rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+}
+
+.formInput:focus,
+.formSelect:focus {
+  outline: 2px solid #003366;
+  outline-offset: 2px;
+  border-color: #003366;
+}
+
+.dateInputContainer {
+  position: relative;
+}
+
+.dateIcon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: #6b7281; /* text-gray-400 */
+  pointer-events: none;
+}
+
+/* New style for section headings like "Contact Details" */
+.formSubtitle {
+  grid-column: 1 / -1; /* Spans full width */
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #003366; /* brand-blue */
+  border-bottom: 2px solid #003366;
+  padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* New style for multi-line text boxes */
+.formTextarea {
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  min-height: 80px;
+}
+
+.formTextarea:focus {
+  outline: 2px solid #003366;
+  outline-offset: 2px;
+  border-color: #003366;
+}
+
+/* New utility class to make a field span 2 columns */
+.colSpan2 {
+  grid-column: span 2 / span 2;
+}
+
+/* --- Form Buttons --- */
+.buttonContainer {
+  grid-column: 1 / -1; /* Spans full width */
+  margin-top: 2rem; /* mt-8 */
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem; /* gap-4 */
+}
+
+.formButton {
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 0.75rem 2rem; /* px-8 py-3 */
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+}
+
+.cancelButton {
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: #1f2937; /* text-gray-800 */
+}
+
+.cancelButton:hover {
+  background-color: #d1d5db;
+}
+
+.submitButton {
+  background-color: #003366; /* brand-blue */
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #002244;
+}
+
+/* --- Responsive --- */
+@media (min-width: 768px) { /* md: */
+  .formGrid {
+    grid-template-columns: 1fr 1fr; /* 2 columns */
+  }
+}
+
+/* Style for the 'Back' button in hero sections */
+.backButton {
+  background: none;
+  border: none;
+  color: white; /* Match hero text color */
+  font-size: 1rem; /* Adjust size as needed */
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 1rem; /* Add space above the button */
+  display: inline-flex; /* Align icon and text horizontally */
+  align-items: center; /* Align icon and text vertically */
+  gap: 0.5rem; /* Space between icon and text */
+  padding: 0.25rem 0.5rem; /* Optional: Small padding */
+  border-radius: 0.25rem; /* Optional: Slight rounding */
+  transition: background-color 0.2s; /* Subtle hover effect */
+  /* --- ADD THESE POSITIONING STYLES --- */
+  position: absolute;
+  top: 1rem;  /* Adjust distance from top */
+  right: 1rem; /* Adjust distance from right */
+}
+
+.backButton:hover {
+  text-decoration: none; /* Remove underline */
+  background-color: rgba(255, 255, 255, 0.1); /* Slight highlight on hover */
+}

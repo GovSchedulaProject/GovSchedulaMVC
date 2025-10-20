@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GovSchedula</title>
+    <link rel="stylesheet" href="~/css/auth.css" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" ... />
+</head>
+<body>
+    <div class="authLayout"> 
+        <div class="container">
+            <div class="logoContainer">
+                <img src="~/images/logo.png" alt="GovSchedula Logo" class="logoImage" />
+                <h1 class="logoTitle">GovSchedula</h1>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

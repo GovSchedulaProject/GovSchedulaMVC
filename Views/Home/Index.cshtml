@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    // Mock data - In a real app, this would come from the Controller
+    var mockNewsData = new[] {
+        new { id = 1, title = "Passport Office Announces New 2-Week Turnaround", summary = "All new passport applications submitted from today will now be processed within a 14-day working period.", link = "#" },
+        new { id = 2, title = "NIA to Open 5 New Registration Centers", summary = "The National Identification Authority has announced new centers in Accra and Kumasi to ease Ghana Card registration queues.", link = "#" },
+        new { id = 3, title = "DVLA Introduces New Digital License", summary = "You can now renew and receive a digital version of your driver's license directly through the new online portal.", link = "#" }
+    };
+}
+
+<div class="section hero">
+    <h1 class="heroTitle">
+        Book Your Government Appointment Easily And Securely
+    </h1>
+    <p class="heroSubtitle">
+        Access multiple government departments in one place - Passport, licensing, tax, health and many more.
+    </p>
+    <a asp-controller="Booking" asp-action="Index" class="ctaButton">
+        Book an Appointment Now
+    </a>
+</div>
+
+<div class="featuredSection">
+    <h3 class="featuredTitle">
+        Available on GovSchedula
+    </h3>
+    <div class="logoGrid">
+        <img src="~/images/passport-logo.png" alt="Department of Passport" />
+        <img src="~/images/dvla-logo.png" alt="Driver and Vehicle License Authority" />
+        <img src="~/images/nhis-logo.png" alt="National Health Insurance Scheme" />
+        <img src="~/images/electoral-commission-logo.png" alt="Electoral Commission" />
+        <img src="~/images/nia-logo.png" alt="National Identification Authority" />
+        <img src="~/images/gra-logo.png" alt="Ghana Revenue Authority" />
+    </div>
+</div>
+
+<div class="section latestUpdates">
+    <h2 class="sectionTitle">Latest Updates</h2>
+
+    <div class="slideshowContainer">
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                @foreach (var news in mockNewsData)
+                {
+                    <div class="swiper-slide slide">
+                        <h3 class="slideTitle">@news.title</h3>
+                        <p class="slideSummary">@news.summary</p>
+                        <a href="@news.link" class="readMoreLink">
+                            Read More &rarr;
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+
+<div class="section howItWorks">
+    <h2 class="sectionTitle">How It Works</h2>
+    <div class="container stepsGrid">
+        <div class="stepCard">
+            <div class="stepIcon"><i class="fa-regular fa-map fa-2x"></i></div>
+            <h3 class="stepTitle">Select Department</h3>
+        </div>
+        <i class="fa-solid fa-arrow-right-long fa-2x arrow"></i>
+        <div class="stepCard">
+            <div class="stepIcon"><i class="fa-regular fa-pen-to-square fa-2x"></i></div>
+            <h3 class="stepTitle">Fill Forms</h3>
+        </div>
+        <i class="fa-solid fa-arrow-right-long fa-2x arrow"></i>
+        <div class="stepCard">
+            <div class="stepIcon"><i class="fa-regular fa-address-card fa-2x"></i></div>
+            <h3 class="stepTitle">Confirm Details</h3>
+        </div>
+        <i class="fa-solid fa-arrow-right-long fa-2x arrow"></i>
+        <div class="stepCard">
+            <div class="stepIcon"><i class="fa-regular fa-envelope fa-2x"></i></div>
+            <h3 class="stepTitle">Get Confirmation</h3>
+        </div>
+    </div>
+</div>
+
+<div class="section whyUse">
+    <h2 class="sectionTitle">Why Use GovSchedula</h2>
+    <div class="container featuresGrid">
+        <ul class="featuresList">
+            <li class="featureItem"><i class="fa-solid fa-check checkIcon"></i><span>Save time and avoid long queues</span></li>
+            <li class="featureItem"><i class="fa-solid fa-check checkIcon"></i><span>Book appointment 24/7</span></li>
+        </ul>
+        <ul class="featuresList">
+            <li class="featureItem"><i class="fa-solid fa-check checkIcon"></i><span>Get instant confirmation and reminders</span></li>
+            <li class="featureItem"><i class="fa-solid fa-check checkIcon"></i><span>Secure and transparent process</span></li>
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/home-swiper.js"></script>
+}

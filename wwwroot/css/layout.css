@@ -1,0 +1,91 @@
+/* Main container for the whole page */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header styles */
+.header {
+  background-color: #003366; 
+  color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem; 
+}
+
+/* Container within the header for alignment */
+.navContainer {
+  max-width: 1280px; 
+  margin-left: auto;
+  margin-right: auto;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+/* Logo + Title link styles */
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+  font-size: 1.5rem; 
+  font-weight: 700; 
+  text-decoration: none;
+  color: white;
+}
+
+/* Logo image size */
+.logoImage {
+  height: 5.7rem; /* 40px */
+  width: 8rem;  /* 40px */
+}
+
+/* Navigation links container */
+.navLinks {
+  display: flex;
+  gap: 1.5rem; 
+}
+
+.navLinks a {
+  font-size: 1.125rem; 
+  color: white;
+  text-decoration: none;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+}
+
+/* Main content area (where page content is rendered) */
+.mainContent {
+  flex-grow: 1; 
+  background-color: #f9fafb; /* Light gray background */
+}
+
+/* Footer styles */
+.footer {
+  background-color: #003366; 
+  padding: 1rem;
+  color: #d1d5db; 
+}
+
+/* Container within the footer for alignment */
+.footerContainer {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+}
+
+.footerLinks a {
+  margin-right: 1rem;
+  text-decoration: none;
+  color: #d1d5db;
+}
+
+.footerLinks a:hover {
+  text-decoration: underline;
+}

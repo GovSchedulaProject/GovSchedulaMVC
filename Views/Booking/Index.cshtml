@@ -1,0 +1,65 @@
+@model GovSchedulaWeb.Models.DepartmentSelectViewModel
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Book Government Appointment</h1>
+    <p class="heroSubtitle">
+        Select a department and book an appointment with ease
+    </p>
+</div>
+
+<div class="contentSection">
+    <div class="container">
+        <h2 class="sectionTitle">Departments</h2>
+        <div class="departmentGrid">
+            @foreach (var dept in Model.Departments)
+            {
+                <div class="departmentCard">
+                    <img src="@Url.Content(dept.LogoUrl)" alt="@dept.Name" class="cardLogo" />
+                    <div class="cardContent">
+                        <h3 class="cardTitle">@dept.Name</h3>
+                        <p class="cardHours">@dept.Hours</p>
+                    </div>
+                    <button class="bookButton"
+                            data-dept-id="@dept.Id"
+                            data-dept-name="@dept.Name">
+                        Book Appointment
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="backdrop" id="serviceModalBackdrop" style="display: none;">
+    <div class="modal" id="serviceModal">
+        <div class="modalHeader">
+            <h2 class="modalTitle" id="modalDeptName">Department Name</h2>
+            <button class="closeButton" id="modalCloseButton">&times;</button>
+        </div>
+        <div class="modalBody">
+            <h3 class="modalSubtitle">Select a Service</h3>
+            <div class="serviceList" id="modalServiceList">
+                </div>
+        </div>
+    </div>
+</div>
+
+<div id="departmentsData" style="display: none;">
+@foreach (var dept in Model.Departments)
+{
+    <div id="dept-@dept.Id">
+        @foreach (var service in dept.Services)
+        {
+            <a href="@service.Link" data-name="@service.Name"></a>
+        }
+    </div>
+}
+</div>
+
+
+@section Scripts {
+    <script src="~/js/departments.js"></script>
+}
