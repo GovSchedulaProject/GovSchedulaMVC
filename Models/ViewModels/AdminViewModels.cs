@@ -21,4 +21,9 @@ namespace GovSchedulaWeb.Models.ViewModels
         public int WaitingCount { get; set; }
         // Add other stats if needed (e.g., AverageWaitTime)
     }
+
+    public class ScannerViewModel
+    {
+    public string? StatusMessage { get; set; } // e.g., "Ready to scan", "QR Code Invalid"
+    }
 }

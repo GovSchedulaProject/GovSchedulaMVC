@@ -1,0 +1,39 @@
+@model GovSchedulaWeb.Models.ViewModels.ScannerViewModel
+@{
+    ViewData["Title"] = "QR Code Scanner";
+    // This page might eventually need its own simpler layout
+    // Layout = "_ScannerLayout"; 
+}
+
+@* @section Styles { <link rel="stylesheet" href="~/css/scanner.css" /> } *@
+
+<div class="hero"> 
+    <h1 class="heroTitle">QR Code Check-In</h1>
+    <p class="heroSubtitle">Scan the citizen's QR code to check them into the queue.</p>
+    </div>
+
+<div class="scanner-container">
+
+    <div class="camera-viewport-container">
+        <div class="camera-placeholder">
+            <i class="fa-solid fa-qrcode fa-5x"></i>
+            <p>(Camera Feed Placeholder)</p>
+            @* <video id="scannerVideo" playsinline></video> *@
+        </div>
+        <div class="scanner-frame"></div> 
+    </div>
+
+    <div class="status-message" id="statusMessage">
+        @Model.StatusMessage
+    </div>
+
+    <div class="manual-entry">
+        <label for="manualCode">Manual Booking ID:</label>
+        <input type="text" id="manualCode" name="manualCode" placeholder="Enter ID if scan fails"/>
+        <button type="button" class="action-btn">Submit ID</button>
+    </div>
+</div>
+
+@section Scripts {
+    @* <script src="~/js/scanner.js"></script> *@
+}

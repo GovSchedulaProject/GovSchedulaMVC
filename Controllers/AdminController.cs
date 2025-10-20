@@ -28,5 +28,27 @@ namespace GovSchedulaWeb.Controllers
 
             return View(viewModel);
         }
+
+        // GET: /Admin/Scanner
+        [HttpGet] // Explicitly state it handles GET requests
+        public IActionResult Scanner()
+        {
+            var viewModel = new ScannerViewModel
+            {
+                StatusMessage = "Position QR code within the frame."
+            };
+            return View(viewModel);
+        }
+
+        // POST action can be added later to handle the scanned data submission
+        /*
+        [HttpPost]
+        public IActionResult ProcessScan(string scannedData)
+        {
+        // TODO: Validate scannedData (Booking ID)
+        // TODO: Call backend logic to check-in user
+        // TODO: Return JSON result (success/failure) or redirect
+        }
+        */
     }
 }
