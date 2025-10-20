@@ -28,6 +28,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Booking/Confirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xDb25maXJtYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Booking/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -42,6 +46,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Dvla/RenewLicense.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHZsYVxSZW5ld0xpY2Vuc2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/ElectoralCommission/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWxlY3RvcmFsQ29tbWlzc2lvblxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Gra/FileReturns.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JhXEZpbGVSZXR1cm5zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Home/Index.cshtml]

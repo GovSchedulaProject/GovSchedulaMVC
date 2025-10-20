@@ -1,0 +1,114 @@
+/* Confirmation Page Specific Styles */
+
+.confirmation-hero {
+    background-color: #16a34a; /* Green color for success */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.confirmation-icon {
+    font-size: 3rem; /* Larger check icon */
+    margin-bottom: 1rem;
+}
+
+.confirmationSection {
+    padding: 3rem 1rem;
+    background-color: #f9fafb; /* Light gray background */
+}
+
+.confirmationContainer {
+    max-width: 900px;
+    margin: auto;
+    background-color: white;
+    padding: 2.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    display: grid;
+    grid-template-columns: 1fr; /* Single column by default */
+    gap: 2.5rem;
+}
+
+.detailsPanel h2, .qrPanel h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #003366; /* brand-blue */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+}
+ .detailsPanel hr {
+    border: 0;
+    height: 1px;
+    background-color: #e5e7eb;
+    margin-bottom: 1.5rem;
+ }
+
+
+.detailsPanel p {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #374151; /* gray-700 */
+}
+
+.detailsPanel p strong {
+    color: #111827; /* gray-900 */
+    margin-right: 0.5rem;
+}
+
+.bookingId {
+    font-weight: 700;
+    color: #003366;
+    background-color: #e0f2fe; /* light blue bg */
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+}
+
+.instructions {
+    margin-top: 1.5rem;
+    font-style: italic;
+    color: #6b7281; /* gray-500 */
+}
+
+.qrPanel {
+    text-align: center;
+    border-left: none; /* No border on mobile */
+    padding-left: 0; /* No padding on mobile */
+}
+
+.qrPanel p {
+     margin-bottom: 1rem;
+     color: #374151;
+}
+
+.qrCodeImage {
+    display: block;
+    max-width: 200px; /* Adjust size as needed */
+    width: 100%;
+    margin: 1rem auto; /* Center image */
+    border: 1px solid #e5e7eb;
+    padding: 5px; /* Optional padding around QR */
+}
+.bookingIdSmall {
+    font-size: 0.9rem;
+    color: #6b7281;
+    font-family: monospace;
+}
+
+/* Responsive layout for wider screens */
+@media (min-width: 768px) { /* md: */
+    .confirmationContainer {
+         /* Two columns on desktop */
+        grid-template-columns: 1.5fr 1fr; /* Details take more space */
+    }
+     .qrPanel {
+        border-left: 1px solid #e5e7eb; /* Add separator line */
+        padding-left: 2.5rem; /* Add padding */
+        text-align: left; /* Align text left */
+    }
+     .qrCodeImage {
+         margin: 1rem 0; /* Align left */
+     }
+
+}

@@ -1,0 +1,41 @@
+@model GovSchedulaWeb.Models.BookingConfirmationViewModel
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/confirmation.css" />
+}
+
+<div class="hero confirmation-hero">
+    <i class="fa-solid fa-circle-check confirmation-icon"></i>
+    <h1 class="heroTitle">Booking Confirmed!</h1>
+    <p class="heroSubtitle">Please keep your Booking ID and QR Code safe for check-in.</p>
+</div>
+
+<div class="confirmationSection">
+    <div class="container confirmationContainer">
+
+        <div class="detailsPanel">
+            <h2>Appointment Details</h2>
+            <hr />
+            <p><strong>Booking ID:</strong> <span class="bookingId">@Model.BookingId</span></p>
+            <p><strong>Service:</strong> @Model.ServiceName</p>
+            <p><strong>Date:</strong> @Model.AppointmentDate</p>
+            <p><strong>Time:</strong> @Model.AppointmentTime</p>
+            <p><strong>Office:</strong> @Model.OfficeName</p>
+            <p><strong>Address:</strong> @Model.OfficeAddress</p>
+            <p class="instructions">Please arrive 15 minutes before your scheduled time.</p>
+        </div>
+
+        <div class="qrPanel">
+            <h2>Your QR Code</h2>
+            <p>Scan this code at the kiosk or with staff upon arrival:</p>
+            <img src="@Url.Content(Model.QrCodeUrl)" alt="Booking QR Code" class="qrCodeImage" />
+            <p class="bookingIdSmall">ID: @Model.BookingId</p>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts { }

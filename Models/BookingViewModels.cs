@@ -5,9 +5,21 @@ namespace GovSchedulaWeb.Models
     public class ServiceViewModel
     {
         // Add '?' to make string properties nullable
-        public string? Name { get; set; } 
-        public string? Link { get; set; } 
+        public string? Name { get; set; }
+        public string? Link { get; set; }
     }
+    
+    // Add this class to the file
+public class BookingConfirmationViewModel
+{
+    public string? BookingId { get; set; }
+    public string? QrCodeUrl { get; set; } // We'll use a placeholder URL/image for now
+    public string? ServiceName { get; set; }
+    public string? AppointmentDate { get; set; } // e.g., "Tuesday, October 21, 2025"
+    public string? AppointmentTime { get; set; } // e.g., "10:15 AM"
+    public string? OfficeName { get; set; } // e.g., "Accra Central Passport Office"
+    public string? OfficeAddress { get; set; }
+}
 
     public class DepartmentViewModel
     {

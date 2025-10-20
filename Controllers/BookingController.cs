@@ -68,6 +68,27 @@ namespace GovSchedulaWeb.Controllers
                 Departments = departments
             };
 
+            // return the view with the departments list
+            return View(viewModel);
+        }
+
+        // GET: /Booking/Confirmation/{bookingId} (Example route)
+        // Or simply /Booking/Confirmation and pass data via TempData after booking POST
+        public IActionResult Confirmation(/* We might pass a bookingId here later */)
+        {
+            // --- MOCK DATA ---
+            // In a real scenario, you'd fetch booking details using an ID
+            var viewModel = new BookingConfirmationViewModel
+            {
+                BookingId = "GSPP-ABC123XYZ",
+                QrCodeUrl = "~/images/placeholder-qr.png", // Use a placeholder image
+                ServiceName = "New Passport Application",
+                AppointmentDate = "Tuesday, October 21, 2025",
+                AppointmentTime = "10:15 AM",
+                OfficeName = "Accra Central Passport Office",
+                OfficeAddress = "Kinbu Road, Accra"
+            };
+
             // Pass the data to the View and render it
             return View(viewModel);
         }

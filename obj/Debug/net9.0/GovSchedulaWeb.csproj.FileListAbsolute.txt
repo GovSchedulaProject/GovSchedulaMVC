@@ -102,3 +102,4 @@ C:\Users\user\MyProjects\GovSchedulaWeb\obj\Debug\net9.0\compressed\0rxrder2sn-q
 C:\Users\user\MyProjects\GovSchedulaWeb\obj\Debug\net9.0\compressed\6twftzpds9-lwqp2875ho.gz
 C:\Users\user\MyProjects\GovSchedulaWeb\obj\Debug\net9.0\compressed\alaehbu6md-z7kef2piuf.gz
 C:\Users\user\MyProjects\GovSchedulaWeb\obj\Debug\net9.0\GovSchedulaWeb.sourcelink.json
+C:\Users\user\MyProjects\GovSchedulaWeb\obj\Debug\net9.0\compressed\nfkmlnrdmd-bmxelrwhdj.gz
