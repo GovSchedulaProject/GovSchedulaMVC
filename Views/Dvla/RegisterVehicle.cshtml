@@ -1,0 +1,47 @@
+@model GovSchedulaWeb.Models.DvlaVehicleRegistrationViewModel
+@{ ViewData["Title"] = "Vehicle Registration"; }
+
+<div class="hero">
+    <h1 class="heroTitle">New Vehicle Registration</h1>
+    <p class="heroSubtitle">Please provide the owner and vehicle details.</p>
+     <button type="button" onclick="window.history.back();" class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="RegisterVehicle" asp-controller="Dvla" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+            <h2 class="formSubtitle">Owner & Vehicle Details</h2>
+            <div>
+                <label asp-for="OwnerGhanaCardNumber" class="formLabel"></label>
+                <input asp-for="OwnerGhanaCardNumber" class="formInput" placeholder="GHA-XXXXXXX-X" />
+                <span asp-validation-for="OwnerGhanaCardNumber" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Vin" class="formLabel"></label>
+                <input asp-for="Vin" class="formInput" placeholder="Enter Vehicle Identification Number" />
+                <span asp-validation-for="Vin" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Make" class="formLabel"></label>
+                <input asp-for="Make" class="formInput" placeholder="e.g., Toyota" />
+                <span asp-validation-for="Make" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="Model" class="formLabel"></label>
+                <input asp-for="Model" class="formInput" placeholder="e.g., Corolla" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="Year" class="formLabel"></label>
+                <input asp-for="Year" class="formInput" placeholder="e.g., 2023" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Submit Registration</button>
+            </div>
+        </div>
+    </form>
+</div>
+ @section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

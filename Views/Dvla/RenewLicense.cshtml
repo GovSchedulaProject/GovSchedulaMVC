@@ -1,0 +1,32 @@
+@model GovSchedulaWeb.Models.DvlaLicenseRenewalViewModel
+@{ ViewData["Title"] = "Driver's License Renewal"; }
+
+<div class="hero">
+    <h1 class="heroTitle">Driver's License Renewal</h1>
+    <p class="heroSubtitle">Enter your details to begin renewal.</p>
+     <button type="button" onclick="window.history.back();" class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="RenewLicense" asp-controller="Dvla" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+             <h2 class="formSubtitle">Verification</h2>
+             <div>
+                <label asp-for="LicenseNumber" class="formLabel"></label>
+                <input asp-for="LicenseNumber" class="formInput" placeholder="Enter your license number" />
+                <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GhanaCardNumber" class="formLabel"></label>
+                <input asp-for="GhanaCardNumber" class="formInput" placeholder="GHA-XXXXXXX-X" />
+                <span asp-validation-for="GhanaCardNumber" class="text-danger"></span>
+            </div>
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Verify & Renew</button>
+            </div>
+        </div>
+    </form>
+</div>
+ @section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

@@ -25,9 +25,9 @@ namespace GovSchedulaWeb.Controllers
                     Id = "dvla", Name = "Driver and Vehicle License Authority", Hours = "9:00AM - 4:00PM",
                     LogoUrl = "~/images/dvla-logo.png",
                     Services = new List<ServiceViewModel> {
-                        new ServiceViewModel { Name = "New Driver's License", Link = "#" },
-                        new ServiceViewModel { Name = "License Renewal", Link = "#" },
-                        new ServiceViewModel { Name = "Vehicle Registration", Link = "#" },
+                        new ServiceViewModel { Name = "New Driver's License", Link = Url.Action("NewLicense", "Dvla")! },
+                        new ServiceViewModel { Name = "License Renewal", Link = Url.Action("RenewLicense", "Dvla")! },
+                        new ServiceViewModel { Name = "Vehicle Registration", Link = Url.Action("RegisterVehicle", "Dvla")! }
 
                     }
                 },

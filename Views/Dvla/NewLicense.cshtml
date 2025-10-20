@@ -1,0 +1,45 @@
+@model GovSchedulaWeb.Models.DvlaNewLicenseViewModel
+@{ ViewData["Title"] = "New Driver's License"; }
+
+<div class="hero">
+    <h1 class="heroTitle">New Driver's License Application</h1>
+    <p class="heroSubtitle">Please provide your details accurately.</p>
+    <button type="button" onclick="window.history.back();" class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="NewLicense" asp-controller="Dvla" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+            <h2 class="formSubtitle">Applicant Details</h2>
+            <div>
+                <label asp-for="GhanaCardNumber" class="formLabel"></label>
+                <input asp-for="GhanaCardNumber" class="formInput" placeholder="GHA-XXXXXXX-X" />
+                <span asp-validation-for="GhanaCardNumber" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="FullName" class="formLabel"></label>
+                <input asp-for="FullName" class="formInput" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="DateOfBirth" class="formLabel"></label>
+                 <div class="dateInputContainer">
+                    <input asp-for="DateOfBirth" class="formInput" placeholder="MM/DD/YYYY" type="text" />
+                    <i class="fa-regular fa-calendar-alt dateIcon"></i>
+                 </div>
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="PhoneNumber" class="formLabel"></label>
+                <input asp-for="PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Submit Application</button>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }
