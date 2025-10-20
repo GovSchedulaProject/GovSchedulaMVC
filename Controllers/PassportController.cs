@@ -42,7 +42,7 @@ namespace GovSchedulaWeb.Controllers
 
             // TODO: Process the valid data (save to database, etc.)
             // For now, just redirect somewhere (e.g., a success page or back home)
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ReviewDetails");
         }
 
         // --- Add Actions for Renewal and Replacement later ---
@@ -87,6 +87,28 @@ namespace GovSchedulaWeb.Controllers
 
             // For now, redirect home after "submission"
             return RedirectToAction("VerifyIdentity" /*, pass any needed route data here */);
+        }
+
+            // Inside PassportController.cs
+
+            // GET: /Passport/ReviewDetails
+            // Displays the review page placeholder
+        [HttpGet]
+        public IActionResult ReviewDetails(/* Pass data via TempData or session */)
+        {
+            // --- MOCK DATA FOR NOW ---
+            // TODO: Retrieve the actual submitted data (e.g., from TempData or Session)
+            var viewModel = new ReviewDetailsViewModel
+    {
+            FirstName = "Mock",
+            LastName = "User",
+            EmailAddress = "mock@example.com",
+            PhoneNumber = "+233 12 345 6789",
+            // Populate other fields as needed for display
+    };
+    // --- END MOCK DATA ---
+
+            return View(viewModel);
         }
     }
 }

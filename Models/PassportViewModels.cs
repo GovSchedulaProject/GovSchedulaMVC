@@ -1,5 +1,28 @@
 namespace GovSchedulaWeb.Models
-{   
+{   public class ReviewDetailsViewModel
+{
+    // Include properties to display the submitted data
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? OtherNames { get; set; }
+    public string? Gender { get; set; }
+    public string? DateOfBirth { get; set; }
+    public string? PlaceOfBirth { get; set; }
+    public string? Profession { get; set; }
+    public string? MaritalStatus { get; set; }
+    public string? Height { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? EmailAddress { get; set; }
+    public string? ResidentialAddress { get; set; }
+    public string? FatherName { get; set; }
+    public string? MotherName { get; set; }
+    public string? EmergencyName { get; set; }
+    public string? EmergencyPhone { get; set; }
+
+    // We might need a temporary ID or reference later
+    // public Guid TempApplicationId { get; set; } 
+}
+
     public class PassportApplicationViewModel
     {
         // Personal Details
