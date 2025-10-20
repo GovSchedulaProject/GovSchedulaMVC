@@ -1,0 +1,62 @@
+@model GovSchedulaWeb.Models.SignUpViewModel
+@{
+    ViewData["Title"] = "Sign Up";
+    Layout = "_AuthLayout"; // Use the Auth layout
+}
+
+<div class="formBox">
+    <h2 class="formTitle">Sign Up here!</h2>
+
+    <form class="form" asp-action="SignUp" asp-controller="Account" method="post">
+        @Html.AntiForgeryToken()
+
+        <div>
+            <label asp-for="Email" class="formLabel"></label>
+            <input asp-for="Email" class="formInput" placeholder="e.g., user@example.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Username" class="formLabel"></label>
+            <input asp-for="Username" class="formInput" placeholder="e.g., gov_user" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="PhoneNumber" class="formLabel"></label>
+            <input asp-for="PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="formLabel"></label>
+            <input asp-for="Password" class="formInput" placeholder="Min. 8 characters" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="ConfirmPassword" class="formLabel"></label>
+            <input asp-for="ConfirmPassword" class="formInput" placeholder="Re-type your password" type="password" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-align: left; margin-top: 1rem;"></div>
+
+        <div>
+            <button type="submit" class="submitButton">
+                Sign Up
+            </button>
+        </div>
+
+        <p class="footerText" style="text-align: left;">
+            Already have an account?
+            <a asp-action="Login" asp-controller="Account" class="footerLink">
+                login
+            </a>
+        </p>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

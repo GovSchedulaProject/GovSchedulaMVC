@@ -41,11 +41,45 @@ namespace GovSchedulaWeb.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // --- Add Actions for SignUp later ---
+        // --- ADD SignUp Actions ---
+
+        // GET: /Account/SignUp
+        // Displays the sign up form
+        [HttpGet]
         public IActionResult SignUp()
         {
-            // TODO: Create SignUp ViewModel and View
-             return RedirectToAction("Index", "Home"); // Placeholder
+            var viewModel = new SignUpViewModel();
+            return View(viewModel);
+        }
+
+        // POST: /Account/SignUp
+        // Handles the sign up form submission
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SignUp(SignUpViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // If validation fails (e.g., passwords don't match, email invalid)
+                // show the form again with error messages
+                return View(model);
+            }
+
+            // --- TODO: Add Actual Registration Logic ---
+            // Here you would typically:
+            // 1. Check if the Username or Email already exists.
+            // 2. Hash the model.Password.
+            // 3. Create a new user record in the database
+            //    (using ASP.NET Core Identity or your own user store).
+            // 4. Optionally, sign the new user in immediately.
+            // 5. Redirect to a success page or the login page.
+            // Example of adding an error if user exists:
+            // ModelState.AddModelError(string.Empty, "Username already taken.");
+            // return View(model);
+            // --- End TODO ---
+
+            // For now, if model is valid, just redirect to the login page
+            return RedirectToAction("Login", "Account");
         }
     }
 }
