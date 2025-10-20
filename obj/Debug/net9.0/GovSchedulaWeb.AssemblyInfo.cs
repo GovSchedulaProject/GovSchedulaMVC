@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GovSchedulaWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ef544260fe8ab32d817bc4799c92908bb1d33d2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec6cedb5d30f48f2447fc3f796f2c2a110bd26d0")]
 [assembly: System.Reflection.AssemblyProductAttribute("GovSchedulaWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GovSchedulaWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
