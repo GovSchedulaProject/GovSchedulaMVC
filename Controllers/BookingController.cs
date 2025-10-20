@@ -57,7 +57,7 @@ namespace GovSchedulaWeb.Controllers
                     Id = "gra", Name = "Ghana Revenue Authority", Hours = "9:00AM - 4:00PM",
                     LogoUrl = "~/images/gra-logo.png",
                     Services = new List<ServiceViewModel> {
-                        new ServiceViewModel { Name = "File Tax Returns", Link = "#" }
+                        new ServiceViewModel { Name = "File Tax Returns", Link = Url.Action("FileReturns", "Gra")! }
                     }
                 }
                 // Add other departments...

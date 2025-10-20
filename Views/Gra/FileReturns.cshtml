@@ -1,0 +1,48 @@
+@model GovSchedulaWeb.Models.TaxFilingViewModel
+@{
+    ViewData["Title"] = "File Tax Returns";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">File Annual Tax Returns</h1>
+    <p class="heroSubtitle">Please provide your TIN and income details.</p>
+    <button type="button" onclick="window.history.back();" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="FileReturns" asp-controller="Gra" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+            <h2 class="formSubtitle">Tax Filing Details</h2>
+
+            <div>
+                <label asp-for="Tin" class="formLabel"></label>
+                <input asp-for="Tin" class="formInput" placeholder="Enter your 11-digit TIN" />
+                <span asp-validation-for="Tin" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="TaxYear" class="formLabel"></label>
+                <input asp-for="TaxYear" class="formInput" placeholder="e.g., 2024" />
+                <span asp-validation-for="TaxYear" class="text-danger"></span>
+            </div>
+
+            <div class="colSpan2">
+                <label asp-for="AssessableIncome" class="formLabel"></label>
+                <input asp-for="AssessableIncome" class="formInput" type="number" step="0.01" placeholder="0.00" />
+                <span asp-validation-for="AssessableIncome" class="text-danger"></span>
+            </div>
+
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Submit Returns</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
