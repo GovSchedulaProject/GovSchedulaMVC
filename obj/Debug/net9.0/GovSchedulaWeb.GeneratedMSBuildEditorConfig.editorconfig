@@ -32,6 +32,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Dvla/NewLicense.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHZsYVxOZXdMaWNlbnNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Dvla/RegisterVehicle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHZsYVxSZWdpc3RlclZlaGljbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Dvla/RenewLicense.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHZsYVxSZW5ld0xpY2Vuc2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

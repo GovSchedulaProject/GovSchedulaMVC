@@ -43,7 +43,7 @@ namespace GovSchedulaWeb.Controllers
                     Id = "ec", Name = "Electoral Commission", Hours = "9:00AM - 4:00PM",
                     LogoUrl = "~/images/electoral-commission-logo.png",
                     Services = new List<ServiceViewModel> {
-                        new ServiceViewModel { Name = "Voter Registration", Link = "#" }
+                        new ServiceViewModel { Name = "Voter Registration", Link = Url.Action("Register", "ElectoralCommission")! }
                     }
                 },
                 new DepartmentViewModel {

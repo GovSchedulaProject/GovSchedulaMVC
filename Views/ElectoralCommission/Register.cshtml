@@ -1,0 +1,98 @@
+@model GovSchedulaWeb.Models.VoterRegistrationViewModel
+@{
+    ViewData["Title"] = "Voter Registration";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Voter Registration Application</h1>
+    <p class="heroSubtitle">Please provide your details accurately.</p>
+    <button type="button" onclick="window.history.back();" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="Register" asp-controller="ElectoralCommission" method="post">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
+            <h2 class="formSubtitle">Registration Details</h2>
+
+            <div>
+                <label asp-for="GhanaCardNumber" class="formLabel"></label>
+                <input asp-for="GhanaCardNumber" class="formInput" placeholder="GHA-XXXXXXX-X" />
+                <span asp-validation-for="GhanaCardNumber" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="FullName" class="formLabel"></label>
+                <input asp-for="FullName" class="formInput" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+             <div>
+                <label asp-for="DateOfBirth" class="formLabel"></label>
+                <div class="dateInputContainer">
+                    <input asp-for="DateOfBirth" class="formInput" placeholder="MM/DD/YYYY" type="text" />
+                    <i class="fa-regular fa-calendar-alt dateIcon"></i>
+                </div>
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Gender" class="formLabel"></label>
+                <select asp-for="Gender" class="formSelect">
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="colSpan2">
+                <label asp-for="ResidentialAddress" class="formLabel"></label>
+                <textarea asp-for="ResidentialAddress" class="formTextarea" rows="2"></textarea>
+                <span asp-validation-for="ResidentialAddress" class="text-danger"></span>
+            </div>
+
+             <div>
+                <label asp-for="DigitalAddress" class="formLabel"></label>
+                <input asp-for="DigitalAddress" class="formInput" placeholder="e.g., GA-123-4567" />
+                <span asp-validation-for="DigitalAddress" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Region" class="formLabel"></label>
+                <input asp-for="Region" class="formInput" placeholder="e.g., Greater Accra" />
+                <span asp-validation-for="Region" class="text-danger"></span>
+            </div>
+
+             <div>
+                <label asp-for="District" class="formLabel"></label>
+                 <input asp-for="District" class="formInput" placeholder="e.g., Accra Metropolitan" />
+                <span asp-validation-for="District" class="text-danger"></span>
+            </div>
+
+             <div>
+                <label asp-for="Constituency" class="formLabel"></label>
+                <input asp-for="Constituency" class="formInput" placeholder="e.g., Ayawaso Central" />
+                <span asp-validation-for="Constituency" class="text-danger"></span>
+            </div>
+
+             <div>
+                <label asp-for="PhoneNumber" class="formLabel"></label>
+                <input asp-for="PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+
+            <div class="buttonContainer">
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Submit Registration</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
