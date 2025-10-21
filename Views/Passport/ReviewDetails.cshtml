@@ -1,0 +1,79 @@
+@model GovSchedulaWeb.Models.ViewModels.ReviewDetailsViewModel
+@{
+    ViewData["Title"] = "Review Application Details";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Review Your Details</h1>
+    <p class="heroSubtitle">Please confirm the information below before proceeding.</p>
+    <button type="button" onclick="window.history.back();" class="backButton">
+         <i class="fa-solid fa-arrow-left"></i> Back to Form
+    </button>
+</div>
+
+<div class="formSection">
+    <div class="formContainer">
+        <h2 class="formSubtitle">Personal Details</h2>
+        <dl class="review-details-list">
+            <dt>First Name:</dt><dd>@Model.FirstName</dd>
+            <dt>Last Name:</dt><dd>@Model.LastName</dd>
+            <dt>Other Names:</dt><dd>@Model.OtherNames ?? "N/A"</dd>
+            <dt>Gender:</dt><dd>@Model.Gender</dd>
+            <dt>Date Of Birth:</dt><dd>@Model.DateOfBirth</dd>
+            <dt>Place Of Birth:</dt><dd>@Model.PlaceOfBirth</dd>
+        </dl>
+
+        <h2 class="formSubtitle">Biographical & Contact</h2>
+         <dl class="review-details-list">
+            <dt>Profession:</dt><dd>@Model.Profession ?? "N/A"</dd>
+            <dt>Marital Status:</dt><dd>@Model.MaritalStatus</dd>
+            <dt>Height:</dt><dd>@Model.Height ?? "N/A"</dd>
+            <dt>Phone Number:</dt><dd>@Model.PhoneNumber</dd>
+            <dt>Email Address:</dt><dd>@Model.EmailAddress ?? "N/A"</dd>
+            <dt>Residential Address:</dt><dd>@Model.ResidentialAddress</dd>
+        </dl>
+
+        <h2 class="formSubtitle">Parental Information</h2>
+        <dl class="review-details-list">
+            <dt>Father's Full Name:</dt><dd>@Model.FatherName ?? "N/A"</dd>
+            <dt>Mother's Full Name:</dt><dd>@Model.MotherName ?? "N/A"</dd>
+        </dl>
+
+         <h2 class="formSubtitle">Emergency Contact</h2>
+         <dl class="review-details-list">
+            <dt>Full Name:</dt><dd>@Model.EmergencyName ?? "N/A"</dd>
+            <dt>Phone Number:</dt><dd>@Model.EmergencyPhone ?? "N/A"</dd>
+        </dl>
+<div class="formSection">
+    <div class="formContainer">
+        <form asp-action="SubmitApplication" asp-controller="Passport" method="post"> 
+             @Html.AntiForgeryToken()
+             <div class="buttonContainer">
+                <a asp-action="Create" asp-controller="Passport" class="formButton cancelButton">Edit Details</a> 
+                <button type="submit" class="formButton submitButton">Confirm & Proceed</button> 
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .review-details-list {
+            display: grid;
+            grid-template-columns: auto 1fr; /* Label column, Data column */
+            gap: 0.75rem 1.5rem; /* Row gap, Column gap */
+            margin-bottom: 2rem;
+        }
+        .review-details-list dt {
+            font-weight: 600;
+            color: #374151; /* gray-700 */
+            text-align: right;
+        }
+         .review-details-list dd {
+            margin: 0;
+            color: #111827; /* gray-900 */
+        }
+    </style>
+}
+
+@section Scripts { }
