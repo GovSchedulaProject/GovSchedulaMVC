@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations; // For validation attributes
 
-namespace GovSchedulaWeb.Models
+namespace GovSchedulaWeb.Models.ViewModels
 {
     public class LoginViewModel
     {

@@ -28,12 +28,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaWduVXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Admin/Scanner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU2Nhbm5lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Booking/Confirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xDb25maXJtYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Booking/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Booking/SelectSlot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xTZWxlY3RTbG90LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Dvla/NewLicense.cshtml]
@@ -86,6 +98,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Passport/Replace.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzc3BvcnRcUmVwbGFjZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Passport/ReviewDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzc3BvcnRcUmV2aWV3RGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/MyProjects/GovSchedulaWeb/Views/Passport/VerifyIdentity.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFzc3BvcnRcVmVyaWZ5SWRlbnRpdHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/MyProjects/GovSchedulaWeb/Views/Shared/Error.cshtml]

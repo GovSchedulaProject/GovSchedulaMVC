@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using GovSchedulaWeb.Models; // Include ViewModels
+using GovSchedulaWeb.Models.ViewModels; // Include ViewModels
 
 namespace GovSchedulaWeb.Controllers
 {
@@ -49,9 +49,9 @@ namespace GovSchedulaWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterVehicle(DvlaVehicleRegistrationViewModel model)
+        public IActionResult RegisterVehicle(DvlaVehicleRegistrationViewModel vehicleModel)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid) return View(vehicleModel);
             // TODO: Process Vehicle Registration data
             return RedirectToAction("Index", "Home"); // Placeholder
         }

@@ -1,0 +1,64 @@
+@model GovSchedulaWeb.Models.ViewModels.SelectSlotViewModel
+@{
+    ViewData["Title"] = "Select Appointment Slot";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Select Appointment Slot</h1>
+    <p class="heroSubtitle">Choose your preferred date, time, and location for @Model.ServiceName.</p>
+     <button type="button" onclick="window.history.back();" class="backButton">
+         <i class="fa-solid fa-arrow-left"></i> Back to Review
+    </button>
+</div>
+
+<div class="formSection">
+    <form class="formContainer" asp-action="SelectSlot" asp-controller="Booking" method="post">
+         @Html.AntiForgeryToken()
+         <input type="hidden" asp-for="ServiceName" /> 
+         <div class="formGrid"> 
+            <h2 class="formSubtitle">Choose Your Slot</h2>
+
+            <div>
+                <label asp-for="SelectedOffice" class="formLabel">Office Location</label>
+                <select asp-for="SelectedOffice" class="formSelect" required>
+                    <option value="">-- Select Office --</option>
+                    @foreach(var office in Model.AvailableOffices) {
+                        <option value="@office">@office</option>
+                    }
+                </select>
+                 <span asp-validation-for="SelectedOffice" class="text-danger"></span>
+            </div>
+
+            <div>
+                 <label asp-for="SelectedDate" class="formLabel">Date</label>
+                <select asp-for="SelectedDate" class="formSelect" required>
+                    <option value="">-- Select Date --</option>
+                     @foreach(var date in Model.AvailableDates) {
+                        <option value="@date">@date</option>
+                    }
+                </select>
+                <span asp-validation-for="SelectedDate" class="text-danger"></span>
+            </div>
+
+            <div class="colSpan2"> <label asp-for="SelectedTime" class="formLabel">Available Times</label>
+                <select asp-for="SelectedTime" class="formSelect" required>
+                    <option value="">-- Select Time --</option>
+                     @foreach(var time in Model.AvailableTimes) {
+                        <option value="@time">@time</option>
+                    }
+                </select>
+                <span asp-validation-for="SelectedTime" class="text-danger"></span>
+            </div>
+
+             <div class="buttonContainer">
+                <a asp-action="ReviewDetails" asp-controller="Passport" class="formButton cancelButton">Cancel</a> 
+                <button type="submit" class="formButton submitButton">Confirm Slot & Book</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

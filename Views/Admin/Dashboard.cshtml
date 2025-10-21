@@ -1,0 +1,78 @@
+@model GovSchedulaWeb.Models.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    // Optionally use a different layout for admin if needed later:
+    // Layout = "_AdminLayout"; 
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<div class="admin-container">
+    <header class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <div class="date-display">@Model.CurrentDate</div>
+    </header>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-value">@Model.WaitingCount</span>
+            <span class="stat-label">Citizens Waiting</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">-</span>
+            <span class="stat-label">Avg. Wait Time</span>
+        </div>
+         <div class="stat-item">
+            <span class="stat-value">-</span>
+            <span class="stat-label">Currently Serving</span>
+        </div>
+    </div>
+
+    <div class="queue-section">
+        <h2>Live Queue</h2>
+        <div class="queue-table-container">
+            <table class="queue-table">
+                <thead>
+                    <tr>
+                        <th>Token</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Checked In</th>
+                        <th>Actions</th> 
+                    </tr>
+                </thead>
+                <tbody id="liveQueueBody">
+                    @if (Model.LiveQueue.Any())
+                    {
+                        @foreach (var item in Model.LiveQueue)
+                        {
+                            <tr>
+                                <td><span class="token">@item.LiveQueueToken</span></td>
+                                <td>@item.ServiceName</td>
+                                <td><span class="status-@item.Status?.ToLower()">@item.Status</span></td>
+                                <td>@item.CheckedInTime</td>
+                                <td>
+                                    <button class="action-btn call-btn">Call Next</button>
+                                    <button class="action-btn complete-btn">Complete</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="no-data">No citizens currently in the queue.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* <script src="~/js/signalr/dist/browser/signalr.js"></script> *@
+    @* <script src="~/js/admin-dashboard.js"></script> *@
+}

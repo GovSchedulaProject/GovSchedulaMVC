@@ -1,0 +1,26 @@
+@model GovSchedulaWeb.Models.ViewModels.VerifyIdentityViewModel
+@{
+    ViewData["Title"] = "Verify Identity";
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Verify Your Identity</h1>
+    <p class="heroSubtitle">Please complete the next step to confirm your identity.</p>
+     <button type="button" onclick="window.history.back();" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+</div>
+
+<div class="formSection">
+    <div class="formContainer" style="text-align: center;">
+         <h2 class="formSubtitle" style="text-align: left; margin-bottom: 2rem;">Verification Required</h2>
+         <p>@Model.Message</p>
+         <p style="margin-top: 1rem;"><em>(Content for this step will be built later)</em></p>
+
+         <div class="buttonContainer" style="justify-content: center; margin-top: 3rem;">
+             <a asp-action="Index" asp-controller="Home" class="formButton submitButton">Finish (Placeholder)</a>
+         </div>
+    </div>
+</div>
+
+@section Scripts { }
