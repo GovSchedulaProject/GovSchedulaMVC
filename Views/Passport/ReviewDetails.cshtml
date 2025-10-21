@@ -50,7 +50,7 @@
         <form asp-action="SubmitApplication" asp-controller="Passport" method="post"> 
              @Html.AntiForgeryToken()
              <div class="buttonContainer">
-                <a asp-action="Create" asp-controller="Passport" class="formButton cancelButton">Edit Details</a> 
+                <a asp-action="CreateStep1" asp-controller="Passport" class="formButton cancelButton">Edit Details</a> 
                 <button type="submit" class="formButton submitButton">Confirm & Proceed</button> 
             </div>
         </form>

@@ -2,42 +2,37 @@
 @model PassportApplicationViewModel
 @{
     ViewData["Title"] = "New Passport Application";
-    
 }
 
 <div class="hero">
     <h1 class="heroTitle">Passport Application</h1>
-    <p class="heroSubtitle">
-        Fill in the forms with the exact details on your birth certificate
-    </p>
-    <button type="button" onclick="window.history.back();" class="backButton">
-        <i class="fa-solid fa-arrow-left"></i> Back
+    <p class="heroSubtitle">Fill in the forms with the exact details on your birth certificate.</p>
+    <button type="button" onclick="window.location.href='@Url.Action("Index", "Booking")'" class="backButton">
+        <i class="fa-solid fa-arrow-left"></i> Back to Departments
     </button>
 </div>
 
 <div class="formSection">
     <form class="formContainer" asp-action="Create" asp-controller="Passport" method="post">
-        @Html.AntiForgeryToken() <div class="formGrid">
+        @Html.AntiForgeryToken()
+        <div class="formGrid">
 
             <h2 class="formSubtitle">Personal Details</h2>
-
             <div>
                 <label asp-for="FirstName" class="formLabel"></label>
                 <input asp-for="FirstName" class="formInput" />
-                <span asp-validation-for="FirstName" class="text-danger"></span> </div>
-
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
             <div>
                 <label asp-for="LastName" class="formLabel"></label>
                 <input asp-for="LastName" class="formInput" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="OtherNames" class="formLabel"></label>
                 <input asp-for="OtherNames" class="formInput" />
                 <span asp-validation-for="OtherNames" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="Gender" class="formLabel"></label>
                 <select asp-for="Gender" class="formSelect">
@@ -47,7 +42,6 @@
                 </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="DateOfBirth" class="formLabel"></label>
                 <div class="dateInputContainer">
@@ -56,96 +50,146 @@
                 </div>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="PlaceOfBirth" class="formLabel"></label>
                 <input asp-for="PlaceOfBirth" class="formInput" />
                 <span asp-validation-for="PlaceOfBirth" class="text-danger"></span>
             </div>
 
-            <h2 class="formSubtitle">Biographical & Contact Details</h2>
-
-            <div>
-                <label asp-for="Profession" class="formLabel"></label>
-                <input asp-for="Profession" class="formInput" />
-                <span asp-validation-for="Profession" class="text-danger"></span>
-            </div>
-
-            <div>
-                <label asp-for="MaritalStatus" class="formLabel"></label>
-                <select asp-for="MaritalStatus" class="formSelect">
-                    <option value="">Select Status</option>
-                    <option>Single</option>
-                    <option>Married</option>
-                    <option>Divorced</option>
-                    <option>Widowed</option>
-                </select>
-                <span asp-validation-for="MaritalStatus" class="text-danger"></span>
-            </div>
-
-            <div>
-                <label asp-for="Height" class="formLabel"></label>
-                <input asp-for="Height" class="formInput" placeholder="e.g., 5ft 9in or 1.75m" />
-                <span asp-validation-for="Height" class="text-danger"></span>
-            </div>
-
-            <div>
+            <h2 class="formSubtitle">Contact & Other Details</h2>
+             <div>
                 <label asp-for="PhoneNumber" class="formLabel"></label>
                 <input asp-for="PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-
             <div>
+                <label asp-for="Nationality" class="formLabel"></label>
+                <input asp-for="Nationality" class="formInput" placeholder="e.g., Ghanaian" />
+                <span asp-validation-for="Nationality" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="PostalAddress" class="formLabel"></label>
+                <input asp-for="PostalAddress" class="formInput" placeholder="e.g., Box 123, Accra" />
+                <span asp-validation-for="PostalAddress" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="Profession" class="formLabel">Occupation</label>
+                <input asp-for="Profession" class="formInput" />
+                <span asp-validation-for="Profession" class="text-danger"></span>
+            </div>
+            <div class="colSpan2">
+                <label asp-for="ResidentialAddress" class="formLabel"></label>
+                <textarea asp-for="ResidentialAddress" class="formTextarea" rows="2"></textarea>
+                <span asp-validation-for="ResidentialAddress" class="text-danger"></span>
+            </div>
+             <div>
                 <label asp-for="EmailAddress" class="formLabel"></label>
-                <input asp-for="EmailAddress" class="formInput" type="email" />
+                <input asp-for="EmailAddress" class="formInput" type="email" placeholder="e.g., user@example.com" />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
 
-            <div class="colSpan2">
-                <label asp-for="ResidentialAddress" class="formLabel"></label>
-                <textarea asp-for="ResidentialAddress" class="formTextarea" rows="3"></textarea>
-                <span asp-validation-for="ResidentialAddress" class="text-danger"></span>
-            </div>
+            <h2 class="formSubtitle">Identification Details</h2>
+             <div>
+                 <label asp-for="IdType" class="formLabel"></label>
+                 <select asp-for="IdType" asp-items="@Model.IdTypeOptions" class="formSelect"></select>
+                 <span asp-validation-for="IdType" class="text-danger"></span>
+             </div>
+             <div>
+                 <label asp-for="IdNumber" class="formLabel"></label>
+                 <input asp-for="IdNumber" class="formInput" placeholder="Enter ID Number" />
+                 <span asp-validation-for="IdNumber" class="text-danger"></span>
+             </div>
 
-            <h2 class="formSubtitle">Parental Information</h2>
+            <h2 class="formSubtitle colSpan2">Type of Passport</h2>
+             <div class="colSpan2 passport-type-options">
+                  <label class="passport-type-label">
+                      <input type="radio" asp-for="PassportType" value="Standard" />
+                      Standard - 32 Pages
+                  </label>
+                  <label class="passport-type-label">
+                      <input type="radio" asp-for="PassportType" value="Diplomat" />
+                      Diplomat - 48 Pages
+                  </label>
+             </div>
+              <span asp-validation-for="PassportType" class="text-danger colSpan2"></span>
 
-            <div>
+            <h2 class="formSubtitle">Family Section</h2>
+             <div>
                 <label asp-for="FatherName" class="formLabel"></label>
                 <input asp-for="FatherName" class="formInput" />
                 <span asp-validation-for="FatherName" class="text-danger"></span>
             </div>
-
+             <div>
+                 <label asp-for="FatherNationality" class="formLabel"></label>
+                 <input asp-for="FatherNationality" class="formInput" placeholder="e.g., Ghanaian" />
+                 <span asp-validation-for="FatherNationality" class="text-danger"></span>
+             </div>
             <div>
-                <label asp-for="MotherName" class="formLabel"></label>
+                <label asp-for="MotherName" class="formLabel">Mother's Full Name (Maiden)</label>
                 <input asp-for="MotherName" class="formInput" />
                 <span asp-validation-for="MotherName" class="text-danger"></span>
             </div>
+             <div>
+                 <label asp-for="MotherNationality" class="formLabel"></label>
+                 <input asp-for="MotherNationality" class="formInput" placeholder="e.g., Ghanaian" />
+                 <span asp-validation-for="MotherNationality" class="text-danger"></span>
+             </div>
+              <div>
+                 <label asp-for="SpouseName" class="formLabel"></label>
+                 <input asp-for="SpouseName" class="formInput" placeholder="(If Married)"/>
+                 <span asp-validation-for="SpouseName" class="text-danger"></span>
+             </div>
+              <div>
+                 <label asp-for="SpouseNationality" class="formLabel"></label>
+                 <input asp-for="SpouseNationality" class="formInput" placeholder="e.g., Ghanaian" />
+                 <span asp-validation-for="SpouseNationality" class="text-danger"></span>
+             </div>
+
+             <h2 class="formSubtitle">Guarantor's Information</h2>
+              <div class="colSpan2">
+                  <label asp-for="GuarantorFullName" class="formLabel"></label>
+                  <input asp-for="GuarantorFullName" class="formInput" />
+                  <span asp-validation-for="GuarantorFullName" class="text-danger"></span>
+              </div>
+              <div>
+                   <label asp-for="GuarantorProfession" class="formLabel"></label>
+                  <input asp-for="GuarantorProfession" class="formInput" />
+                  <span asp-validation-for="GuarantorProfession" class="text-danger"></span>
+              </div>
+              <div>
+                  <label asp-for="GuarantorPhoneNumber" class="formLabel"></label>
+                  <input asp-for="GuarantorPhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX"/>
+                  <span asp-validation-for="GuarantorPhoneNumber" class="text-danger"></span>
+              </div>
+               <div class="colSpan2">
+                  <label asp-for="GuarantorAddress" class="formLabel"></label>
+                  <textarea asp-for="GuarantorAddress" class="formTextarea" rows="2"></textarea>
+                  <span asp-validation-for="GuarantorAddress" class="text-danger"></span>
+              </div>
+               <div>
+                  <label asp-for="GuarantorPassportNumber" class="formLabel"></label>
+                  <input asp-for="GuarantorPassportNumber" class="formInput" placeholder="GXXXXXXX"/>
+                  <span asp-validation-for="GuarantorPassportNumber" class="text-danger"></span>
+              </div>
 
             <h2 class="formSubtitle">Emergency Contact</h2>
-
             <div>
                 <label asp-for="EmergencyName" class="formLabel"></label>
                 <input asp-for="EmergencyName" class="formInput" />
                 <span asp-validation-for="EmergencyName" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="EmergencyPhone" class="formLabel"></label>
                 <input asp-for="EmergencyPhone" class="formInput" placeholder="+233 XX XXX XXXX" />
                 <span asp-validation-for="EmergencyPhone" class="text-danger"></span>
             </div>
 
-
             <div class="buttonContainer">
-                <a asp-action="Index" asp-controller="Home" class="formButton cancelButton">Cancel</a>
-                <button type="submit" class="formButton submitButton">
-                    Next: Review Details
-                </button>
+                <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
+                <button type="submit" class="formButton submitButton">Next: Review Details</button>
             </div>
-        </div>
-    </form>
+
+        </div> </form>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

@@ -16,7 +16,7 @@ namespace GovSchedulaWeb.Controllers
                     LogoUrl = "~/images/passport-logo.png", // Use ~ for root path
                     // Inside BookingController.cs, Index action
                 Services = new List<ServiceViewModel> {
-                    new ServiceViewModel { Name = "New Passport Application", Link = Url.Action("Create", "Passport")! }, // Correct
+                    new ServiceViewModel { Name = "New Passport Application", Link = Url.Action("Create", "Passport")! },
                     new ServiceViewModel { Name = "Passport Renewal", Link = Url.Action("Renew", "Passport")! },       // Correct
                     new ServiceViewModel { Name = "Lost/Damaged Replacement", Link = Url.Action("Replace", "Passport")! } // Correct
                     }
