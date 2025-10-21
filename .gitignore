@@ -53,6 +53,3 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-# Ignore build output and temporary files
-bin/
-obj/
