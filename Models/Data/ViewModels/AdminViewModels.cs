@@ -1,6 +1,6 @@
 using System.Collections.Generic; // For List
 
-namespace GovSchedulaWeb.Models.ViewModels
+namespace GovSchedulaWeb.Models.Data.ViewModels
 {
     // Represents one person currently in the live queue
     public class QueueItemViewModel

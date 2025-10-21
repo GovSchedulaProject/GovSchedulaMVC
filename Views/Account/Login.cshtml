@@ -1,4 +1,5 @@
-@model GovSchedulaWeb.Models.ViewModels.LoginViewModel
+@using GovSchedulaWeb.Models.Data.ViewModels
+@model LoginViewModel
 @{
     ViewData["Title"] = "Log In";
     Layout = "_AuthLayout"; // Specify to use the Auth layout
@@ -11,9 +12,9 @@
         @Html.AntiForgeryToken()
 
         <div>
-            <label asp-for="LoginIdentifier" class="formLabel"></label>
-            <input asp-for="LoginIdentifier" class="formInput" placeholder="e.g., user@example.com" />
-            <span asp-validation-for="LoginIdentifier" class="text-danger"></span>
+            <label asp-for="Email" class="formLabel"></label>
+            <input asp-for="Email" class="formInput" placeholder="e.g., user@example.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
         <div>

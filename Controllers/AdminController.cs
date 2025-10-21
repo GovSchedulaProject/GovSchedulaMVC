@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using GovSchedulaWeb.Models.ViewModels; // Use the correct namespace
 using System; // For DateTime
-using System.Collections.Generic; // For List
+using System.Collections.Generic;
+using GovSchedulaWeb.Models.Data.ViewModels; // For List
 
 namespace GovSchedulaWeb.Controllers
 {

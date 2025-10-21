@@ -1,6 +1,6 @@
 using System.Collections.Generic; // Make sure List is included
 
-namespace GovSchedulaWeb.Models.ViewModels
+namespace GovSchedulaWeb.Models.Data.ViewModels
 {
     public class ServiceViewModel
     {

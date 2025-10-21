@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GovSchedulaWeb.Models.ViewModels
+namespace GovSchedulaWeb.Models.Data.ViewModels
 {
     public class NiaRegistrationViewModel
     {

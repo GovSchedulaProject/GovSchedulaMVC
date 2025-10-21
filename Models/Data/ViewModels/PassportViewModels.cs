@@ -1,4 +1,4 @@
-namespace GovSchedulaWeb.Models.ViewModels
+namespace GovSchedulaWeb.Models.Data.ViewModels
 {   public class ReviewDetailsViewModel
 {
     // Include properties to display the submitted data

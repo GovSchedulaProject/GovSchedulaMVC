@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GovSchedulaWeb.Models.ViewModels
+namespace GovSchedulaWeb.Models.Data.ViewModels
 {
     public class SignUpViewModel
     {
+        [Key]
+        public int UserId { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

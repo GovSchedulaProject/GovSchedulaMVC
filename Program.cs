@@ -1,7 +1,17 @@
+using GovScedulaTrial.Models.Data.Services;
+using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<GovSchedulaDbContext>(o =>
+{
+    o.UseSqlServer(builder.Configuration.GetConnectionString("GovSchedulaDBConnection"));
+});
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddSession();
 
 builder.Services.AddSession();
 var app = builder.Build();
