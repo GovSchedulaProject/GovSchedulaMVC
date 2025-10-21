@@ -38,4 +38,22 @@ public class BookingConfirmationViewModel
         // Initialize List properties with '= new()'
         public List<DepartmentViewModel> Departments { get; set; } = new List<DepartmentViewModel>();
     }
+
+    // Add this class
+    public class SelectSlotViewModel
+    {
+        public string? ServiceName { get; set; } // e.g., "New Passport Application"
+        // TODO: Add properties to hold the application data being booked (or an ID)
+
+        // --- Mock Data for Available Slots ---
+        public List<string> AvailableDates { get; set; } = new List<string> { "Monday, Oct 27", "Tuesday, Oct 28", "Wednesday, Oct 29" };
+        public List<string> AvailableTimes { get; set; } = new List<string> { "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "..." };
+        public List<string> AvailableOffices { get; set; } = new List<string> { "Accra Central Office", "Tema Branch Office", "Kumasi Regional Office" };
+        // --- End Mock Data ---
+
+        // Properties to capture user's selection
+        public string? SelectedDate { get; set; }
+        public string? SelectedTime { get; set; }
+        public string? SelectedOffice { get; set; }
+    }
 }

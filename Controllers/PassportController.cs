@@ -90,8 +90,11 @@ namespace GovSchedulaWeb.Controllers
         // TempData["ServiceName"] = "New Passport Application";
         // ... set other details for confirmation page ...
 
+        TempData["ServiceName"] = "New Passport Application"; 
+        // TempData["TempApplicationId"] = someGeneratedId;
+
         // Redirect to the Confirmation action in the BookingController
-        return RedirectToAction("Confirmation", "Booking"); 
+        return RedirectToAction("SelectSlot", "Booking"); // Go to SelectSlot page 
         }
 
         public IActionResult Replace()
