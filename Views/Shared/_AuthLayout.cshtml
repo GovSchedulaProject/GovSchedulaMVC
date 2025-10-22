@@ -4,19 +4,41 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GovSchedula</title>
-    <link rel="stylesheet" href="~/css/auth.css" /> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" ... />
+
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    @RenderSection("Styles", required: false)
 </head>
-<body>
-    <div class="authLayout"> 
-        <div class="container">
-            <div class="logoContainer">
-                <img src="~/images/logo.png" alt="GovSchedula Logo" class="logoImage" />
-                <h1 class="logoTitle">GovSchedula</h1>
-            </div>
-            @RenderBody()
+<body class="auth-body">
+
+    <header class="auth-header-centered">
+        <img src="~/images/logo.png" alt="GovSchedula Logo" class="logo-image" />
+        <span class="logo-text">GovSchedula</span>
+    </header>
+
+    <main role="main" class="auth-container">
+        @RenderBody() 
+    
+    </main>
+
+    <footer class="auth-footer">
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="Index" class="footer-link">Terms</a>
+            <a asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
+            <a asp-controller="Home" asp-action="Index" class="footer-link">Contact</a>
         </div>
-    </div>
+        <div class="footer-copyright">
+            &copy; @DateTime.Now.Year - GovSchedula
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
