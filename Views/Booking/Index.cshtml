@@ -2,6 +2,11 @@
 @model DepartmentSelectViewModel
 @{
     ViewData["Title"] = "Book Appointment";
+    var disabledServices = new List<string>
+    {
+        "Passport Renewal",
+        "Lost/Damaged Replacement"
+    };
 }
 
 <div class="hero">
@@ -54,7 +59,19 @@
     <div id="dept-@dept.Id">
         @foreach (var service in dept.Services)
         {
-            <a href="@service.Link" data-name="@service.Name"></a>
+                var isDisabled = disabledServices.Contains(service.Name);
+
+                @if (isDisabled)
+                {
+                    <a href="#"
+                       data-name="@service.Name"
+                       data-disabled="true"
+                       class="disabled-service"></a>
+                }
+                else
+                {
+                    <a href="@service.Link" data-name="@service.Name"></a>
+                }
         }
     </div>
 }
@@ -63,4 +80,98 @@
 
 @section Scripts {
     <script src="~/js/departments.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait a bit to ensure departments.js has loaded
+            setTimeout(function() {
+                const modalBackdrop = document.getElementById('serviceModalBackdrop');
+                const modal = document.getElementById('serviceModal');
+                const modalDeptName = document.getElementById('modalDeptName');
+                const modalServiceList = document.getElementById('modalServiceList');
+                const modalCloseButton = document.getElementById('modalCloseButton');
+                const departmentsDataContainer = document.getElementById('departmentsData');
+
+                // Get all book buttons
+                const bookButtons = document.querySelectorAll('.bookButton');
+
+                // Remove existing event listeners by cloning buttons
+                bookButtons.forEach(button => {
+                    const newButton = button.cloneNode(true);
+                    button.parentNode.replaceChild(newButton, button);
+                });
+
+                // Re-attach event listeners with disabled service logic
+                const newBookButtons = document.querySelectorAll('.bookButton');
+                newBookButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const deptId = this.getAttribute('data-dept-id');
+                        const deptName = this.getAttribute('data-dept-name');
+
+                        // Clear previous services
+                        modalServiceList.innerHTML = '';
+
+                        // Set department name
+                        modalDeptName.textContent = deptName;
+
+                        // Find the hidden service data for this department
+                        const deptDataElement = departmentsDataContainer.querySelector(`#dept-${deptId}`);
+
+                        if (deptDataElement) {
+                            const serviceLinks = deptDataElement.querySelectorAll('a');
+
+                            serviceLinks.forEach(link => {
+                                const serviceName = link.getAttribute('data-name');
+                                const serviceUrl = link.getAttribute('href');
+                                const isDisabled = link.getAttribute('data-disabled') === 'true';
+
+                                // Create new link element for the modal list
+                                const newLink = document.createElement('a');
+                                newLink.textContent = serviceName;
+                                newLink.className = 'serviceLink';
+
+                                // If service is disabled
+                                if (isDisabled) {
+                                    newLink.classList.add('disabled-service');
+                                    newLink.href = 'javascript:void(0)';
+
+                                    // Apply inline styles directly
+                                    newLink.style.opacity = '0.4';
+                                    newLink.style.cursor = 'not-allowed';
+                                    newLink.style.pointerEvents = 'none';
+                                    newLink.style.transition = 'none';
+
+                                    newLink.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        alert('This service is temporarily unavailable. Please try again later.');
+                                        return false;
+                                    });
+                                } else {
+                                    newLink.href = serviceUrl;
+                                }
+
+                                modalServiceList.appendChild(newLink);
+                            });
+                        }
+
+                        modalBackdrop.style.display = 'flex';
+                    });
+                });
+
+                // Re-attach close listeners
+                modalCloseButton.addEventListener('click', function() {
+                    modalBackdrop.style.display = 'none';
+                });
+
+                modalBackdrop.addEventListener('click', function() {
+                    modalBackdrop.style.display = 'none';
+                });
+
+                modal.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+
+            }, 100);
+        });
+    </script>
 }

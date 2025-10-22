@@ -15,9 +15,9 @@ public partial class Family
 
     public string MotherHomeTown { get; set; } = null!;
 
-    public string SpouseName { get; set; } = null!;
+    public string? SpouseName { get; set; }
 
-    public string SpouseNationality { get; set; } = null!;
+    public string? SpouseNationality { get; set; }
 
     public virtual ICollection<GhanaCardRegistration> GhanaCardRegistrations { get; set; } = new List<GhanaCardRegistration>();
 

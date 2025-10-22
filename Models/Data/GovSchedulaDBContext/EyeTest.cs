@@ -7,7 +7,7 @@ public partial class EyeTest
 {
     public int EyeTestId { get; set; }
 
-    public byte[] Image { get; set; } = null!;
+    public byte[]? Image { get; set; }
 
     public virtual ICollection<DriverLicenceRegistration> DriverLicenceRegistrations { get; set; } = new List<DriverLicenceRegistration>();
 }

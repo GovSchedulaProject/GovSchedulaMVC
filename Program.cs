@@ -1,5 +1,6 @@
 using GovScedulaTrial.Models.Data.Services;
 using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+using GovSchedulaWeb.Models.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,9 +12,17 @@ builder.Services.AddDbContext<GovSchedulaDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("GovSchedulaDBConnection"));
 });
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<PassportService>();
+builder.Services.AddScoped<VoterRegService>();
 builder.Services.AddSession();
 
-builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

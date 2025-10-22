@@ -19,7 +19,7 @@ public partial class DriverLicenceRegistration
 
     public int GeneralDetailsId { get; set; }
 
-    public int StatusId { get; set; }
+    public int? StatusId { get; set; }
 
     public virtual BloodGroup BloodGroup { get; set; } = null!;
 
@@ -28,4 +28,6 @@ public partial class DriverLicenceRegistration
     public virtual GeneralDetail GeneralDetails { get; set; } = null!;
 
     public virtual NextofKin NextofKin { get; set; } = null!;
+
+    public virtual ApprovalStatus Status { get; set; } = null!;
 }

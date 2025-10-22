@@ -10,7 +10,7 @@
 
     <form class="form" asp-action="SignUp" asp-controller="Account" method="post">
         @Html.AntiForgeryToken()
-
+        
         <div>
             <label asp-for="Email" class="formLabel"></label>
             <input asp-for="Email" class="formInput" placeholder="e.g., user@example.com" />

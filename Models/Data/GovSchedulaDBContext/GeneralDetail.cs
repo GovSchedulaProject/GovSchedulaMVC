@@ -27,7 +27,7 @@ public partial class GeneralDetail
 
     public string Occupation { get; set; } = null!;
 
-    public int PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; } = null!;
 
     public string Email { get; set; } = null!;
 

@@ -17,7 +17,7 @@ public partial class PassportRegistration
 
     public int GeneralDetailsId { get; set; }
 
-    public int StatusId { get; set; }
+    public int? StatusId { get; set; }
 
     public virtual Family Family { get; set; } = null!;
 

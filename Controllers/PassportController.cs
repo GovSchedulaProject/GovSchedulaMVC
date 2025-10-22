@@ -1,105 +1,159 @@
+using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+using GovSchedulaWeb.Models.Data.Services;
+using GovSchedulaWeb.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using GovSchedulaWeb.Models.ViewModels; // Include the ViewModel
 
 namespace GovSchedulaWeb.Controllers
 {
     public class PassportController : Controller
     {
+        private readonly PassportService _passportService;
+
+        public PassportController(PassportService passportService)
+        {
+            _passportService = passportService;
+        }
+
         // GET: /Passport/Create
-        // Displays the single-page application form
         [HttpGet]
         public IActionResult Create()
         {
-            // If returning from Review edit, load data
-            var model = TempData.ContainsKey("PassportReviewData")
-                        && TempData["PassportReviewData"] is string reviewDataJson
-                        && !string.IsNullOrEmpty(reviewDataJson)
-                ? JsonSerializer.Deserialize<PassportApplicationViewModel>(reviewDataJson)
-                : new PassportApplicationViewModel();
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "Please log in to continue.";
+                return RedirectToAction("Login", "Account");
+            }
 
-             if (model == null) model = new PassportApplicationViewModel();
-            TempData.Remove("PassportReviewData"); // Clear stale data
-             
-             model.IdTypeOptions = new List<SelectListItem>
-    {
-                new SelectListItem { Value = "", Text = "-- Select ID Type --" },
-                 new SelectListItem { Value = "Ghana Card", Text = "Ghana Card" },
-                new SelectListItem { Value = "Voter ID", Text = "Voter ID" },
-                new SelectListItem { Value = "Driver's License", Text = "Driver's License" }
-                // Add other relevant ID types
-    };
-
-            return View(model); // Renders Create.cshtml
-
-            // --- ADD CODE TO POPULATE DROPDOWN ---
-    
+            var model = new PassportApplicationViewModel
+            {
+                PassportRegistration = new PassportRegistration(),
+                GeneralDetail = new GeneralDetail(),
+                Family = new Family()
+            };
+            return View(model);
         }
 
         // POST: /Passport/Create
-        // Handles submission of the single-page form, goes to Review
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(PassportApplicationViewModel model)
+        public async Task<IActionResult> Create(PassportApplicationViewModel model)
         {
-            // Optional: Server-side validation
-            // if (!ModelState.IsValid)
-            // {
-            //     return View(model);
-            // }
-
-            // Store data for the Review page
-            TempData["PassportReviewData"] = JsonSerializer.Serialize(model);
-
-            // Go directly to Review Details
-            return RedirectToAction("ReviewDetails");
-        }
-
-        // --- ReviewDetails, SubmitApplication, Renew, Replace, VerifyIdentity actions remain the same ---
-        // Make sure ReviewDetails GET action still uses TempData["PassportReviewData"]
-        [HttpGet]
-        public IActionResult ReviewDetails()
-        {
-            if (!TempData.ContainsKey("PassportReviewData") || TempData["PassportReviewData"] == null)
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
             {
-                return RedirectToAction("Create"); // Go back to Create if no data
+                TempData["ErrorMessage"] = "Session expired. Please log in again.";
+                return RedirectToAction("Login", "Account");
             }
-            // ... rest of ReviewDetails GET action ...
-             var reviewDataJson = TempData["PassportReviewData"] as string;
-             var viewModelFromJson = JsonSerializer.Deserialize<PassportApplicationViewModel>(reviewDataJson ?? "{}");
-             TempData.Keep("PassportReviewData");
 
-             // Map to ReviewDetailsViewModel if needed
-             var reviewViewModel = new ReviewDetailsViewModel { /* copy properties */ };
+            // Remove validation errors for unused identity proof types
+            RemoveUnusedIdentityProofErrors(model.SelectedIdentityProofType);
 
-             return View(reviewViewModel); // Pass ReviewDetailsViewModel
-        }
+            // Remove navigation property errors
+            RemoveNavigationPropertyErrors();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SubmitApplication()
-        {
-             if (!TempData.ContainsKey("PassportReviewData") || TempData["PassportReviewData"] == null)
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("Create"); // Go back if no data
+                foreach (var error in ModelState)
+                {
+                    foreach (var subError in error.Value.Errors)
+                    {
+                        Console.WriteLine($"Field: {error.Key} - Error: {subError.ErrorMessage}");
+                    }
+                }
+                return View(model);
             }
-            // ... rest of SubmitApplication POST action ...
-            return RedirectToAction("Confirmation", "Booking");
+
+            try
+            {
+                await _passportService.AddPassportAsync(model, userId.Value);
+
+                TempData["SuccessMessage"] = "Passport application submitted successfully!";
+                return RedirectToAction("Success");
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in Passport Create: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                ModelState.AddModelError("", "An error occurred while saving your data. Please try again.");
+                return View(model);
+            }
         }
 
-        [HttpGet]
-        public IActionResult Renew() { /* ... */ return View(); }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Renew(PassportRenewalViewModel model) { /* ... */ return RedirectToAction("Index","Home"); }
+        // GET: /Passport/Success
+        public IActionResult Success()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-        [HttpGet]
-        public IActionResult Replace() { /* ... */ return View(); }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Replace(PassportReplacementViewModel model) { /* ... */ return RedirectToAction("VerifyIdentity"); }
+            if (TempData["SuccessMessage"] == null)
+            {
+                return RedirectToAction("Create");
+            }
 
-        [HttpGet]
-        public IActionResult VerifyIdentity() { /* ... */ return View(); }
+            return View();
+        }
 
-    } // End Controller
-} // End Namespace
+        #region Helper Methods
+
+        private void RemoveUnusedIdentityProofErrors(string selectedType)
+        {
+            var allTypes = new Dictionary<string, string>
+            {
+                { "GhanaCard", "GhanaCard" },
+                { "BirthCertificate", "BirthCertificate" },
+                { "VoterId", "VoterId" },
+                { "NHIS", "Nhis" },
+                { "Guarantor", "Guarantor" }
+            };
+
+            foreach (var type in allTypes)
+            {
+                if (type.Key != selectedType)
+                {
+                    RemoveModelStateErrorsForPrefix(type.Value);
+                }
+            }
+        }
+
+        private void RemoveNavigationPropertyErrors()
+        {
+            var navigationProperties = new[]
+            {
+                "GeneralDetail.User",
+                "GeneralDetail.Department",
+                "GeneralDetail.IdentityProofNavigation",
+                "PassportRegistration.GeneralDetails",
+                "PassportRegistration.Family"
+            };
+
+            foreach (var prop in navigationProperties)
+            {
+                ModelState.Remove(prop);
+            }
+        }
+
+        private void RemoveModelStateErrorsForPrefix(string prefix)
+        {
+            var keysToRemove = ModelState.Keys
+                .Where(k => k.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            foreach (var key in keysToRemove)
+            {
+                ModelState.Remove(key);
+            }
+        }
+
+        #endregion
+    }
+}

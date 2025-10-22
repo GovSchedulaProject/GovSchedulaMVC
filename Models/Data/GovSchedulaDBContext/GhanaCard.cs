@@ -7,7 +7,7 @@ public partial class GhanaCard
 {
     public int GhanaCardId { get; set; }
 
-    public int GhanaCardIdnumber { get; set; }
+    public string GhanaCardIdnumber { get; set; } = null!;
 
     public virtual ICollection<IdentityProof> IdentityProofs { get; set; } = new List<IdentityProof>();
 }

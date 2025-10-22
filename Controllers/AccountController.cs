@@ -33,6 +33,9 @@ namespace GovSchedulaWeb.Controllers
             {
                 // Optionally set a session or cookie here
                 //HttpContext.Session.SetString("UserName", user.Email);
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                HttpContext.Session.SetString("UserName", user.Username);
+                HttpContext.Session.SetString("Email", user.Email);
 
                 // Redirect to homepage or profile page
                 return RedirectToAction("Index", "Home");
@@ -63,11 +66,16 @@ namespace GovSchedulaWeb.Controllers
         {
             try
             {
-                bool result = _accountService.SignUp(model);
-                if (result)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Login", "Account");
+                    bool result = _accountService.SignUp(model);
+                    if (result)
+                    {
+                        return RedirectToAction("Login", "Account");
+                    }
+
                 }
+               
                 throw new Exception();
             }
             catch (Exception ex)

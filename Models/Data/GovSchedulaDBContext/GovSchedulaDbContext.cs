@@ -17,6 +17,8 @@ public partial class GovSchedulaDbContext : DbContext
 
     public virtual DbSet<Adminlogin> Adminlogins { get; set; }
 
+    public virtual DbSet<ApprovalStatus> ApprovalStatuses { get; set; }
+
     public virtual DbSet<BirthSet> BirthSets { get; set; }
 
     public virtual DbSet<BloodGroup> BloodGroups { get; set; }
@@ -56,8 +58,8 @@ public partial class GovSchedulaDbContext : DbContext
     public virtual DbSet<VoterIdregistration> VoterIdregistrations { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=ACEXEDGE00\\SQLEXPRESS;Database=GovSchedulaDB; Integrated Security = true; MultipleActiveResultSets=true;TrustServerCertificate=true");
+// To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Name=GovSchedulaDBConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -77,6 +79,16 @@ public partial class GovSchedulaDbContext : DbContext
                 .HasForeignKey(d => d.DepartmentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("RefDEPARTMENT35");
+        });
+
+        modelBuilder.Entity<ApprovalStatus>(entity =>
+        {
+            entity.HasKey(e => e.StatusId);
+
+            entity.ToTable("ApprovalStatus");
+
+            entity.Property(e => e.StatusId).HasColumnName("StatusID");
+            entity.Property(e => e.Approval).HasMaxLength(50);
         });
 
         modelBuilder.Entity<BirthSet>(entity =>
@@ -167,6 +179,11 @@ public partial class GovSchedulaDbContext : DbContext
                 .HasForeignKey(d => d.NextofKinId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("RefNextofKin19");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.DriverLicenceRegistrations)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DriverLIcenceRegistration_ApprovalStatus");
         });
 
         modelBuilder.Entity<EyeTest>(entity =>
@@ -236,6 +253,7 @@ public partial class GovSchedulaDbContext : DbContext
             entity.Property(e => e.MiddleName).HasMaxLength(100);
             entity.Property(e => e.Nationality).HasMaxLength(100);
             entity.Property(e => e.Occupation).HasMaxLength(100);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(50);
             entity.Property(e => e.PostalAddress)
                 .HasMaxLength(15)
                 .IsUnicode(false)
@@ -268,7 +286,9 @@ public partial class GovSchedulaDbContext : DbContext
             entity.ToTable("GhanaCard");
 
             entity.Property(e => e.GhanaCardId).HasColumnName("GhanaCardID");
-            entity.Property(e => e.GhanaCardIdnumber).HasColumnName("GhanaCardIDNumber");
+            entity.Property(e => e.GhanaCardIdnumber)
+                .HasMaxLength(100)
+                .HasColumnName("GhanaCardIDNumber");
         });
 
         modelBuilder.Entity<GhanaCardRegistration>(entity =>
@@ -296,6 +316,11 @@ public partial class GovSchedulaDbContext : DbContext
                 .HasForeignKey(d => d.GeneralDetailsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("RefGeneralDetails15");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.GhanaCardRegistrations)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GhanaCardRegistration_ApprovalStatus");
         });
 
         modelBuilder.Entity<IdentityProof>(entity =>
@@ -399,6 +424,11 @@ public partial class GovSchedulaDbContext : DbContext
                 .HasForeignKey(d => d.NextofKinId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("RefNextofKin25");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.Nhisregistrations)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NHISRegistration_ApprovalStatus");
         });
 
         modelBuilder.Entity<PassportRegistration>(entity =>
@@ -465,11 +495,17 @@ public partial class GovSchedulaDbContext : DbContext
 
             entity.Property(e => e.VoterId).HasColumnName("VoterID");
             entity.Property(e => e.GeneralDetailsId).HasColumnName("GeneralDetailsID");
+            entity.Property(e => e.StatusId).HasColumnName("StatusID");
 
             entity.HasOne(d => d.GeneralDetails).WithMany(p => p.VoterIdregistrations)
                 .HasForeignKey(d => d.GeneralDetailsId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("RefGeneralDetails22");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.VoterIdregistrations)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VoterIDRegistration_ApprovalStatus");
         });
 
         OnModelCreatingPartial(modelBuilder);

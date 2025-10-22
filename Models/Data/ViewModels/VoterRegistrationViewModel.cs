@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GovSchedulaWeb.Models.ViewModels
 {
-    public class PassportApplicationViewModel
+    public class VoterRegistrationViewModel
     {
         // Identity Proof Selection
-        [Required(ErrorMessage = "Please select an identity proof type")]
+    
         [Display(Name = "Identity Proof Type")]
         public string SelectedIdentityProofType { get; set; } = string.Empty;
 
-        public List<SelectListItem> IdentityProofTypes { get; set; } = new List<SelectListItem>
+        public List<SelectListItem>? IdentityProofTypes { get; set; } = new List<SelectListItem>
         {
             new SelectListItem { Value = "", Text = "-- Select Identity Proof --" },
             new SelectListItem { Value = "GhanaCard", Text = "Ghana Card" },
@@ -23,13 +23,11 @@ namespace GovSchedulaWeb.Models.ViewModels
 
         // Main Entities (Required)
         [Required]
-        public PassportRegistration PassportRegistration { get; set; } = new();
+        public VoterIdregistration VoterIdRegistration { get; set; } = new();
 
         [Required]
-        public GeneralDetail GeneralDetail { get; set; } = new();
+        public GeneralDetail? GeneralDetail { get; set; } = new();
 
-        // Optional: Family Information
-        public Family? Family { get; set; } = new();
 
         // Identity Proof Objects (only one will be populated based on selection)
         public GhanaCard? GhanaCard { get; set; }

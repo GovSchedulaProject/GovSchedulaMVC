@@ -17,9 +17,11 @@ public partial class GhanaCardRegistration
 
     public int GeneralDetailsId { get; set; }
 
-    public int StatusId { get; set; }
+    public int? StatusId { get; set; }
 
     public virtual Family Family { get; set; } = null!;
 
     public virtual GeneralDetail GeneralDetails { get; set; } = null!;
+
+    public virtual ApprovalStatus Status { get; set; } = null!;
 }
