@@ -18,39 +18,67 @@
         <dl class="review-details-list">
             <dt>First Name:</dt><dd>@Model.FirstName</dd>
             <dt>Last Name:</dt><dd>@Model.LastName</dd>
-            <dt>Other Names:</dt><dd>@Model.OtherNames ?? "N/A"</dd>
+            <dt>Other Names:</dt><dd>@Model.OtherNames</dd>
             <dt>Gender:</dt><dd>@Model.Gender</dd>
             <dt>Date Of Birth:</dt><dd>@Model.DateOfBirth</dd>
             <dt>Place Of Birth:</dt><dd>@Model.PlaceOfBirth</dd>
         </dl>
 
-        <h2 class="formSubtitle">Biographical & Contact</h2>
-         <dl class="review-details-list">
-            <dt>Profession:</dt><dd>@Model.Profession ?? "N/A"</dd>
-            <dt>Marital Status:</dt><dd>@Model.MaritalStatus</dd>
-            <dt>Height:</dt><dd>@Model.Height ?? "N/A"</dd>
-            <dt>Phone Number:</dt><dd>@Model.PhoneNumber</dd>
-            <dt>Email Address:</dt><dd>@Model.EmailAddress ?? "N/A"</dd>
-            <dt>Residential Address:</dt><dd>@Model.ResidentialAddress</dd>
+        </dl>
+        <h2 class="formSubtitle">Identification Details</h2>
+        <dl class="review-details-list">
+            <dt>Type of ID:</dt><dd>@Model.IdType</dd>
+            <dt>ID Number:</dt><dd>@Model.IdNumber</dd>
         </dl>
 
-        <h2 class="formSubtitle">Parental Information</h2>
+        </dl>
+        <h2 class="formSubtitle">Type of Passport</h2>
         <dl class="review-details-list">
-            <dt>Father's Full Name:</dt><dd>@Model.FatherName ?? "N/A"</dd>
-            <dt>Mother's Full Name:</dt><dd>@Model.MotherName ?? "N/A"</dd>
+            <dt>Passport Type:</dt><dd>@Model.PassportType</dd>
+        </dl>
+
+        <h2 class="formSubtitle">Biographical & Contact</h2>
+         <dl class="review-details-list">
+            <dt>Profession:</dt><dd>@Model.Profession</dd>
+            <dt>Marital Status:</dt><dd>@Model.MaritalStatus</dd>
+            <dt>Height:</dt><dd>@Model.Height</dd>
+            <dt>Phone Number:</dt><dd>@Model.PhoneNumber</dd>
+            <dt>Email Address:</dt><dd>@Model.EmailAddress</dd>
+            <dt>Residential Address:</dt><dd>@Model.ResidentialAddress</dd>
+         </dl>
+
+        <h2 class="formSubtitle">Family Section</h2>
+        <dl class="review-details-list">
+            <dt>Father's Full Name:</dt><dd>@Model.FatherName</dd>
+            <dt>Father's Nationality:</dt><dd>@Model.FatherNationality</dd>
+            <dt>Mother's Full Name:</dt><dd>@Model.MotherName</dd>
+            <dt>Mother's Nationality:</dt><dd>@Model.MotherNationality</dd>
+            <dt>Spouse's Full Name:</dt><dd>@Model.SpouseName</dd>
+            <dt>Spouse's Nationality:</dt><dd>@Model.SpouseNationality</dd>
+        </dl>
+
+        </dl>
+
+        <h2 class="formSubtitle">Guarantor's Information</h2>
+        <dl class="review-details-list">
+            <dt>Full Name:</dt><dd>@Model.GuarantorFullName</dd>
+            <dt>Profession:</dt><dd>@Model.GuarantorProfession</dd>
+            <dt>Phone Number:</dt><dd>@Model.GuarantorPhoneNumber</dd>
+            <dt>Address:</dt><dd>@Model.GuarantorAddress</dd>
+            <dt>Ghana Passport Number:</dt><dd>@Model.GuarantorPassportNumber</dd>
         </dl>
 
          <h2 class="formSubtitle">Emergency Contact</h2>
-         <dl class="review-details-list">
-            <dt>Full Name:</dt><dd>@Model.EmergencyName ?? "N/A"</dd>
-            <dt>Phone Number:</dt><dd>@Model.EmergencyPhone ?? "N/A"</dd>
+        <dl class="review-details-list">
+            <dt>Full Name:</dt><dd>@Model.EmergencyName</dd>
+            <dt>Phone Number:</dt><dd>@Model.EmergencyPhone</dd>
         </dl>
 <div class="formSection">
     <div class="formContainer">
         <form asp-action="SubmitApplication" asp-controller="Passport" method="post"> 
              @Html.AntiForgeryToken()
              <div class="buttonContainer">
-                <a asp-action="CreateStep1" asp-controller="Passport" class="formButton cancelButton">Edit Details</a> 
+                <a asp-action="Create" asp-controller="Passport" class="formButton cancelButton">Edit Details</a> 
                 <button type="submit" class="formButton submitButton">Confirm & Proceed</button> 
             </div>
         </form>

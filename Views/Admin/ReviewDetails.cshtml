@@ -1,0 +1,108 @@
+@model GovSchedulaWeb.Models.ViewModels.PassportApplicationViewModel
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+
+    <style>
+        .review-details-list { /* ... your existing styles ... */ }
+        .admin-actions { background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 1.5rem; margin-top: 2rem; border-radius: 0.5rem; }
+    </style>
+}
+@{
+    ViewData["Title"] = "Review Application";
+    var applicationId = ViewData["ApplicationId"];
+}
+
+<div class="formSection">
+    <div class="formContainer">
+        <h2 class="formSubtitle">Personal Details</h2>
+        <dl class="review-details-list">
+             <dt>First Name:</dt><dd>@Model.FirstName</dd>
+             <dt>Last Name:</dt><dd>@Model.LastName</dd>
+             </dl>
+    </div>
+</div>
+
+
+<div class="formSection">
+    <div class="formContainer admin-actions">
+        <h2 class="formSubtitle">Admin Actions</h2>
+        
+        <form asp-action="ApproveApplication" asp-controller="Admin" method="post" class="formGrid">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="applicationId" value="@applicationId" />
+
+            <div>
+                <label for="appointmentDate" class="formLabel">Select Appointment Date</label>
+                <input type="date" id="appointmentDate" name="appointmentDate" class="formInput" required />
+            </div>
+            <div>
+                <label for="appointmentTime" class="formLabel">Select Appointment Time</label>
+                <select id="appointmentTime" name="appointmentTime" class="formSelect" required>
+                    <option value="">-- Select a time --</option>
+                    <option value="09:00 AM">09:00 AM</option>
+                    <option value="09:30 AM">09:30 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="10:30 AM">10:30 AM</option>
+                    </select>
+            </div>
+
+            <div class="buttonContainer" style="grid-column: 1 / -1;">
+                <button type="button" class="formButton cancelButton" onclick="openModal('rejectModal')">
+                    Reject
+                </button>
+                
+                <button type="button" class="formButton infoButton" onclick="openModal('requestInfoModal')">
+                    Request Info
+                </button>
+
+                <button type="submit" class="formButton submitButton" style="background-color: #059669;">
+                    Approve & Send Email
+                </button>
+                
+                </div>
+        </form>
+        </div>
+</div>
+
+<div id="rejectModal" class="admin-modal">
+    <div class="admin-modal-content">
+        <span class="close-button" onclick="closeModal('rejectModal')">&times;</span>
+        <h2 class="formSubtitle">Reject Application</h2>
+        <form asp-action="RejectApplication" asp-controller="Admin" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="applicationId" value="@ViewData["ApplicationId"]" />
+            <div class="form-group">
+                <label for="reason" class="formLabel">Reason for Rejection</label>
+                <textarea id="reason" name="reason" class="formTextarea" rows="4" required></textarea>
+            </div>
+            <div class="buttonContainer" style="margin-top: 1rem;">
+                <button type="button" class="formButton cancelButton" onclick="closeModal('rejectModal')">Cancel</button>
+                <button type="submit" class="formButton submitButton" style="background-color: #DC2626;">Confirm Rejection</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="requestInfoModal" class="admin-modal">
+    <div class="admin-modal-content">
+        <span class="close-button" onclick="closeModal('requestInfoModal')">&times;</span>
+        <h2 class="formSubtitle">Request More Information</h2>
+        <form asp-action="RequestInfo" asp-controller="Admin" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="applicationId" value="@ViewData["ApplicationId"]" />
+            <div class="form-group">
+                <label for="message" class="formLabel">Information Required</label>
+                <textarea id="message" name="message" class="formTextarea" rows="4" required placeholder="e.g., 'Please re-upload a clearer copy of your birth certificate.'"></textarea>
+            </div>
+            <div class="buttonContainer" style="margin-top: 1rem;">
+                <button type="button" class="formButton cancelButton" onclick="closeModal('requestInfoModal')">Cancel</button>
+                <button type="submit" class="formButton submitButton" style="background-color: #F59E0B;">Send Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+}

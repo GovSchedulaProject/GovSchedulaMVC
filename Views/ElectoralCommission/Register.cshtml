@@ -1,7 +1,7 @@
 @using GovSchedulaWeb.Models.ViewModels
 @model VoterRegistrationViewModel
 @{
-    ViewData["Title"] = "Voter Registration";
+    ViewData["Title"] = "Voter's Identification Card";
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
@@ -134,5 +134,5 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
 }

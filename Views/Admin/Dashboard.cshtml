@@ -2,78 +2,57 @@
 @model AdminDashboardViewModel
 @{
     ViewData["Title"] = "Admin Dashboard";
-    // Optionally use a different layout for admin if needed later:
-    // Layout = "_AdminLayout"; 
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/admin.css" />
+    <style>
+        /* Quick styles for the new dashboard */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .kpi-card { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center; }
+        .kpi-card h3 { font-size: 3rem; font-weight: 700; color: #003366; }
+        .kpi-card p { font-size: 1rem; font-weight: 500; color: #374151; margin-top: 0.5rem; }
+        
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
+        .action-card { display: block; background-color: #fff; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 2rem; text-align: center; font-size: 1.25rem; font-weight: 600; color: #003366; text-decoration: none; transition: all 0.2s; }
+        .action-card:hover { background-color: #f9fafb; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .action-card i { font-size: 2rem; margin-bottom: 1rem; display: block; }
+    </style>
 }
 
-<div class="admin-container">
-    <header class="admin-header">
-        <h1>Admin Dashboard</h1>
-        <div class="date-display">@Model.CurrentDate</div>
-    </header>
+<div class="container" style="max-width: 1024px; margin-left: auto; margin-right: auto; padding: 2rem 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <h1 class="heroTitle" style="font-size: 2.25rem; color: #111827;">Admin Dashboard</h1>
+        <span style="font-size: 1rem; color: #4b5563;">@Model.CurrentDate</span>
+    </div>
 
-    <div class="stats-bar">
-        <div class="stat-item">
-            <span class="stat-value">@Model.WaitingCount</span>
-            <span class="stat-label">Citizens Waiting</span>
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>@Model.PendingApplicationsCount</h3>
+            <p>Pending Applications</p>
         </div>
-        <div class="stat-item">
-            <span class="stat-value">-</span>
-            <span class="stat-label">Avg. Wait Time</span>
+        <div class="kpi-card">
+            <h3>@Model.AppointmentsTodayCount</h3>
+            <p>Appointments Today</p>
         </div>
-         <div class="stat-item">
-            <span class="stat-value">-</span>
-            <span class="stat-label">Currently Serving</span>
+        <div class="kpi-card">
+            <h3>@Model.CitizensWaitingCount</h3>
+            <p>Currently Waiting</p>
+        </div>
+        <div class="kpi-card">
+            <h3 style="font-size: 2.5rem; padding-top: 0.5rem;">@Model.AverageWaitTime</h3>
+            <p>Avg. Wait Time</p>
         </div>
     </div>
 
-    <div class="queue-section">
-        <h2>Live Queue</h2>
-        <div class="queue-table-container">
-            <table class="queue-table">
-                <thead>
-                    <tr>
-                        <th>Token</th>
-                        <th>Service</th>
-                        <th>Status</th>
-                        <th>Checked In</th>
-                        <th>Actions</th> 
-                    </tr>
-                </thead>
-                <tbody id="liveQueueBody">
-                    @if (Model.LiveQueue.Any())
-                    {
-                        @foreach (var item in Model.LiveQueue)
-                        {
-                            <tr>
-                                <td><span class="token">@item.LiveQueueToken</span></td>
-                                <td>@item.ServiceName</td>
-                                <td><span class="status-@item.Status?.ToLower()">@item.Status</span></td>
-                                <td>@item.CheckedInTime</td>
-                                <td>
-                                    <button class="action-btn call-btn">Call Next</button>
-                                    <button class="action-btn complete-btn">Complete</button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5" class="no-data">No citizens currently in the queue.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    <div class="action-grid">
+        <a asp-action="ApplicationReview" asp-controller="Admin" class="action-card">
+            <i class="fa-solid fa-file-signature"></i>
+            Review Pending Applications
+        </a>
+        <a asp-action="LiveQueue" asp-controller="Admin" class="action-card">
+            <i class="fa-solid fa-users"></i>
+            Manage Live Queue
+        </a>
     </div>
+
 </div>
-
-@section Scripts {
-    @* <script src="~/js/signalr/dist/browser/signalr.js"></script> *@
-    @* <script src="~/js/admin-dashboard.js"></script> *@
-}
