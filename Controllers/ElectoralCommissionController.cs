@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using GovSchedulaWeb.Models.ViewModels; // Include ViewModels
+using GovSchedulaWeb.Models.ViewModels;
+using System.Text.Json; 
 
 namespace GovSchedulaWeb.Controllers
 {
@@ -9,8 +10,17 @@ namespace GovSchedulaWeb.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var viewModel = new VoterRegistrationViewModel();
-            return View(viewModel);
+            var model = TempData.ContainsKey("VoterRegData")
+                        && TempData["VoterRegData"] is string jsonData
+                        && !string.IsNullOrEmpty(jsonData)
+                ? JsonSerializer.Deserialize<VoterRegistrationViewModel>(jsonData)
+                : new VoterRegistrationViewModel();
+
+            if (model == null) model = new VoterRegistrationViewModel();
+            
+            TempData.Keep("VoterRegData"); 
+            
+            return View(model);
         }
 
         // POST: /ElectoralCommission/Register
@@ -18,12 +28,63 @@ namespace GovSchedulaWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(VoterRegistrationViewModel model)
         {
-            if (!ModelState.IsValid)
+            // 4. VALIDATION IS COMMENTED OUT FOR TESTING
+            /* if (!ModelState.IsValid)
             {
-                return View(model); // Show form with validation errors
+                return View(model);
             }
-            // TODO: Process Voter Registration data
-            return RedirectToAction("Index", "Home"); // Placeholder redirect
+            */
+            
+            TempData["VoterRegData"] = JsonSerializer.Serialize(model);
+            return RedirectToAction("ReviewVoterDetails");
+        }
+
+        // GET: /ElectoralCommission/ReviewVoterDetails
+        [HttpGet]
+        public IActionResult ReviewVoterDetails()
+        {
+            if (!TempData.ContainsKey("VoterRegData") || TempData["VoterRegData"] == null)
+            {
+                return RedirectToAction("Register"); 
+            }
+
+            var jsonData = TempData["VoterRegData"] as string;
+            var model = JsonSerializer.Deserialize<VoterRegistrationViewModel>(jsonData ?? "{}");
+
+            if (model == null)
+            {
+                 return RedirectToAction("Register");
+            }
+            
+            TempData.Keep("VoterRegData"); 
+                                 
+            return View(model); 
+        }
+
+        // POST: /ElectoralCommission/SubmitRegistration
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitRegistration()
+        {
+            if (!TempData.ContainsKey("VoterRegData") || TempData["VoterRegData"] == null)
+            {
+                return RedirectToAction("Register"); 
+            }
+
+            var jsonData = TempData["VoterRegData"] as string;
+            var model = JsonSerializer.Deserialize<VoterRegistrationViewModel>(jsonData ?? "{}");
+
+            // TODO: Pass the 'model' to your colleague's backend/database logic
+            
+            TempData.Remove("VoterRegData");
+            return RedirectToAction("RegistrationSuccess");
+        }
+
+        // GET: /ElectoralCommission/RegistrationSuccess
+        [HttpGet]
+        public IActionResult RegistrationSuccess()
+        {
+            return View();
         }
     }
 }

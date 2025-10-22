@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Registration Submitted";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/confirmation.css" asp-append-version="true" />
+}
+
+<div class="hero confirmation-hero">
+    <i class="fa-solid fa-circle-check confirmation-icon"></i>
+    <h1 class="heroTitle">Registration Submitted!</h1>
+    <p class="heroSubtitle">Your application has been submitted for review. You will receive an email upon approval.</p>
+</div>
+
+<div style="text-align: center; margin: 2rem;">
+    <a asp-action="Index" asp-controller="Home" class="formButton submitButton">Back to Home</a>
+</div>

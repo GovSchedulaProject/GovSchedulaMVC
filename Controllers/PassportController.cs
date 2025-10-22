@@ -20,7 +20,7 @@ namespace GovSchedulaWeb.Controllers
                 : new PassportApplicationViewModel();
 
              if (model == null) model = new PassportApplicationViewModel();
-            TempData.Remove("PassportReviewData"); // Clear stale data
+            TempData.Keep("PassportReviewData");
              
              model.IdTypeOptions = new List<SelectListItem>
     {
@@ -56,36 +56,86 @@ namespace GovSchedulaWeb.Controllers
             return RedirectToAction("ReviewDetails");
         }
 
-        // --- ReviewDetails, SubmitApplication, Renew, Replace, VerifyIdentity actions remain the same ---
-        // Make sure ReviewDetails GET action still uses TempData["PassportReviewData"]
-        [HttpGet]
+       [HttpGet]
         public IActionResult ReviewDetails()
         {
             if (!TempData.ContainsKey("PassportReviewData") || TempData["PassportReviewData"] == null)
             {
                 return RedirectToAction("Create"); // Go back to Create if no data
             }
-            // ... rest of ReviewDetails GET action ...
-             var reviewDataJson = TempData["PassportReviewData"] as string;
-             var viewModelFromJson = JsonSerializer.Deserialize<PassportApplicationViewModel>(reviewDataJson ?? "{}");
-             TempData.Keep("PassportReviewData");
+ 
+            var reviewDataJson = TempData["PassportReviewData"] as string;
+            
+            // This is the full model with all the form data
+            var viewModelFromJson = JsonSerializer.Deserialize<PassportApplicationViewModel>(reviewDataJson ?? "{}");
 
-             // Map to ReviewDetailsViewModel if needed
-             var reviewViewModel = new ReviewDetailsViewModel { /* copy properties */ };
+            if (viewModelFromJson == null)
+            {
+                 return RedirectToAction("Create");
+            }
 
-             return View(reviewViewModel); // Pass ReviewDetailsViewModel
+            // --- THIS IS THE CHANGE ---
+            
+            // We no longer map to a separate, incomplete view model.
+            // We just pass the *full* model directly to the view.
+            
+            // DELETE ALL THIS:
+            // var reviewViewModel = new ReviewDetailsViewModel { ... };
+
+            // KEEP THIS:
+            // Keep the original data in TempData for the "Edit" button.
+            TempData.Keep("PassportReviewData"); 
+                                 
+            // SEND THE FULL MODEL:
+            return View(viewModelFromJson); // Pass the FULL PassportApplicationViewModel
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitApplication()
         {
-             if (!TempData.ContainsKey("PassportReviewData") || TempData["PassportReviewData"] == null)
+            if (!TempData.ContainsKey("PassportReviewData") || TempData["PassportReviewData"] == null)
             {
                 return RedirectToAction("Create"); // Go back if no data
             }
-            // ... rest of SubmitApplication POST action ...
-            return RedirectToAction("Confirmation", "Booking");
+
+            // --- START: NEW LOGIC ---
+
+            // 1. Get the final application data from TempData
+            var reviewDataJson = TempData["PassportReviewData"] as string;
+            var applicationData = JsonSerializer.Deserialize<PassportApplicationViewModel>(reviewDataJson ?? "{}");
+
+            // 2. TODO: Save 'applicationData' to your database
+            // This is where you will add your code to save the
+            // applicationData to your database with a
+            // status like "Pending Approval".
+            //
+            // Example:
+            // var newApplication = new PassportApplication();
+            // newApplication.FirstName = applicationData.FirstName;
+            // ... (map all other fields) ...
+            // newApplication.Status = "Pending Approval";
+            // _context.PassportApplications.Add(newApplication);
+            // await _context.SaveChangesAsync();
+
+            // 3. CRITICAL: Clear TempData now that the application is fully submitted.
+            // This prevents the user from going back to the "Review" page.
+            TempData.Remove("PassportReviewData");
+
+            // 4. Redirect to our new "ApplicationSubmitted" page
+            return RedirectToAction("ApplicationSubmitted", "Passport");
+            
+            // --- END: NEW LOGIC ---
+
+            // The old redirect is no longer used:
+            // return RedirectToAction("Confirmation", "Booking");
+        }
+        
+        [HttpGet]
+        public IActionResult ApplicationSubmitted()
+        {
+            // This just displays the static view we created in Step 1.
+            return View();
         }
 
         [HttpGet]

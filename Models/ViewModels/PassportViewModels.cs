@@ -101,30 +101,6 @@ namespace GovSchedulaWeb.Models.ViewModels
         public List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> IdTypeOptions { get; set; } = new();
     }
 
-    // ViewModel for displaying reviewed data
-    public class ReviewDetailsViewModel
-    {
-        // Copy all relevant properties from PassportApplicationViewModel
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string? OtherNames { get; set; }
-        public string? Gender { get; set; }
-        public string? DateOfBirth { get; set; }
-        public string? PlaceOfBirth { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Nationality { get; set; }
-        public string? PostalAddress { get; set; }
-        public string? Profession { get; set; }
-        public string? ResidentialAddress { get; set; }
-        public string? EmailAddress { get; set; }
-        public string? MaritalStatus { get; set; }
-        public string? Height { get; set; }
-        public string? FatherName { get; set; }
-        public string? MotherName { get; set; }
-        public string? EmergencyName { get; set; }
-        public string? EmergencyPhone { get; set; }
-    }
-
     // ViewModel for the Renewal start page
     public class PassportRenewalViewModel
     {

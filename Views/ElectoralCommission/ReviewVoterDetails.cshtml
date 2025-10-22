@@ -1,0 +1,68 @@
+@model GovSchedulaWeb.Models.ViewModels.VoterRegistrationViewModel
+@{
+    ViewData["Title"] = "Review Your Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+    <style>
+        /* Copied from Passport Review Page */
+        .review-details-list {
+            display: grid;
+            grid-template-columns: auto 1fr; /* Label column, Data column */
+            gap: 0.75rem 1.5rem; /* Row gap, Column gap */
+            margin-bottom: 2rem;
+        }
+        .review-details-list dt {
+            font-weight: 600;
+            color: #374151; /* gray-700 */
+            text-align: right;
+        }
+         .review-details-list dd {
+            margin: 0;
+            color: #111827; /* gray-900 */
+         }
+    </style>
+}
+
+<div class="hero">
+    <h1 class="heroTitle">Review Your Details</h1>
+    <p class="heroSubtitle">Please confirm the information below before proceeding.</p>
+    <a asp-action="Register" asp-controller="ElectoralCommission" class="backButton">
+         <i class="fa-solid fa-arrow-left"></i> Back to Form
+    </a>
+</div>
+
+<div class="formSection">
+    <div class="formContainer">
+        
+        <h2 class="formSubtitle">Personal Details</h2>
+        <dl class="review-details-list">
+            <dt>First Name:</dt><dd>@Model.FirstName</dd>
+            <dt>Last Name:</dt><dd>@Model.LastName</dd>
+            <dt>Other Names:</dt><dd>@Model.OtherNames</dd>
+            <dt>Gender:</dt><dd>@Model.Gender</dd>
+            <dt>Date Of Birth:</dt><dd>@Model.DateOfBirth</dd>
+            <dt>Place Of Birth:</dt><dd>@Model.PlaceOfBirth</dd>
+        </dl>
+
+        <h2 class="formSubtitle">Contact & Other Details</h2>
+         <dl class="review-details-list">
+            <dt>Phone Number:</dt><dd>@Model.PhoneNumber</dd>
+            <dt>Nationality:</dt><dd>@Model.Nationality</dd>
+            <dt>Postal Address:</dt><dd>@Model.PostalAddress</dd>
+            <dt>Occupation:</dt><dd>@Model.Occupation</dd>
+            <dt>Residential Address:</dt><dd>@Model.ResidentialAddress</dd>
+            <dt>Email Address:</dt><dd>@Model.EmailAddress</dd>
+         </dl>
+       
+        <form asp-action="SubmitRegistration" asp-controller="ElectoralCommission" method="post"> 
+            @Html.AntiForgeryToken()
+            <div class="buttonContainer">
+                <a asp-action="Register" asp-controller="ElectoralCommission" class="formButton cancelButton">Edit Details</a> 
+                <button type="submit" class="formButton submitButton">Confirm & Proceed</button> 
+            </div>
+        </form>
+
+    </div>
+</div>

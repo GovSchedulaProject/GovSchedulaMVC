@@ -1,9 +1,13 @@
+using GovSchedulaWeb.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
+// Add this to register your new email service
+builder.Services.AddTransient<IEmailService, GovSchedulaWeb.Services.EmailService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
