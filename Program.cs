@@ -1,6 +1,7 @@
 using GovScedulaTrial.Models.Data.Services;
 using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
 using GovSchedulaWeb.Models.Data.Services;
+using GovSchedulaWeb.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Configuration
+       .AddJsonFile("api.json", optional: false, reloadOnChange: true);
 builder.Services.AddDbContext<GovSchedulaDbContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("GovSchedulaDBConnection"));
@@ -15,6 +18,8 @@ builder.Services.AddDbContext<GovSchedulaDbContext>(o =>
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<PassportService>();
 builder.Services.AddScoped<VoterRegService>();
+builder.Services.AddScoped<AdminService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddSession();
 
 builder.Services.AddDistributedMemoryCache();

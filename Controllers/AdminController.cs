@@ -1,197 +1,215 @@
+using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+using GovSchedulaWeb.Models.Data.Services;
+using GovSchedulaWeb.Models.Data.ViewModels;
+using GovSchedulaWeb.Services; // For List
 using Microsoft.AspNetCore.Mvc;
 using System; // For DateTime
 using System.Collections.Generic;
-using GovSchedulaWeb.Models.Data.ViewModels; // For List
 
 namespace GovSchedulaWeb.Controllers
 {
     public class AdminController : Controller
     {
-        // --- 2. ADD THESE TWO LINES ---
+        private readonly AdminService _adminService;
         private readonly IEmailService _emailService;
-        // private readonly ApplicationDbContext _context; // (Your DB context will go here later)
 
-        // --- 3. UPDATE THE CONSTRUCTOR ---
-        public AdminController(IEmailService emailService) // (Add , ApplicationDbContext context later)
+        public AdminController(AdminService adminService, IEmailService emailService)
         {
+            _adminService = adminService;
             _emailService = emailService;
-            // _context = context;
         }
 
-        // ... (Your Dashboard, ApplicationReview, and ReviewDetails GET actions stay the same) ...
+        //Loging in as Admin
 
-        // GET: /Admin/Dashboard
-        public IActionResult Dashboard()
-        {
-            // ... (code unchanged) ...
-            var viewModel = new AdminDashboardViewModel
-            {
-                CurrentDate = DateTime.Now.ToString("dddd, MMMM dd, yyyy"),
-                PendingApplicationsCount = 15,
-                AppointmentsTodayCount = 82,
-                CitizensWaitingCount = 3,
-                AverageWaitTime = "12 min"
-            };
-            return View(viewModel);
-        }
-
-        // GET: /Admin/ApplicationReview
         [HttpGet]
-        public IActionResult ApplicationReview()
+        public IActionResult Login()
         {
-            // ... (code unchanged) ...
-            var pending = new List<ApplicationSummaryItem> {
-                new ApplicationSummaryItem { ApplicationId = 101, ApplicantName = "Philip Agyapong", ServiceName = "New Passport", SubmittedOn = DateTime.Now.AddDays(-1), Status = "Pending" },
-                new ApplicationSummaryItem { ApplicationId = 102, ApplicantName = "Jane Doe", ServiceName = "Passport Renewal", SubmittedOn = DateTime.Now.AddHours(-5), Status = "Pending" }
-            };
-            var viewModel = new ApplicationReviewViewModel { PendingApplications = pending };
-            return View(viewModel);
+            return View();
         }
 
-        // GET: /Admin/ReviewDetails/101
-        [HttpGet]
-        public IActionResult ReviewDetails(int id)
-        {
-             // ... (code unchanged) ...
-            var application = new PassportApplicationViewModel {
-                FirstName = "Philip", LastName = "Agyapong", DateOfBirth = "11/01/1996",
-                FatherName = "Das", MotherName = "Mas",
-                GuarantorFullName = "Test Guarantor",
-            };
-            ViewData["ApplicationId"] = id;
-            return View(application);
-        }
-
-
-        // --- 4. UPDATE APPROVE ACTION ---
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApproveApplication(int applicationId, DateTime appointmentDate, string appointmentTime)
+        public async Task<IActionResult> Login(AdminLoginViewModel model)
         {
-            // TODO: Get real application from DB
-            // var application = _context.PassportApplications.Find(applicationId);
-            // if (application == null) return NotFound();
+            if (!ModelState.IsValid)
+                return View(model);
 
-            // --- MOCK DATA (DELETE LATER) ---
-            var mockUserEmail = "philipagyapong18@gmail.com"; // <-- Use your real email
-            var mockUserName = "Philip"; // Get this from the 'application' object
-            // --- END MOCK DATA ---
+            var admin = await _adminService.AuthenticateAsync(model.Ssn, model.Password);
 
-            // ... (Your logic to save to DB) ...
-            
-            // 5. Send the approval email
-            var subject = "Your Application has been Approved!";
-            var message = $@"
-                <h1>Booking Confirmed!</h1>
-                <p>Dear {mockUserName},</p>
-                <p>Your application (ID: {applicationId}) has been approved.</p>
-                <p><strong>Your appointment is scheduled for:</strong></p>
-                <ul>
-                    <li><strong>Date:</strong> {appointmentDate.ToShortDateString()}</li>
-                    <li><strong>Time:</strong> {appointmentTime}</li>
-                </ul>
-                <p>Please keep this email safe. You will need to present your Booking ID (or QR Code) at the service center.</p>
-                <p>Thank you,<br>GovSchedula Team</p>";
-            
-            await _emailService.SendEmailAsync(mockUserEmail, subject, message);
-            
-            return RedirectToAction("ApplicationReview");
-        }
-
-        // --- 5. UPDATE REJECT ACTION ---
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RejectApplication(int applicationId, string reason)
-        {
-            // TODO: Get real application from DB
-            // var application = _context.PassportApplications.Find(applicationId);
-            // if (application == null) return NotFound();
-
-            // --- MOCK DATA (DELETE LATER) ---
-            var mockUserEmail = "philipagyapong18@gmail.com"; // <-- Use your real email
-            var mockUserName = "Philip";
-            // --- END MOCK DATA ---
-
-            // ... (Your logic to update status in DB) ...
-            
-            // 4. Send rejection email to the user
-            var subject = "Your Application Status";
-            var message = $@"
-                <h1>Application Update</h1>
-                <p>Dear {mockUserName},</p>
-                <p>We regret to inform you that your application (ID: {applicationId}) has been rejected.</p>
-                <p><strong>Reason:</strong> {reason}</p>
-                <p>Please review the reason, make the necessary corrections, and feel free to re-apply.</p>
-                <p>Thank you,<br>GovSchedula Team</p>";
-
-            await _emailService.SendEmailAsync(mockUserEmail, subject, message);
-
-            TempData["Message"] = "Application has been rejected.";
-            return RedirectToAction("ApplicationReview");
-        }
-
-        // --- 6. UPDATE REQUEST INFO ACTION ---
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RequestInfo(int applicationId, string message)
-        {
-            // TODO: Get real application from DB
-            // var application = _context.PassportApplications.Find(applicationId);
-            // if (application == null) return NotFound();
-
-            // --- MOCK DATA (DELETE LATER) ---
-            var mockUserEmail = "philipagyapong18@gmail.com"; // <-- Use your real email
-            var mockUserName = "Philip";
-            // --- END MOCK DATA ---
-
-            // ... (Your logic to update status in DB) ...
-
-            // 4. Send info request email to the user
-            var subject = "Action Required: More Information Needed for Your Application";
-            var htmlMessage = $@"
-                <h1>Application Update</h1>
-                <p>Dear {mockUserName},</p>
-                <p>Your application (ID: {applicationId}) requires more information before it can be processed.</p>
-                <p><strong>Information Required:</strong> {message}</p>
-                <p>Please log in to your portal to provide the requested details.</p>
-                <p>Thank you,<br>GovSchedula Team</p>";
-
-            await _emailService.SendEmailAsync(mockUserEmail, subject, message);
-            
-            TempData["Message"] = "Information request has been sent.";
-            return RedirectToAction("ApplicationReview");
-        }
-        
-        // ... (Your LiveQueue and Scanner actions stay the same) ...
-        [HttpGet]
-        public IActionResult LiveQueue()
-        {
-            // ... (code unchanged) ...
-            var mockQueue = new List<QueueItemViewModel> {
-                new QueueItemViewModel { LiveQueueToken = "P001", ServiceName = "New Passport", Status = "Waiting", CheckedInTime = "09:15 AM"},
-                new QueueItemViewModel { LiveQueueToken = "P002", ServiceName = "Passport Renewal", Status = "Waiting", CheckedInTime = "09:21 AM"},
-                new QueueItemViewModel { LiveQueueToken = "D001", ServiceName = "New Driver's License", Status = "Waiting", CheckedInTime = "09:25 AM"},
-            };
-            var viewModel = new LiveQueueViewModel
+            if (admin != null)
             {
-                CurrentDate = DateTime.Now.ToString("dddd, MMMM dd, yyyy"),
-                LiveQueue = mockQueue,
-                WaitingCount = mockQueue.Count(q => q.Status == "Waiting"),
-                AverageWaitTime = "8 min",
-                CurrentlyServing = 1
-            };
-            return View(viewModel);
+                // You can store data in session
+                HttpContext.Session.SetInt32("AdminId", admin.AdminId);
+                HttpContext.Session.SetInt32("DepartmentId", admin.DepartmentId);
+                HttpContext.Session.SetString("Ssn", admin.Ssn.ToString());
+
+                // Redirect to dashboard or review page
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
+            ViewBag.ErrorMessage = "Invalid SSN or Password";
+            return View(model);
         }
 
-        [HttpGet]
-        public IActionResult Scanner()
+        public IActionResult Logout()
         {
-             // ... (code unchanged) ...
-            var viewModel = new ScannerViewModel
-            {
-                StatusMessage = "Position QR code within the frame."
-            };
-            return View(viewModel);
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
+
+
+        //Admin Dashboard
+
+        public async Task<IActionResult> Dashboard()
+        {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            if (adminId == null)
+                return RedirectToAction("Login", "Admin");
+
+            var admin = await _adminService.GetAdminByIdAsync(adminId.Value);
+            if (admin == null)
+                return RedirectToAction("Login", "Admin");
+
+            var model = await _adminService.GetDashboardDataAsync(admin.DepartmentId);
+            return View(model);
+        }
+
+        public async Task<IActionResult> ApplicationReview(int departmentId, int? statusId)
+        {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            if (adminId == null)
+                return RedirectToAction("Login", "Admin");
+
+            var admin = await _adminService.GetAdminByIdAsync(adminId.Value);
+            if (admin == null)
+                return RedirectToAction("Login", "Admin");
+
+            departmentId = admin.DepartmentId;
+
+
+            if (departmentId == 2)
+            {
+                var applications = await _adminService.GetVoterApplicationsByDepartmentAsync(departmentId, statusId);
+                var statuses = await _adminService.GetAllStatusesAsync();
+
+                var model = new AdminApplicationsViewModel
+                {
+                    DepartmentId = departmentId,
+                    Applications = applications,
+                    Statuses = statuses
+                };
+
+                return View(model);
+            }
+            else if (departmentId == 1)
+            {
+                var applications = await _adminService.GetPassportApplicationsByDepartmentAsync(departmentId, statusId);
+                var statuses = await _adminService.GetAllStatusesAsync();
+
+                var model = new AdminApplicationsViewModel
+                {
+                    DepartmentId = departmentId,
+                    Applications = applications,
+                    Statuses = statuses
+                };
+
+                return View(model);
+            }
+
+            return RedirectToAction("Login", "Admin");
+
+        }
+
+        public async Task<IActionResult> ReviewDetails(int departmentId, int Id)
+        {
+            var adminId = HttpContext.Session.GetInt32("AdminId");
+            if (adminId == null)
+                return RedirectToAction("Login", "Admin");
+
+            var admin = await _adminService.GetAdminByIdAsync(adminId.Value);
+            if (admin == null)
+                return RedirectToAction("Login", "Admin");
+
+            departmentId = admin.DepartmentId;
+
+
+            if (departmentId == 2)
+            {
+                var application = await _adminService.GetVoterApplicationDetailsAsync(Id);
+                if (application == null) return NotFound();
+
+                var statuses = await _adminService.GetAllStatusesAsync();
+
+                var model = new AdminReviewPageViewModel
+                {
+                    Application = application,
+                    Statuses = statuses
+                };
+
+                return View(model);
+            }
+            else if (departmentId == 1)
+            {
+                var application = await _adminService.GetPassportApplicationDetailsAsync(Id);
+                if (application == null) return NotFound();
+
+                var statuses = await _adminService.GetAllStatusesAsync();
+
+                var model = new AdminReviewPageViewModel
+                {
+                    Application = application,
+                    Statuses = statuses
+                };
+
+                return View(model);
+            }
+            return RedirectToAction("Login", "Admin");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int applicationId, int statusId, int departmentId, string? reason, DateTime? appointmentDate, string? appointmentTime)
+        {
+            bool result = false;
+            string departmentName = departmentId == 1 ? "Passport" : "Voter ID";
+
+            // Fetch applicant details for email
+            var application = departmentId == 1
+                ? await _adminService.GetPassportApplicationDetailsAsync(applicationId)
+                : await _adminService.GetVoterApplicationDetailsAsync(applicationId);
+
+            if (application == null)
+            {
+                TempData["Error"] = "Application not found.";
+                return RedirectToAction("ApplicationReview", new { departmentId });
+            }
+
+            // Update DB
+            if (departmentId == 1)
+                result = await _adminService.UpdatePassportApplicationStatusAsync(applicationId, statusId);
+            else if (departmentId == 2)
+                result = await _adminService.UpdateVoterApplicationStatusAsync(applicationId, statusId);
+
+            if (!result)
+            {
+                TempData["Error"] = "Unable to update status. Please try again.";
+                return RedirectToAction("ApplicationReview", new { departmentId });
+            }
+
+            // Send email based on status
+            var applicantName = $"{application.GeneralDetails.FirstName} {application.GeneralDetails.LastName}";
+            var applicantEmail = application.GeneralDetails.Email;
+
+            if (statusId == 2) // Approved
+            {
+                await _emailService.SendApprovalEmailAsync(applicantEmail, applicantName, departmentName, appointmentDate, appointmentTime);
+            }
+            else if (statusId == 3 && !string.IsNullOrWhiteSpace(reason)) // Rejected
+            {
+                await _emailService.SendRejectionEmailAsync(applicantEmail, applicantName, departmentName, reason);
+            }
+
+            TempData["Success"] = "Status updated and email notification sent!";
+            return RedirectToAction("ApplicationReview", new { departmentId });
+        }
+
     }
 }

@@ -22,4 +22,6 @@ public partial class PassportRegistration
     public virtual Family Family { get; set; } = null!;
 
     public virtual GeneralDetail GeneralDetails { get; set; } = null!;
+
+    public virtual ApprovalStatus? Status { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
 @using GovSchedulaWeb.Models.Data.ViewModels
+
 @model AdminDashboardViewModel
 @{
     ViewData["Title"] = "Admin Dashboard";
@@ -6,41 +7,85 @@
 
 @section Styles {
     <style>
-        /* Quick styles for the new dashboard */
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .kpi-card { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center; }
-        .kpi-card h3 { font-size: 3rem; font-weight: 700; color: #003366; }
-        .kpi-card p { font-size: 1rem; font-weight: 500; color: #374151; margin-top: 0.5rem; }
-        
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
-        .action-card { display: block; background-color: #fff; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 2rem; text-align: center; font-size: 1.25rem; font-weight: 600; color: #003366; text-decoration: none; transition: all 0.2s; }
-        .action-card:hover { background-color: #f9fafb; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .action-card i { font-size: 2rem; margin-bottom: 1rem; display: block; }
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .kpi-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+            .kpi-card h3 {
+                font-size: 3rem;
+                font-weight: 700;
+                color: #003366;
+            }
+
+            .kpi-card p {
+                font-size: 1rem;
+                font-weight: 500;
+                color: #374151;
+                margin-top: 0.5rem;
+            }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .action-card {
+            display: block;
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #003366;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+            .action-card:hover {
+                background-color: #f9fafb;
+                box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            }
+
+            .action-card i {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+                display: block;
+            }
     </style>
 }
 
-<div class="container" style="max-width: 1024px; margin-left: auto; margin-right: auto; padding: 2rem 1rem;">
-    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-        <h1 class="heroTitle" style="font-size: 2.25rem; color: #111827;">Admin Dashboard</h1>
-        <span style="font-size: 1rem; color: #4b5563;">@Model.CurrentDate</span>
-    </div>
+<div class="container" style="max-width: 1024px; margin: 2rem auto; padding: 1rem;">
+    <h1 class="heroTitle" style="font-size: 2.2rem; color: #111827; text-align:center;">Admin Dashboard</h1>
+    <h1 class="heroTitle" style="font-size: 16px; color: #111827; text-align:center;">- @Model.DepartmentName.ToUpper() -</h1>
 
     <div class="kpi-grid">
         <div class="kpi-card">
-            <h3>@Model.PendingApplicationsCount</h3>
+            <h3>@Model.PendingCount</h3>
             <p>Pending Applications</p>
         </div>
         <div class="kpi-card">
-            <h3>@Model.AppointmentsTodayCount</h3>
-            <p>Appointments Today</p>
+            <h3>@Model.ApprovedCount</h3>
+            <p>Approved Applications</p>
         </div>
         <div class="kpi-card">
-            <h3>@Model.CitizensWaitingCount</h3>
-            <p>Currently Waiting</p>
-        </div>
-        <div class="kpi-card">
-            <h3 style="font-size: 2.5rem; padding-top: 0.5rem;">@Model.AverageWaitTime</h3>
-            <p>Avg. Wait Time</p>
+            <h3>@Model.RejectedCount</h3>
+            <p>Rejected Applications</p>
         </div>
     </div>
 
@@ -54,5 +99,4 @@
             Manage Live Queue
         </a>
     </div>
-
 </div>

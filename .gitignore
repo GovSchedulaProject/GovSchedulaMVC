@@ -27,6 +27,7 @@ bld/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+api.json
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -57,3 +58,5 @@ nunit-*.xml
 obj/
 bin/
 .vs/
+
+"api.json" 

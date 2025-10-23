@@ -1,103 +1,259 @@
-@model GovSchedulaWeb.Models.ViewModels.PassportApplicationViewModel
+@using GovSchedulaWeb.Models.Data.ViewModels
+@using GovSchedulaWeb.Models.ViewModels
+
+@model AdminReviewPageViewModel
+
 @section Styles {
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/adminReview.css" asp-append-version="true" />
 
     <style>
-        .review-details-list { /* ... your existing styles ... */ }
-        .admin-actions { background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 1.5rem; margin-top: 2rem; border-radius: 0.5rem; }
+        .review-details-list { /* ... your existing styles ... */
+        }
+
+        .admin-actions {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 0.5rem;
+        }
     </style>
 }
+
 @{
     ViewData["Title"] = "Review Application";
-    var applicationId = ViewData["ApplicationId"];
 }
 
-<div class="formSection">
-    <div class="formContainer">
-        <h2 class="formSubtitle">Personal Details</h2>
-        <dl class="review-details-list">
-             <dt>First Name:</dt><dd>@Model.FirstName</dd>
-             <dt>Last Name:</dt><dd>@Model.LastName</dd>
-             </dl>
+@{
+    var isVoterApp = Model.Application.VoterIdregistration != null;
+    var isPassportApp = Model.Application.PassportRegistration != null;
+    var applicationId = isVoterApp ? Model.Application.VoterIdregistration.VoterId
+                      : isPassportApp ? Model.Application.PassportRegistration.PassportId
+                      : 0;
+}
+<div class ="formSection">
+    <div formContainer>
+        <div class="review-content">
+            <!-- Personal Details Section -->
+            <h2 class="section-title">
+                <i class="fas fa-user"></i>
+                Personal Information
+            </h2>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-label">First Name</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.FirstName</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Middle Name</div>
+                    <div class="detail-value">@(Model.Application.GeneralDetails.MiddleName ?? " ")</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Last Name</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.LastName</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Birth Date</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.Bdate</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Birth Place</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.BirthPlace</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Nationality</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.Nationality</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Gender</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.Gender</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Phone Number</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.PhoneNumber</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.Email</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Occupation</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.Occupation</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Residential Address</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.ResidentalAddress</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Postal Address</div>
+                    <div class="detail-value">@Model.Application.GeneralDetails.PostalAddress</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Department</div>
+                    <div class="detail-value">@Model.Application.Department.DepartmentName</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Current Status</div>
+                    <div class="detail-value">
+                        @{
+                            var statusClass = Model.Application.ApprovalStatus?.Approval?.ToLower() switch
+                            {
+                                "approved" => "status-approved",
+                                "rejected" => "status-rejected",
+                                _ => "status-pending"
+                            };
+                        }
+                        <span class="status-badge @statusClass">
+                            @(Model.Application.ApprovalStatus?.Approval ?? "Unoticed")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Identity Proof Section -->
+            <div class="identity-section">
+                <h2 class="identity-title">
+                    <i class="fas fa-id-card"></i>
+                    Identity Verification
+                </h2>
+                <div class="details-grid" id="identityProofInfo"></div>
+            </div>
+
+            @* Voter-specific fields *@
+            @if (isVoterApp)
+            {
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">Ghana Card</div>
+                        <div class="detail-value">@(Model.Application.IdentityProof.GhanaCard?.GhanaCardIdnumber ?? "N/A")</div>
+                    </div>
+                </div>
+            }
+
+            @* Passport-specific fields *@
+            @if (isPassportApp)
+            {
+                <div class="passport-section">
+                    <h2 class="identity-title" style="color: #92400e;">
+                        <i class="fas fa-passport"></i>
+                        Passport Information
+                    </h2>
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-label">Country of Destination</div>
+                            <div class="detail-value">@Model.Application.PassportRegistration?.CountryDestination</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Passport Type</div>
+                            <div class="detail-value">@Model.Application.PassportRegistration?.TypeOfPassport</div>
+                        </div>
+                        <div class="detail-card" style="grid-column: 1 / -1;">
+                            <div class="detail-label">Reason for Application</div>
+                            <div class="detail-value">@Model.Application.PassportRegistration?.ReasonForApply</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="family-section">
+                    <h2 class="identity-title" style="color: #831843;">
+                        <i class="fas fa-users"></i>
+                        Family Information
+                    </h2>
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-label">Father's Full Name</div>
+                            <div class="detail-value">@(Model.Application.Family?.FatherFullName ?? "N/A")</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Father's Hometown</div>
+                            <div class="detail-value">@(Model.Application.Family?.FatherHomeTown ?? "N/A")</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Mother's Full Name</div>
+                            <div class="detail-value">@(Model.Application.Family?.MotherFullName ?? "N/A")</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Mother's Hometown</div>
+                            <div class="detail-value">@(Model.Application.Family?.MotherHomeTown ?? "N/A")</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Spouse's Name</div>
+                            <div class="detail-value">@(Model.Application.Family?.SpouseName ?? "N/A")</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Spouse's Nationality</div>
+                            <div class="detail-value">@(Model.Application.Family?.SpouseNationality ?? "N/A")</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
 
 
 <div class="formSection">
-    <div class="formContainer admin-actions">
+    <div class="formContainer admin-actions" style="max-width: 1000px;">
         <h2 class="formSubtitle">Admin Actions</h2>
-        
-        <form asp-action="ApproveApplication" asp-controller="Admin" method="post" class="formGrid">
+
+        <form id="statusForm" asp-action="UpdateStatus" asp-controller="Admin" method="post" class="formGrid">
             @Html.AntiForgeryToken()
             <input type="hidden" name="applicationId" value="@applicationId" />
+            <input type="hidden" name="departmentId" value="@Model.Application.Department.DepartmentId" />
+
+            <div>
+                <label for="newStatusId" class="formLabel">Change Status</label>
+                <select id="newStatusId" name="statusId" class="formSelect" required>
+                    @foreach (var status in Model.Statuses)
+                    {
+                        <option value="@status.StatusId" selected="@(status.StatusId == Model.Application.ApprovalStatus?.StatusId)">
+                            @status.Approval
+                        </option>
+                    }
+                </select>
+            </div>
 
             <div>
                 <label for="appointmentDate" class="formLabel">Select Appointment Date</label>
-                <input type="date" id="appointmentDate" name="appointmentDate" class="formInput" required />
+                <input type="date" id="appointmentDate" name="appointmentDate" class="formInput" />
             </div>
+
             <div>
                 <label for="appointmentTime" class="formLabel">Select Appointment Time</label>
-                <select id="appointmentTime" name="appointmentTime" class="formSelect" required>
+                <select id="appointmentTime" name="appointmentTime" class="formSelect">
                     <option value="">-- Select a time --</option>
                     <option value="09:00 AM">09:00 AM</option>
                     <option value="09:30 AM">09:30 AM</option>
                     <option value="10:00 AM">10:00 AM</option>
                     <option value="10:30 AM">10:30 AM</option>
-                    </select>
+                </select>
             </div>
 
             <div class="buttonContainer" style="grid-column: 1 / -1;">
-                <button type="button" class="formButton cancelButton" onclick="openModal('rejectModal')">
-                    Reject
+                <button type="submit" class="formButton submitButton" id="saveButton" style="background-color: #059669;">
+                    Save
                 </button>
-                
-                <button type="button" class="formButton infoButton" onclick="openModal('requestInfoModal')">
-                    Request Info
-                </button>
-
-                <button type="submit" class="formButton submitButton" style="background-color: #059669;">
-                    Approve & Send Email
-                </button>
-                
-                </div>
-        </form>
-        </div>
-</div>
-
-<div id="rejectModal" class="admin-modal">
-    <div class="admin-modal-content">
-        <span class="close-button" onclick="closeModal('rejectModal')">&times;</span>
-        <h2 class="formSubtitle">Reject Application</h2>
-        <form asp-action="RejectApplication" asp-controller="Admin" method="post">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="applicationId" value="@ViewData["ApplicationId"]" />
-            <div class="form-group">
-                <label for="reason" class="formLabel">Reason for Rejection</label>
-                <textarea id="reason" name="reason" class="formTextarea" rows="4" required></textarea>
-            </div>
-            <div class="buttonContainer" style="margin-top: 1rem;">
-                <button type="button" class="formButton cancelButton" onclick="closeModal('rejectModal')">Cancel</button>
-                <button type="submit" class="formButton submitButton" style="background-color: #DC2626;">Confirm Rejection</button>
             </div>
         </form>
     </div>
 </div>
 
-<div id="requestInfoModal" class="admin-modal">
+<!-- Reject Modal -->
+<div id="rejectModal" class="admin-modal">
     <div class="admin-modal-content">
-        <span class="close-button" onclick="closeModal('requestInfoModal')">&times;</span>
-        <h2 class="formSubtitle">Request More Information</h2>
-        <form asp-action="RequestInfo" asp-controller="Admin" method="post">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="applicationId" value="@ViewData["ApplicationId"]" />
+        <span class="close-button" onclick="closeModal('rejectModal')">&times;</span>
+        <h2 class="formSubtitle">Rejection Reason</h2>
+        <form id="rejectForm" method="post">
             <div class="form-group">
-                <label for="message" class="formLabel">Information Required</label>
-                <textarea id="message" name="message" class="formTextarea" rows="4" required placeholder="e.g., 'Please re-upload a clearer copy of your birth certificate.'"></textarea>
+                <label for="reason" class="formLabel">Reason for Rejection</label>
+                <textarea id="reason" name="reason" class="formTextarea" rows="4" required></textarea>
             </div>
+
             <div class="buttonContainer" style="margin-top: 1rem;">
-                <button type="button" class="formButton cancelButton" onclick="closeModal('requestInfoModal')">Cancel</button>
-                <button type="submit" class="formButton submitButton" style="background-color: #F59E0B;">Send Request</button>
+                <button type="button" class="formButton cancelButton" onclick="closeModal('rejectModal')">Cancel</button>
+                <button type="button" class="formButton submitButton" id="confirmReject" style="background-color: #DC2626;">Confirm Rejection</button>
             </div>
         </form>
     </div>
@@ -105,4 +261,141 @@
 
 @section Scripts {
     <script src="~/js/admin.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the identity proof data from the model
+            const identityProofData = {
+                ghanaCardId: '@Model.Application.IdentityProof?.GhanaCardId',
+                birthCertificateId: '@Model.Application.IdentityProof?.BirthSetId',
+                voterIdId: '@Model.Application.IdentityProof?.VoterId',
+                nhisId: '@Model.Application.IdentityProof?.Nhisid',
+                guarantorId: '@Model.Application.IdentityProof?.GarantorId',
+
+                // Actual values
+                ghanaCardNumber: '@Model.Application.IdentityProof?.GhanaCard?.GhanaCardIdnumber',
+                birthCertNumber: '@Model.Application.IdentityProof?.BirthSet?.Image',
+                voterIdNumber: '@Model.Application.IdentityProof?.Voter?.VoterIdnumber',
+                nhisNumber: '@Model.Application.IdentityProof?.Nhis?.Nhisidnumber',
+                guarantorName: '@Model.Application.IdentityProof?.Garantor?.FirstName @Model.Application.IdentityProof?.Garantor?.OtherNames',
+                guarantorProfession: '@Model.Application.IdentityProof?.Garantor?.Profession',
+                guarantorPostalAddress: '@Model.Application.IdentityProof?.Garantor?.PostalAddress',
+                guarantorEmail: '@Model.Application.IdentityProof?.Garantor?.Email',
+                guarantorPhoneNumber: '@Model.Application.IdentityProof?.Garantor?.PhoneNumber'
+            };
+
+            const identityProofContainer = document.getElementById('identityProofInfo');
+
+            if (!identityProofContainer) return;
+
+            let identityHTML = '';
+
+            if (identityProofData.ghanaCardId && identityProofData.ghanaCardId !== '') {
+                identityHTML = `
+                <div>
+                    <div class="detail-label">Identity Proof Type:</div>
+                    <div class="detail-value">Ghana Card</div>
+                </div>
+                    <div class="detail-label">Ghana Card Number:</div>
+                    <div class="detail-value">${identityProofData.ghanaCardNumber || 'N/A'}</div>
+                `;
+            }
+            else if (identityProofData.birthCertificateId && identityProofData.birthCertificateId !== '') {
+                identityHTML = `
+                <div>
+                    <div class="detail-label">Identity Proof Type:</div>
+                    <div class="detail-value">Birth Certificate</div>
+                </div>
+                    <div class="detail-label">Certificate Number:</div>
+                    <div class="detail-value">${identityProofData.birthCertNumber || 'N/A'}</div>
+                `;
+            }
+            else if (identityProofData.voterIdId && identityProofData.voterIdId !== '') {
+                identityHTML = `
+                <div>
+                    <div class="detail-label">Identity Proof Type:</div>
+                    <div class="detail-value">Voter ID</div>
+                </div>
+                    <div class="detail-label">Voter ID Number:</dt>
+                    <div class="detail-value">${identityProofData.voterIdNumber || 'N/A'}</div>
+                `;
+            }
+            else if (identityProofData.nhisId && identityProofData.nhisId !== '') {
+                identityHTML = `
+                <div>
+                    <div class="detail-label">Identity Proof Type:</div>
+                    <div class="detail-value">NHIS Card</div>
+                </div>
+                    <div class="detail-label">NHIS Number:</div>
+                    <div class="detail-value">${identityProofData.nhisNumber || 'N/A'}</div>
+                `;
+            }
+            else if (identityProofData.guarantorId && identityProofData.guarantorId !== '') {
+                identityHTML = `
+                <div>
+                    <div class="detail-label">Identity Proof Type:</div>
+                    <div class="detail-value">Guarantor</div>
+                </div>
+                    <div class="detail-label">Guarantor Name:</div>
+                    <div class="detail-value">${identityProofData.guarantorName || 'N/A'}</div>
+                    <div class="detail-label">Guarantor Profession:</div>
+                    <div class="detail-value">${identityProofData.guarantorProfession || 'N/A'}</div>
+                    <div class="detail-label">Guarantor PostalAddress:</div>
+                    <div class="detail-value">${identityProofData.guarantorPostalAddress || 'N/A'}</div>
+                    <div class="detail-label">Guarantor Email:</div>
+                    <div class="detail-value">${identityProofData.guarantorEmail || 'N/A'}</div>
+                    <div class="detail-label">Guarantor PhoneNumber:</div>
+                    <div class="detail-value">${identityProofData.guarantorPhoneNumber || 'N/A'}</div>
+                `;
+            }
+            else {
+                identityHTML = `
+                <div>
+                    <div class="detail-label">Identity Proof Type:</div>
+                    <div class="detail-value">Not Provided</div>
+                </div>
+                `;
+            }
+
+            identityProofContainer.innerHTML = identityHTML;
+        });
+    </script>
+    <script>
+        document.getElementById('saveButton').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const selectedStatus = document.getElementById('newStatusId').value;
+            const rejectModal = document.getElementById('rejectModal');
+            const form = document.getElementById('statusForm');
+
+            // If status is "Rejected" (StatusId == 3), show modal
+            if (selectedStatus == "3") {
+                rejectModal.style.display = 'block';
+            } else {
+                form.submit();
+            }
+        });
+
+        document.getElementById('confirmReject').addEventListener('click', function () {
+            const reason = document.getElementById('reason').value.trim();
+            if (reason === "") {
+                alert("Please provide a reason for rejection.");
+                return;
+            }
+
+            // You could attach the reason to the form if you want to store it later
+            const hiddenReason = document.createElement('input');
+            hiddenReason.type = 'hidden';
+            hiddenReason.name = 'reason';
+            hiddenReason.value = reason;
+            document.getElementById('statusForm').appendChild(hiddenReason);
+
+            closeModal('rejectModal');
+            document.getElementById('statusForm').submit();
+        });
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+    </script>
 }

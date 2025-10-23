@@ -1,0 +1,43 @@
+@using GovSchedulaWeb.Models.Data.ViewModels
+@model AdminLoginViewModel
+
+@{
+    ViewData["Title"] = "Admin Log In";
+    Layout = "_AuthLayout"; // same layout as user login
+}
+
+<div class="formBox">
+    <h2 class="formTitle">Admin Log In</h2>
+
+    <form class="form" asp-action="Login" asp-controller="Admin" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-align: left;"></div>
+
+        <!-- SSN Field -->
+        <div>
+            <label asp-for="Ssn" class="formLabel"></label>
+            <input asp-for="Ssn" class="formInput" placeholder="Enter your SSN" />
+            <span asp-validation-for="Ssn" class="text-danger"></span>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+            <label asp-for="Password" class="formLabel"></label>
+            <input asp-for="Password" class="formInput" placeholder="Enter your password" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div>
+            <button type="submit" class="submitButton">
+                Log In
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
