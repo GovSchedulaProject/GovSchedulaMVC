@@ -188,12 +188,48 @@ namespace GovSchedulaWeb.Controllers
         [HttpGet]
         public IActionResult Scanner()
         {
-             // ... (code unchanged) ...
+            // ... (code unchanged) ...
             var viewModel = new ScannerViewModel
             {
                 StatusMessage = "Position QR code within the frame."
             };
             return View(viewModel);
+        }
+        
+        // GET: /Admin/Login
+        [HttpGet]
+        public IActionResult Login()
+        {
+            // We use this [AllowAnonymous] attribute so that a non-admin
+            // can see the login page.
+            // [AllowAnonymous] 
+            return View(new AdminLoginViewModel());
+        }
+
+        // POST: /Admin/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(AdminLoginViewModel model)
+        {
+            // [AllowAnonymous]
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // TODO: Add your real admin authentication logic here.
+            // This is just a placeholder.
+            if (model.LoginIdentifier == "admin" && model.Password == "admin123")
+            {
+                // TODO: Set up your authentication (e.g., create cookie)
+                
+                // If login is successful, send to the real dashboard
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
+            // If login fails, show an error
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(model);
         }
     }
 }

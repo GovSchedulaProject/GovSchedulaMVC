@@ -1,0 +1,39 @@
+@model GovSchedulaWeb.Models.ViewModels.AdminLoginViewModel
+@{
+    ViewData["Title"] = "Admin Log In";
+    // We use the EXACT same layout file as the user login.
+    // This is what guarantees the style will be identical.
+    Layout = "_AuthLayout"; 
+}
+
+<div class="formBox">
+    <h2 class="formTitle">Admin Log In</h2>
+
+    <form class="form" asp-action="Login" asp-controller="Admin" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-align: left;"></div>
+
+        <div>
+            <label asp-for="LoginIdentifier" class="formLabel"></label>
+            <input asp-for="LoginIdentifier" class="formInput" placeholder="e.g., admin@govschedula.com" />
+            <span asp-validation-for="LoginIdentifier" class.text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="formLabel"></label>
+            <input asp-for="Password" class="formInput" placeholder="Enter your password" type="password" />
+            <span asp-validation-for="Password" class.text-danger"></span>
+        </div>
+
+        <div>
+            <button type="submit" class="submitButton">
+                Log In
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

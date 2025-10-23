@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using System.ComponentModel.DataAnnotations;
 namespace GovSchedulaWeb.Models.ViewModels
 {
     // -----------------------------------------------------------------
@@ -42,7 +43,7 @@ namespace GovSchedulaWeb.Models.ViewModels
     {
         public string CurrentDate { get; set; } = string.Empty;
         public int WaitingCount { get; set; }
-        
+
         // --- THIS IS THE LINE FROM THE ERROR ---
         public string AverageWaitTime { get; set; } = "N/A";
         // ---
@@ -50,19 +51,31 @@ namespace GovSchedulaWeb.Models.ViewModels
         public int CurrentlyServing { get; set; }
         public List<QueueItemViewModel> LiveQueue { get; set; } = new();
     }
-    
+
     // This is your *existing* sub-model
-    public class QueueItemViewModel 
+    public class QueueItemViewModel
     {
         public string LiveQueueToken { get; set; } = string.Empty;
         public string ServiceName { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string CheckedInTime { get; set; } = string.Empty;
     }
-    
+
     // (Your existing ScannerViewModel can stay the same)
     public class ScannerViewModel
     {
         public string? StatusMessage { get; set; }
+    }
+
+    // Add this new class inside the GovSchedulaWeb.Models.ViewModels namespace
+    public class AdminLoginViewModel
+    {
+        [Required]
+        [Display(Name = "Username or Email")]
+        public string? LoginIdentifier { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string? Password { get; set; }
     }
 }
