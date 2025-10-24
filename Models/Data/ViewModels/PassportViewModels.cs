@@ -26,7 +26,7 @@ namespace GovSchedulaWeb.Models.ViewModels
         public PassportRegistration PassportRegistration { get; set; } = new();
 
         [Required]
-        public GeneralDetail GeneralDetail { get; set; } = new();
+        public GeneralDetail? GeneralDetail { get; set; } = new();
 
         // Optional: Family Information
         public Family? Family { get; set; } = new();

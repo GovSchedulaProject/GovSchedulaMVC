@@ -23,7 +23,8 @@ namespace GovSchedulaWeb.Services
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("philip@traveltide.uk", "GovSchedula Booking Appointment");
             var to = new EmailAddress(toEmail);
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, "", htmlContent);
+            var plainTextContent = "Please view this email in HTML format.";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
             var response = await client.SendEmailAsync(msg);
             // Optional logging:
@@ -63,6 +64,24 @@ namespace GovSchedulaWeb.Services
                 <br/>
                 <p>Best regards,<br/>GovSchedula Team</p>
             ";
+
+            await SendEmailAsync(toEmail, subject, htmlContent);
+        }
+        public async Task SendBookingConfirmationEmailAsync(string toEmail, string applicantName, string departmentName, DateTime? bookingDate)
+        {
+            var subject = $"Your {departmentName} Booking Has Been Received";
+
+            string htmlContent = $@"
+                <h2>Dear {applicantName},</h2>
+                <p>Thank you for booking your <strong>{departmentName}</strong> appointment through <strong>GovSchedula</strong>.</p>
+                <p>We have received your booking on <strong>{bookingDate?.ToString("dddd, MMMM dd yyyy")}</strong>.</p>
+                <p>Our team will review your application shortly. You will receive another email once your booking is 
+                <strong>approved</strong> or <strong>rejected</strong>.</p>
+                <br/>
+                <p>In the meantime, please make sure all required documents are ready for verification.</p>
+                <br/>
+                <p>Best regards,<br/>GovSchedula Team</p>
+             ";
 
             await SendEmailAsync(toEmail, subject, htmlContent);
         }

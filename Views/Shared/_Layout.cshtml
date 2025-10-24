@@ -28,13 +28,30 @@
                     <img src="~/images/logo.png" alt="Logo" class="logoImage" />
                     <span>GovSchedula</span>
                 </a>
-                <nav class="navLinks">
-                    <a asp-controller="Home" asp-action="Index">Home</a>
-                    <a asp-controller="Booking" asp-action="Index">Book Appointments</a>
-                    <a asp-controller="Account" asp-action="Login">Sign In</a>
-                    <a href="#">Help</a>
-                </nav>
+                <div class="outerNav">
+                    <nav class="navLinks">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <a asp-controller="Booking" asp-action="Index">Book Appointments</a>
+
+                        @if (Context.Session.GetString("UserName") == null)
+                        {
+                            <a asp-controller="Account" asp-action="Login">Sign In</a>
+                        }
+                        <a asp-controller="Home" asp-action="Help">Help</a>
+                        @if (Context.Session.GetString("UserName") != null)
+                        {
+                            <a asp-controller="Account" asp-action="Login">Logout</a>
+                        }
+
+                    </nav>
+                    @if (Context.Session.GetString("UserName") != null)
+                    {
+                        <span class="usernameDisplay">@Context.Session.GetString("UserName")[0]</span>
+
+                    }
+                </div>
             </div>
+
         </header>
 
         <main role="main" class="mainContent">

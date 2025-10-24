@@ -1,41 +1,41 @@
+using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace GovSchedulaWeb.Models.Data.ViewModels
+namespace GovSchedulaWeb.Models.ViewModels
 {
-    public class NiaRegistrationViewModel
+    public class NiaApplicationViewModel
     {
-        // Similar fields to Passport Application might be needed
-        [Required]
-        [Display(Name = "First Name")]
-        public string? FirstName { get; set; }
+        // Identity Proof Selection
+        [Required(ErrorMessage = "Please select an identity proof type")]
+        [Display(Name = "Identity Proof Type")]
+        public string SelectedIdentityProofType { get; set; } = string.Empty;
 
-        [Required]
-        [Display(Name = "Last Name")]
-        public string? LastName { get; set; }
+        public List<SelectListItem> IdentityProofTypes { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "", Text = "-- Select Identity Proof --" },
+            new SelectListItem { Value = "GhanaCard", Text = "Ghana Card" },
+            new SelectListItem { Value = "BirthCertificate", Text = "Birth Certificate" },
+            new SelectListItem { Value = "VoterId", Text = "Voter ID" },
+            new SelectListItem { Value = "NHIS", Text = "NHIS Card" },
+            new SelectListItem { Value = "Guarantor", Text = "Guarantor" }
+        };
 
-        [Display(Name = "Other Names")]
-        public string? OtherNames { get; set; }
-
+        // Main Entities (Required)
         [Required]
-        [Display(Name = "Date of Birth")]
-        public string? DateOfBirth { get; set; } // Consider DateTime
-
-        [Required]
-        [Display(Name = "Place Of Birth")]
-        public string? PlaceOfBirth { get; set; }
-
-        [Required]
-        public string? Gender { get; set; }
+        public GhanaCardRegistration GhanaCardRegistration { get; set; } = new();
 
         [Required]
-        [Display(Name = "Phone Number")]
-        public string? PhoneNumber { get; set; }
+        public GeneralDetail? GeneralDetail { get; set; } = new();
 
-        [Required]
-        [Display(Name = "Residential Address")]
-        public string? ResidentialAddress { get; set; }
+        // Optional: Family Information
+        public Family? Family { get; set; } = new();
 
-        // Add other potentially required fields:
-        // Nationality, Digital Address, Parent Info, etc.
+        // Identity Proof Objects (only one will be populated based on selection)
+        public GhanaCard? GhanaCard { get; set; }
+        public BirthSet? BirthCertificate { get; set; }
+        public VoterId? VoterId { get; set; }
+        public Nhi? Nhis { get; set; }
+        public Garantor? Guarantor { get; set; }
     }
 }

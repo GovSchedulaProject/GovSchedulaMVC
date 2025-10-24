@@ -179,7 +179,7 @@
             </div>
             <div>
                 <label asp-for="GeneralDetail.Bdate" class="formLabel">Date of Birth</label>
-                <input asp-for="GeneralDetail.Bdate" class="formInput" type="date" />
+                <input asp-for="GeneralDetail.Bdate" class="formInput" type="date" value="@DateTime.Now" />
                 <span asp-validation-for="GeneralDetail.Bdate" class="text-danger"></span>
             </div>
             <div>
@@ -201,7 +201,7 @@
             </div>
             <div>
                 <label asp-for="GeneralDetail.PostalAddress" class="formLabel">Postal Address</label>
-                <input asp-for="GeneralDetail.PostalAddress" class="formInput" placeholder="e.g., Box 123, Accra" />
+                <input asp-for="GeneralDetail.PostalAddress" class="formInput" placeholder="e.g., AK-XXXX-XXXX" />
                 <span asp-validation-for="GeneralDetail.PostalAddress" class="text-danger"></span>
             </div>
             <div>
@@ -211,7 +211,7 @@
             </div>
             <div class="colSpan2">
                 <label asp-for="GeneralDetail.ResidentalAddress" class="formLabel">Residential Address</label>
-                <textarea asp-for="GeneralDetail.ResidentalAddress" class="formTextarea"></textarea>
+                <textarea asp-for="GeneralDetail.ResidentalAddress" class="formTextarea" placeholder="e.g., Box 123, Accra"></textarea>
                 <span asp-validation-for="GeneralDetail.ResidentalAddress" class="text-danger"></span>
             </div>
             <div>

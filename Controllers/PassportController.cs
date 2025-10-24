@@ -1,6 +1,7 @@
-using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+﻿using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
 using GovSchedulaWeb.Models.Data.Services;
 using GovSchedulaWeb.Models.ViewModels;
+using GovSchedulaWeb.Services; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace GovSchedulaWeb.Controllers
@@ -8,10 +9,12 @@ namespace GovSchedulaWeb.Controllers
     public class PassportController : Controller
     {
         private readonly PassportService _passportService;
+        private readonly IEmailService _emailService;
 
-        public PassportController(PassportService passportService)
+        public PassportController(PassportService passportService, IEmailService emailService)
         {
             _passportService = passportService;
+            _emailService = emailService; 
         }
 
         // GET: /Passport/Create
@@ -67,6 +70,17 @@ namespace GovSchedulaWeb.Controllers
             try
             {
                 await _passportService.AddPassportAsync(model, userId.Value);
+
+                var applicantEmail = model.GeneralDetail.Email;
+                var applicantName = $"{model.GeneralDetail.FirstName} {model.GeneralDetail.LastName}";
+                var bookingDate = DateTime.Now; // You can replace this with your booking date field if available
+
+                await _emailService.SendBookingConfirmationEmailAsync(
+                    applicantEmail,
+                    applicantName,
+                    "Passport",
+                    bookingDate
+                );
 
                 TempData["SuccessMessage"] = "Passport application submitted successfully!";
                 return RedirectToAction("Success");

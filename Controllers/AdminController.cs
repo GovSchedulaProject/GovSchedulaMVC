@@ -1,9 +1,9 @@
 using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
 using GovSchedulaWeb.Models.Data.Services;
 using GovSchedulaWeb.Models.Data.ViewModels;
-using GovSchedulaWeb.Services; // For List
+using GovSchedulaWeb.Services;
 using Microsoft.AspNetCore.Mvc;
-using System; // For DateTime
+using System;
 using System.Collections.Generic;
 
 namespace GovSchedulaWeb.Controllers
@@ -19,13 +19,10 @@ namespace GovSchedulaWeb.Controllers
             _emailService = emailService;
         }
 
-        //Loging in as Admin
+        // ====================== LOGIN ======================
 
         [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         [HttpPost]
         public async Task<IActionResult> Login(AdminLoginViewModel model)
@@ -37,12 +34,10 @@ namespace GovSchedulaWeb.Controllers
 
             if (admin != null)
             {
-                // You can store data in session
                 HttpContext.Session.SetInt32("AdminId", admin.AdminId);
                 HttpContext.Session.SetInt32("DepartmentId", admin.DepartmentId);
                 HttpContext.Session.SetString("Ssn", admin.Ssn.ToString());
 
-                // Redirect to dashboard or review page
                 return RedirectToAction("Dashboard", "Admin");
             }
 
@@ -56,125 +51,119 @@ namespace GovSchedulaWeb.Controllers
             return RedirectToAction("Login");
         }
 
-
-        //Admin Dashboard
+        // ====================== DASHBOARD ======================
 
         public async Task<IActionResult> Dashboard()
         {
             var adminId = HttpContext.Session.GetInt32("AdminId");
             if (adminId == null)
-                return RedirectToAction("Login", "Admin");
+                return RedirectToAction("Login");
 
             var admin = await _adminService.GetAdminByIdAsync(adminId.Value);
             if (admin == null)
-                return RedirectToAction("Login", "Admin");
+                return RedirectToAction("Login");
 
             var model = await _adminService.GetDashboardDataAsync(admin.DepartmentId);
             return View(model);
         }
 
+        // ====================== APPLICATION REVIEW ======================
+
         public async Task<IActionResult> ApplicationReview(int departmentId, int? statusId)
         {
             var adminId = HttpContext.Session.GetInt32("AdminId");
             if (adminId == null)
-                return RedirectToAction("Login", "Admin");
+                return RedirectToAction("Login");
 
             var admin = await _adminService.GetAdminByIdAsync(adminId.Value);
             if (admin == null)
-                return RedirectToAction("Login", "Admin");
+                return RedirectToAction("Login");
 
             departmentId = admin.DepartmentId;
 
+            var statuses = await _adminService.GetAllStatusesAsync();
+            List<AdminViewModel> applications = new();
 
-            if (departmentId == 2)
+            if (departmentId == 1)
+                applications = await _adminService.GetPassportApplicationsByDepartmentAsync(departmentId, statusId);
+            else if (departmentId == 2)
+                applications = await _adminService.GetVoterApplicationsByDepartmentAsync(departmentId, statusId);
+            else if (departmentId == 3)
+                applications = await _adminService.GetNiaApplicationsByDepartmentAsync(departmentId, statusId);
+
+            var model = new AdminApplicationsViewModel
             {
-                var applications = await _adminService.GetVoterApplicationsByDepartmentAsync(departmentId, statusId);
-                var statuses = await _adminService.GetAllStatusesAsync();
+                DepartmentId = departmentId,
+                Applications = applications,
+                Statuses = statuses
+            };
 
-                var model = new AdminApplicationsViewModel
-                {
-                    DepartmentId = departmentId,
-                    Applications = applications,
-                    Statuses = statuses
-                };
-
-                return View(model);
-            }
-            else if (departmentId == 1)
-            {
-                var applications = await _adminService.GetPassportApplicationsByDepartmentAsync(departmentId, statusId);
-                var statuses = await _adminService.GetAllStatusesAsync();
-
-                var model = new AdminApplicationsViewModel
-                {
-                    DepartmentId = departmentId,
-                    Applications = applications,
-                    Statuses = statuses
-                };
-
-                return View(model);
-            }
-
-            return RedirectToAction("Login", "Admin");
-
+            return View(model);
         }
 
-        public async Task<IActionResult> ReviewDetails(int departmentId, int Id)
+        // ====================== REVIEW DETAILS ======================
+
+        public async Task<IActionResult> ReviewDetails(int departmentId, int id)
         {
             var adminId = HttpContext.Session.GetInt32("AdminId");
             if (adminId == null)
-                return RedirectToAction("Login", "Admin");
+                return RedirectToAction("Login");
 
             var admin = await _adminService.GetAdminByIdAsync(adminId.Value);
             if (admin == null)
-                return RedirectToAction("Login", "Admin");
+                return RedirectToAction("Login");
 
             departmentId = admin.DepartmentId;
 
+            var statuses = await _adminService.GetAllStatusesAsync();
+            AdminViewModel? application = null;
 
-            if (departmentId == 2)
+            if (departmentId == 1)
+                application = await _adminService.GetPassportApplicationDetailsAsync(id);
+            else if (departmentId == 2)
+                application = await _adminService.GetVoterApplicationDetailsAsync(id);
+            else if (departmentId == 3)
+                application = await _adminService.GetNiaApplicationDetailsAsync(id);
+
+            if (application == null)
+                return NotFound();
+
+            var model = new AdminReviewPageViewModel
             {
-                var application = await _adminService.GetVoterApplicationDetailsAsync(Id);
-                if (application == null) return NotFound();
+                Application = application,
+                Statuses = statuses
+            };
 
-                var statuses = await _adminService.GetAllStatusesAsync();
-
-                var model = new AdminReviewPageViewModel
-                {
-                    Application = application,
-                    Statuses = statuses
-                };
-
-                return View(model);
-            }
-            else if (departmentId == 1)
-            {
-                var application = await _adminService.GetPassportApplicationDetailsAsync(Id);
-                if (application == null) return NotFound();
-
-                var statuses = await _adminService.GetAllStatusesAsync();
-
-                var model = new AdminReviewPageViewModel
-                {
-                    Application = application,
-                    Statuses = statuses
-                };
-
-                return View(model);
-            }
-            return RedirectToAction("Login", "Admin");
+            return View(model);
         }
 
+        // ====================== UPDATE STATUS ======================
+
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(int applicationId, int statusId, int departmentId, string? reason, DateTime? appointmentDate, string? appointmentTime)
+        public async Task<IActionResult> UpdateStatus(
+            int applicationId,
+            int statusId,
+            int departmentId,
+            string? reason,
+            DateTime? appointmentDate,
+            string? appointmentTime)
         {
             bool result = false;
-            string departmentName = departmentId == 1 ? "Passport" : "Voter ID";
+            string departmentName = departmentId switch
+            {
+                1 => "Passport",
+                2 => "Voter ID",
+                3 => "Ghana Card",
+                _ => "Unknown"
+            };
 
-            // Fetch applicant details for email
-            var application = departmentId == 1
-                ? await _adminService.GetPassportApplicationDetailsAsync(applicationId)
-                : await _adminService.GetVoterApplicationDetailsAsync(applicationId);
+            AdminViewModel? application = departmentId switch
+            {
+                1 => await _adminService.GetPassportApplicationDetailsAsync(applicationId),
+                2 => await _adminService.GetVoterApplicationDetailsAsync(applicationId),
+                3 => await _adminService.GetNiaApplicationDetailsAsync(applicationId),
+                _ => null
+            };
 
             if (application == null)
             {
@@ -182,11 +171,13 @@ namespace GovSchedulaWeb.Controllers
                 return RedirectToAction("ApplicationReview", new { departmentId });
             }
 
-            // Update DB
-            if (departmentId == 1)
-                result = await _adminService.UpdatePassportApplicationStatusAsync(applicationId, statusId);
-            else if (departmentId == 2)
-                result = await _adminService.UpdateVoterApplicationStatusAsync(applicationId, statusId);
+            result = departmentId switch
+            {
+                1 => await _adminService.UpdatePassportApplicationStatusAsync(applicationId, statusId),
+                2 => await _adminService.UpdateVoterApplicationStatusAsync(applicationId, statusId),
+                3 => await _adminService.UpdateNiaApplicationStatusAsync(applicationId, statusId),
+                _ => false
+            };
 
             if (!result)
             {
@@ -194,22 +185,16 @@ namespace GovSchedulaWeb.Controllers
                 return RedirectToAction("ApplicationReview", new { departmentId });
             }
 
-            // Send email based on status
             var applicantName = $"{application.GeneralDetails.FirstName} {application.GeneralDetails.LastName}";
             var applicantEmail = application.GeneralDetails.Email;
 
             if (statusId == 2) // Approved
-            {
                 await _emailService.SendApprovalEmailAsync(applicantEmail, applicantName, departmentName, appointmentDate, appointmentTime);
-            }
             else if (statusId == 3 && !string.IsNullOrWhiteSpace(reason)) // Rejected
-            {
                 await _emailService.SendRejectionEmailAsync(applicantEmail, applicantName, departmentName, reason);
-            }
 
             TempData["Success"] = "Status updated and email notification sent!";
             return RedirectToAction("ApplicationReview", new { departmentId });
         }
-
     }
 }

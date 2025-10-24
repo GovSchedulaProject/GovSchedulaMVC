@@ -1,5 +1,7 @@
 @using GovSchedulaWeb.Models.Data.ViewModels
-@model NiaRegistrationViewModel
+@using GovSchedulaWeb.Models.ViewModels
+@model NiaApplicationViewModel
+
 @{
     ViewData["Title"] = "Ghana Card Registration";
 }
@@ -15,72 +17,317 @@
 <div class="formSection">
     <form class="formContainer" asp-action="Register" asp-controller="Nia" method="post">
         @Html.AntiForgeryToken()
+
         <div class="formGrid">
-            <h2 class="formSubtitle">Personal Details</h2>
 
-            <div>
-                <label asp-for="FirstName" class="formLabel"></label>
-                <input asp-for="FirstName" class="formInput" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-
-            <div>
-                <label asp-for="LastName" class="formLabel"></label>
-                <input asp-for="LastName" class="formInput" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-
-             <div>
-                <label asp-for="OtherNames" class="formLabel"></label>
-                <input asp-for="OtherNames" class="formInput" />
-                <span asp-validation-for="OtherNames" class="text-danger"></span>
-            </div>
-
-             <div>
-                <label asp-for="Gender" class="formLabel"></label>
-                <select asp-for="Gender" class="formSelect">
-                    <option value="">Select Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
+            <!-- Identity Proof Selection Section -->
+            <h2 class="formSubtitle colSpan2">Identity Proof Selection</h2>
+            <div class="colSpan2">
+                <label asp-for="SelectedIdentityProofType" class="formLabel">Select Identity Proof Type</label>
+                <select asp-for="SelectedIdentityProofType"
+                        asp-items="Model.IdentityProofTypes"
+                        class="formSelect"
+                        id="identityProofSelect">
                 </select>
-                <span asp-validation-for="Gender" class="text-danger"></span>
+                <span asp-validation-for="SelectedIdentityProofType" class="text-danger"></span>
             </div>
 
-            <div>
-                <label asp-for="DateOfBirth" class="formLabel"></label>
-                <div class="dateInputContainer">
-                    <input asp-for="DateOfBirth" class="formInput" placeholder="MM/DD/YYYY" type="text" />
-                    <i class="fa-regular fa-calendar-alt dateIcon"></i>
+            <!-- Ghana Card Fields -->
+            <div id="ghanaCardFields" class="identity-fields colSpan2" style="display:none;">
+                <div class="alert alert-info">
+                    <strong>Ghana Card Information</strong>
                 </div>
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                <div class="formGrid">
+                    <div>
+                        <label class="formLabel">Ghana Card ID Number</label>
+                        <input asp-for="GhanaCard.GhanaCardIdnumber"
+                               class="formInput"
+                               type="text"
+                               placeholder="Enter Ghana Card Number" />
+                        <span asp-validation-for="GhanaCard.GhanaCardIdnumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Birth Certificate Fields -->
+            <div id="birthCertFields" class="identity-fields colSpan2" style="display:none;">
+                <div class="alert alert-info">
+                    <strong>Birth Certificate Information</strong>
+                </div>
+                <div class="formGrid">
+                    <div>
+                        <label class="formLabel">Certificate Number</label>
+                        <input asp-for="BirthCertificate.Image"
+                               class="formInput"
+                               type="text"
+                               placeholder="Enter Birth Certificate Number" />
+                        <span asp-validation-for="BirthCertificate.Image" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voter ID Fields -->
+            <div id="voterIdFields" class="identity-fields colSpan2" style="display:none;">
+                <div class="alert alert-info">
+                    <strong>Voter ID Information</strong>
+                </div>
+                <div class="formGrid">
+                    <div>
+                        <label class="formLabel">Voter ID Number</label>
+                        <input asp-for="VoterId.VoterIdnumber"
+                               class="formInput"
+                               type="text"
+                               placeholder="Enter Your Voter's Identification Number" />
+                        <span asp-validation-for="VoterId.VoterIdnumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NHIS Fields -->
+            <div id="nhisFields" class="identity-fields colSpan2" style="display:none;">
+                <div class="alert alert-info">
+                    <strong>NHIS Card Information</strong>
+                </div>
+                <div class="formGrid">
+                    <div>
+                        <label class="formLabel">NHIS Number</label>
+                        <input asp-for="Nhis.Nhisidnumber"
+                               class="formInput"
+                               type="text"
+                               placeholder="Enter National Health Insurance Card Number" />
+                        <span asp-validation-for="Nhis.Nhisidnumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guarantor Fields -->
+            <div id="guarantorFields" class="identity-fields colSpan2" style="display:none;">
+                <div class="alert alert-info">
+                    <strong>Guarantor as Identity Proof</strong>
+                    <p>Please provide guarantor information for identity verification</p>
+                </div>
+                <div class="formGrid">
+                    <div>
+                        <label asp-for="Guarantor.FirstName" class="formLabel">First Name</label>
+                        <input asp-for="Guarantor.FirstName" class="formInput" />
+                        <span asp-validation-for="Guarantor.FirstName" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Guarantor.OtherNames" class="formLabel">Other Names</label>
+                        <input asp-for="Guarantor.OtherNames" class="formInput" />
+                        <span asp-validation-for="Guarantor.OtherNames" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Guarantor.Profession" class="formLabel">Profession</label>
+                        <input asp-for="Guarantor.Profession" class="formInput" />
+                        <span asp-validation-for="Guarantor.Profession" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Guarantor.PhoneNumber" class="formLabel">Phone Number</label>
+                        <input asp-for="Guarantor.PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
+                        <span asp-validation-for="Guarantor.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="colSpan2">
+                        <label asp-for="Guarantor.PostalAddress" class="formLabel">Postal Address</label>
+                        <textarea asp-for="Guarantor.PostalAddress" class="formTextarea" rows="2"></textarea>
+                        <span asp-validation-for="Guarantor.PostalAddress" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Guarantor.Email" class="formLabel">Email</label>
+                        <input asp-for="Guarantor.Email" class="formInput" type="email" />
+                        <span asp-validation-for="Guarantor.Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="formSubtitle colSpan2">Personal Details</h2>
+            <div>
+                <label asp-for="GeneralDetail.FirstName" class="formLabel">First Name</label>
+                <input asp-for="GeneralDetail.FirstName" class="formInput" />
+                <span asp-validation-for="GeneralDetail.FirstName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.LastName" class="formLabel">Last Name</label>
+                <input asp-for="GeneralDetail.LastName" class="formInput" />
+                <span asp-validation-for="GeneralDetail.LastName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.MiddleName" class="formLabel">Middle Name</label>
+                <input asp-for="GeneralDetail.MiddleName" class="formInput" />
+                <span asp-validation-for="GeneralDetail.MiddleName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.Gender" class="formLabel">Gender</label>
+                <select asp-for="GeneralDetail.Gender" class="formSelect">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <span asp-validation-for="GeneralDetail.Gender" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.Bdate" class="formLabel">Date of Birth</label>
+                <input asp-for="GeneralDetail.Bdate" class="formInput" type="date" value="@DateTime.Now" />
+                <span asp-validation-for="GeneralDetail.Bdate" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.BirthPlace" class="formLabel">Place of Birth</label>
+                <input asp-for="GeneralDetail.BirthPlace" class="formInput" />
+                <span asp-validation-for="GeneralDetail.BirthPlace" class="text-danger"></span>
+            </div>
+
+            <h2 class="formSubtitle colSpan2">Contact & Other Details</h2>
+            <div>
+                <label asp-for="GeneralDetail.PhoneNumber" class="formLabel">Phone Number</label>
+                <input asp-for="GeneralDetail.PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
+                <span asp-validation-for="GeneralDetail.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.Nationality" class="formLabel">Nationality</label>
+                <input asp-for="GeneralDetail.Nationality" class="formInput" placeholder="e.g., Ghanaian" />
+                <span asp-validation-for="GeneralDetail.Nationality" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.PostalAddress" class="formLabel">Postal Address</label>
+                <input asp-for="GeneralDetail.PostalAddress" class="formInput" placeholder="e.g., AK-XXXX-XXXX" />
+                <span asp-validation-for="GeneralDetail.PostalAddress" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.Occupation" class="formLabel">Occupation</label>
+                <input asp-for="GeneralDetail.Occupation" class="formInput" />
+                <span asp-validation-for="GeneralDetail.Occupation" class="text-danger"></span>
+            </div>
+            <div class="colSpan2">
+                <label asp-for="GeneralDetail.ResidentalAddress" class="formLabel">Residential Address</label>
+                <textarea asp-for="GeneralDetail.ResidentalAddress" class="formTextarea" placeholder="e.g., Box 123, Accra" ></textarea>
+                <span asp-validation-for="GeneralDetail.ResidentalAddress" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GeneralDetail.Email" class="formLabel">Email</label>
+                <input asp-for="GeneralDetail.Email" class="formInput" type="email" placeholder="e.g., user@example.com" />
+                <span asp-validation-for="GeneralDetail.Email" class="text-danger"></span>
+            </div>
+
+            <h2 class="formSubtitle colSpan2">GhanaCard Specific Details</h2>
+            <div>
+                <label asp-for="GhanaCardRegistration.Religion" class="formLabel">Religion</label>
+                <input asp-for="GhanaCardRegistration.Religion" class="formInput" />
+                <span asp-validation-for="GhanaCardRegistration.Religion" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="GhanaCardRegistration.HomeTown" class="formLabel">HomeTown</label>
+                <input asp-for="GhanaCardRegistration.HomeTown" class="formInput" />
+                <span asp-validation-for="GhanaCardRegistration.HomeTown" class="text-danger"></span>
             </div>
 
             <div>
-                <label asp-for="PlaceOfBirth" class="formLabel"></label>
-                <input asp-for="PlaceOfBirth" class="formInput" />
-                <span asp-validation-for="PlaceOfBirth" class="text-danger"></span>
+                <label asp-for="GhanaCardRegistration.District" class="formLabel">District</label>
+                <input asp-for="GhanaCardRegistration.District" class="formInput" />
+                <span asp-validation-for="GhanaCardRegistration.District" class="text-danger"></span>
             </div>
 
-             <div>
-                <label asp-for="PhoneNumber" class="formLabel"></label>
-                <input asp-for="PhoneNumber" class="formInput" placeholder="+233 XX XXX XXXX" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            <h2 class="formSubtitle colSpan2">Family Section</h2>
+            <div>
+                <label asp-for="Family.FatherFullName" class="formLabel">Father's Full Name</label>
+                <input asp-for="Family.FatherFullName" class="formInput" />
+                <span asp-validation-for="Family.FatherFullName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Family.FatherHomeTown" class="formLabel">Father's Home Town</label>
+                <input asp-for="Family.FatherHomeTown" class="formInput" />
+                <span asp-validation-for="Family.FatherHomeTown" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Family.MotherFullName" class="formLabel">Mother's Full Name (Maiden)</label>
+                <input asp-for="Family.MotherFullName" class="formInput" />
+                <span asp-validation-for="Family.MotherFullName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Family.MotherHomeTown" class="formLabel">Mother's Home Town</label>
+                <input asp-for="Family.MotherHomeTown" class="formInput" />
+                <span asp-validation-for="Family.MotherHomeTown" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Family.SpouseName" class="formLabel">Spouse Name (If Married)</label>
+                <input asp-for="Family.SpouseName" class="formInput" placeholder="(If Married)" />
+                <span asp-validation-for="Family.SpouseName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Family.SpouseNationality" class="formLabel">Spouse Nationality</label>
+                <input asp-for="Family.SpouseNationality" class="formInput" placeholder="e.g., Ghanaian" />
+                <span asp-validation-for="Family.SpouseNationality" class="text-danger"></span>
             </div>
 
-             <div class="colSpan2">
-                <label asp-for="ResidentialAddress" class="formLabel"></label>
-                <textarea asp-for="ResidentialAddress" class="formTextarea" rows="3"></textarea>
-                <span asp-validation-for="ResidentialAddress" class="text-danger"></span>
-            </div>
-
-            <div class="buttonContainer">
+            <div class="buttonContainer colSpan2">
                 <a asp-action="Index" asp-controller="Booking" class="formButton cancelButton">Cancel</a>
-                <button type="submit" class="formButton submitButton">Submit Registration</button>
+                <button type="submit" class="formButton submitButton">Submit Application</button>
             </div>
+
         </div>
     </form>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Use vanilla JavaScript instead of jQuery
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const identityProofSelect = document.getElementById('identityProofSelect');
+            const identityFields = document.querySelectorAll('.identity-fields');
+
+            // Hide all identity fields initially
+            identityFields.forEach(field => {
+                field.style.display = 'none';
+            });
+
+            // Show/hide fields based on selection
+            identityProofSelect.addEventListener('change', function() {
+                // Hide all fields first
+                identityFields.forEach(field => {
+                    field.style.display = 'none';
+                });
+
+                const selectedValue = this.value;
+
+                // Show the selected field
+                switch(selectedValue) {
+                    case 'BirthCertificate':
+                        document.getElementById('birthCertFields').style.display = 'block';
+                        break;
+                    case 'VoterId':
+                        document.getElementById('voterIdFields').style.display = 'block';
+                        break;
+                    case 'NHIS':
+                        document.getElementById('nhisFields').style.display = 'block';
+                        break;
+                    case 'Guarantor':
+                        document.getElementById('guarantorFields').style.display = 'block';
+                        break;
+                }
+            });
+
+            // Trigger change on page load if there's a selected value
+            if (identityProofSelect.value) {
+                identityProofSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+
+    <style>
+        .identity-fields {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 12px;
+            border-radius: 5px;
+        }
+    </style>
 }

@@ -45,7 +45,7 @@ namespace GovSchedulaWeb.Models.Data.Services
         }
 
 
-        public async Task<AdminDashboardViewModel> GetDashboardDataAsync( int departmentId)
+        public async Task<AdminDashboardViewModel> GetDashboardDataAsync(int departmentId)
         {
             int pendingCount = 0;
             int approvedCount = 0;
@@ -65,6 +65,13 @@ namespace GovSchedulaWeb.Models.Data.Services
                 approvedCount = await _context.VoterIdregistrations.CountAsync(v => v.StatusId == 2);
                 rejectedCount = await _context.VoterIdregistrations.CountAsync(v => v.StatusId == 3);
                 departmentName = "Electoral Commission";
+            }
+            else if (departmentId == 3) // ghanacard ID Department
+            {
+                pendingCount = await _context.VoterIdregistrations.CountAsync(v => v.StatusId == 1);
+                approvedCount = await _context.VoterIdregistrations.CountAsync(v => v.StatusId == 2);
+                rejectedCount = await _context.VoterIdregistrations.CountAsync(v => v.StatusId == 3);
+                departmentName = "National Indentification Authority";
             }
             // Add other departments (3 and 4) when you have those tables
 
@@ -235,6 +242,94 @@ namespace GovSchedulaWeb.Models.Data.Services
                 //GhanaCard = p.GeneralDetails.IdentityProofNavigation?.GhanaCard,
                 PassportRegistration = p,
                 ApprovalStatus = p.Status
+            };
+        }
+
+
+        //NIA ghana card
+
+        public async Task<List<AdminViewModel>> GetNiaApplicationsByDepartmentAsync(int departmentId, int? statusId = null)
+        {
+            var query = _context.GhanaCardRegistrations
+                .Include(n => n.Status)
+                .Include(n => n.Family)
+                .Include(n => n.GeneralDetails)
+                    .ThenInclude(g => g.Department)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.GhanaCard)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.Nhis)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.Voter)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.BirthSet)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.Garantor)
+                .Where(n => n.GeneralDetails.DepartmentId == departmentId);
+
+            if (statusId.HasValue)
+                query = query.Where(n => n.StatusId == statusId.Value);
+
+            var result = await query
+                .Select(n => new AdminViewModel
+                {
+                    GeneralDetails = n.GeneralDetails,
+                    Department = n.GeneralDetails.Department,
+                    IdentityProof = n.GeneralDetails.IdentityProofNavigation,
+                    //GhanaCard = n.GeneralDetails.IdentityProofNavigation.GhanaCard,
+                    GhanaCardRegistration = n,
+                    ApprovalStatus = n.Status
+                })
+                .OrderByDescending(n => n.GeneralDetails.GeneralDetailsId)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<bool> UpdateNiaApplicationStatusAsync(int ghanaCardRegistrationId, int newStatusId)
+        {
+            var record = await _context.GhanaCardRegistrations
+                .FirstOrDefaultAsync(n => n.GhanaCardId == ghanaCardRegistrationId);
+
+            if (record == null)
+                return false;
+
+            record.StatusId = newStatusId;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<AdminViewModel?> GetNiaApplicationDetailsAsync(int ghanaCardRegistrationId)
+        {
+            var n = await _context.GhanaCardRegistrations
+                .Include(n => n.Status)
+                .Include(n => n.Family)
+                .Include(n => n.GeneralDetails)
+                    .ThenInclude(g => g.Department)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.GhanaCard)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.Nhis)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.Voter)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.BirthSet)
+                .Include(n => n.GeneralDetails.IdentityProofNavigation)
+                    .ThenInclude(i => i.Garantor)
+                .FirstOrDefaultAsync(n => n.GhanaCardId == ghanaCardRegistrationId);
+
+            if (n == null)
+                return null;
+
+            return new AdminViewModel
+            {
+                GeneralDetails = n.GeneralDetails,
+                Department = n.GeneralDetails.Department,
+                IdentityProof = n.GeneralDetails.IdentityProofNavigation,
+                //GhanaCard = n.GeneralDetails.IdentityProofNavigation?.GhanaCard,
+                Family = n.Family,
+                GhanaCardRegistration = n,
+                ApprovalStatus = n.Status
             };
         }
     }

@@ -29,8 +29,10 @@
 @{
     var isVoterApp = Model.Application.VoterIdregistration != null;
     var isPassportApp = Model.Application.PassportRegistration != null;
+    var isGhanaCardApp = Model.Application.GhanaCardRegistration != null;
     var applicationId = isVoterApp ? Model.Application.VoterIdregistration.VoterId
                       : isPassportApp ? Model.Application.PassportRegistration.PassportId
+                      : isGhanaCardApp ? Model.Application.GhanaCardRegistration.GhanaCardId
                       : 0;
 }
 <div class ="formSection">
@@ -124,12 +126,12 @@
             @* Voter-specific fields *@
             @if (isVoterApp)
             {
-                <div class="details-grid">
+                @* <div class="details-grid">
                     <div class="detail-card">
                         <div class="detail-label">Ghana Card</div>
                         <div class="detail-value">@(Model.Application.IdentityProof.GhanaCard?.GhanaCardIdnumber ?? "N/A")</div>
                     </div>
-                </div>
+                </div> *@
             }
 
             @* Passport-specific fields *@

@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Help & Support";
+}
+
+<section class="helpSection">
+    <div class="helpContainer">
+        <h1>Help & Support</h1>
+        <p class="introText">
+            Welcome to <strong>GovSchedula</strong> — your one-stop platform for booking government service appointments online.
+            If you’re having trouble or just want to learn how everything works, you’re in the right place.
+        </p>
+
+        <h2>🗓️ How to Book an Appointment</h2>
+        <ol>
+            <li>Go to the <a asp-controller="Booking" asp-action="Index">Book Appointments</a> page.</li>
+            <li>Select your desired <strong>department</strong> (e.g., Passport, DVLA, Births & Deaths, etc.).</li>
+            <li>Fill in the required personal details and submit the form.</li>
+            <li>Wait for an approval email — it will include your <strong>appointment date and time</strong>.</li>
+        </ol>
+
+        <h2>📧 Email Notifications</h2>
+        <p>
+            Once you book, you’ll receive an email from <strong>GovSchedula Booking Appointment</strong> or <strong>philip@traveltide.uk</strong> confirming your submission.
+            You’ll later get another email when your booking is <strong>approved or rejected</strong>.
+        </p>
+
+        <h2>👤 Managing Your Account</h2>
+        <ul>
+            <li>Sign in to your account to view your bookings and status.</li>
+            <li>If you forget your password, click the <strong>“Forgot Password”</strong> link on the login page.</li>
+            <li>Logged-in users will see their <strong>username</strong> displayed in the header.</li>
+        </ul>
+
+        <h2>⏰ Booking Rules</h2>
+        <ul>
+            <li>You can make a new booking only after <strong>34 hours</strong> have passed since your last one.</li>
+            <li>Please arrive on time and bring all required documents listed in your confirmation email.</li>
+        </ul>
+
+        <h2>❓ Frequently Asked Questions</h2>
+        <details>
+            <summary>Why haven’t I received my confirmation email?</summary>
+            <p>Check your spam/junk folder. If it’s not there, verify that you entered the correct email address during booking.</p>
+        </details>
+        <details>
+            <summary>Can I change my appointment date?</summary>
+            <p>Currently, you’ll need to contact the department directly to reschedule your appointment.</p>
+        </details>
+        <details>
+            <summary>My booking was rejected. What should I do?</summary>
+            <p>Read the rejection email carefully — it includes the reason for rejection and next steps.</p>
+        </details>
+
+        <h2>📞 Contact Support</h2>
+        <p>
+            Still need help? Reach out to our support team at
+            <a href="mailto:govschedula@gmail.com">support@govschedula.gov</a>.
+        </p>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .helpContainer {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+            .helpContainer h1 {
+                color: #1a73e8;
+                margin-bottom: 1rem;
+            }
+
+            .helpContainer h2 {
+                margin-top: 2rem;
+                color: #333;
+            }
+
+            .helpContainer p, .helpContainer li {
+                line-height: 1.6;
+                color: #555;
+            }
+
+            .helpContainer a {
+                color: #1a73e8;
+                text-decoration: none;
+            }
+
+                .helpContainer a:hover {
+                    text-decoration: underline;
+                }
+
+        .introText {
+            margin-bottom: 1.5rem;
+        }
+
+        details {
+            margin-top: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            background: #fafafa;
+        }
+
+            details summary {
+                font-weight: 600;
+                cursor: pointer;
+            }
+    </style>
+}

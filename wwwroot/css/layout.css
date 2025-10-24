@@ -16,23 +16,25 @@
 
 /* Container within the header for alignment */
 .navContainer {
-  max-width: 1280px; 
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1500px; 
+  margin-left: 60px;
   display: flex; 
   align-items: center; 
   justify-content: space-between; 
 }
-
+.outerNav{
+    display:flex;
+    align-items:center;
+}
 /* Logo + Title link styles */
 .logoLink {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem; 
-  font-size: 1.5rem; 
-  font-weight: 700; 
-  text-decoration: none;
-  color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
 }
 
 /* Logo image size */

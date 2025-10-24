@@ -17,6 +17,7 @@ builder.Services.AddDbContext<GovSchedulaDbContext>(o =>
 });
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<PassportService>();
+builder.Services.AddScoped<NiaService>();
 builder.Services.AddScoped<VoterRegService>();
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddTransient<IEmailService, EmailService>();

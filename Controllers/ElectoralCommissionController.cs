@@ -1,17 +1,22 @@
-using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
-using GovSchedulaWeb.Models.Data.Services; // Include ViewModels
+﻿using GovSchedulaWeb.Models.Data.GovSchedulaDBContext;
+using GovSchedulaWeb.Models.Data.Services;
 using GovSchedulaWeb.Models.ViewModels;
+using GovSchedulaWeb.Services; // 👈 Add this for IEmailService
 using Microsoft.AspNetCore.Mvc;
 
 namespace GovSchedulaWeb.Controllers
 {
     public class ElectoralCommissionController : Controller
     {
-        private VoterRegService _voterRegService;
-        public ElectoralCommissionController(VoterRegService voterRegService)
+        private readonly VoterRegService _voterRegService;
+        private readonly IEmailService _emailService; // 👈 Add this
+
+        public ElectoralCommissionController(VoterRegService voterRegService, IEmailService emailService)
         {
             _voterRegService = voterRegService;
+            _emailService = emailService; // 👈 Injected email service
         }
+
         // GET: /ElectoralCommission/Register
         [HttpGet]
         public IActionResult Register()
@@ -34,7 +39,7 @@ namespace GovSchedulaWeb.Controllers
         // POST: /ElectoralCommission/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Register(VoterRegistrationViewModel model)
+        public async Task<IActionResult> Register(VoterRegistrationViewModel model)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
@@ -43,26 +48,50 @@ namespace GovSchedulaWeb.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Remove validation errors for unused identity proof types
-            //RemoveUnusedIdentityProofErrors(model.SelectedIdentityProofType);
-
-            // Remove navigation property errors
-            //RemoveNavigationPropertyErrors();
-            //if (!ModelState.IsValid)
-            //{
-            //    foreach (var error in ModelState)
-            //    {
-            //        foreach (var subError in error.Value.Errors)
-            //        {
-            //            Console.WriteLine($"Field: {error.Key} - Error: {subError.ErrorMessage}");
-            //        }
-            //    }
-            //    return View(model);
-            //}
             try
             {
+                // Save booking (registration)
                 await _voterRegService.AddVoterAsync(model, userId.Value);
 
+                var applicantEmail = model.GeneralDetail?.Email;
+                var applicantName = (model.GeneralDetail != null)
+                    ? $"{model.GeneralDetail.FirstName} {model.GeneralDetail.LastName}".Trim()
+                    : null;
+
+                // Fallback to session values if the model didn't provide them
+                if (string.IsNullOrWhiteSpace(applicantEmail))
+                    applicantEmail = HttpContext.Session.GetString("UserEmail");
+
+                if (string.IsNullOrWhiteSpace(applicantName))
+                    applicantName = HttpContext.Session.GetString("Username");
+
+                // Only attempt send if we have an email
+                if (!string.IsNullOrWhiteSpace(applicantEmail))
+                {
+                    try
+                    {
+                        // small defensive defaults
+                        var deptName = "Electoral Commission";
+                        var bookingDate = DateTime.Now;
+
+                        await _emailService.SendBookingConfirmationEmailAsync(
+                            applicantEmail,
+                            string.IsNullOrWhiteSpace(applicantName) ? "Applicant" : applicantName,
+                            deptName,
+                            bookingDate
+                        );
+                        Console.WriteLine($"Booking confirmation sent to {applicantEmail}");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error but don't break registration flow
+                        Console.WriteLine($"Failed to send booking confirmation email to {applicantEmail}: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No applicant email available in model or session — skipping confirmation email.");
+                }
                 TempData["SuccessMessage"] = "Passport application submitted successfully!";
                 return RedirectToAction("Success");
             }
@@ -73,7 +102,7 @@ namespace GovSchedulaWeb.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in Passport Create: {ex.Message}");
+                Console.WriteLine($"Error in ElectoralCommission Register: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
 
                 ModelState.AddModelError("", "An error occurred while saving your data. Please try again.");
@@ -91,59 +120,10 @@ namespace GovSchedulaWeb.Controllers
 
             if (TempData["SuccessMessage"] == null)
             {
-                return RedirectToAction("Create");
+                return RedirectToAction("Register");
             }
 
             return View();
-        }
-
-        private void RemoveUnusedIdentityProofErrors(string selectedType)
-        {
-            var allTypes = new Dictionary<string, string>
-            {
-                { "GhanaCard", "GhanaCard" },
-                { "BirthCertificate", "BirthCertificate" },
-                { "VoterId", "VoterId" },
-                { "NHIS", "Nhis" },
-                { "Guarantor", "Guarantor" }
-            };
-
-            foreach (var type in allTypes)
-            {
-                if (type.Key != selectedType)
-                {
-                    RemoveModelStateErrorsForPrefix(type.Value);
-                }
-            }
-        }
-
-        private void RemoveNavigationPropertyErrors()
-        {
-            var navigationProperties = new[]
-            {
-                "GeneralDetail.User",
-                "GeneralDetail.Department",
-                "GeneralDetail.IdentityProofNavigation",
-                "PassportRegistration.GeneralDetails",
-                "PassportRegistration.Family"
-            };
-
-            foreach (var prop in navigationProperties)
-            {
-                ModelState.Remove(prop);
-            }
-        }
-
-        private void RemoveModelStateErrorsForPrefix(string prefix)
-        {
-            var keysToRemove = ModelState.Keys
-                .Where(k => k.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            foreach (var key in keysToRemove)
-            {
-                ModelState.Remove(key);
-            }
         }
     }
 }
