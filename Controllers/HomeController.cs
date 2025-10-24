@@ -13,6 +13,13 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    // GET: /Home/Help
+        [HttpGet]
+        public IActionResult Help()
+        {
+            return View();
+        }
+
     public IActionResult Index()
     {
         return View();

@@ -1,11 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    // Mock data - In a real app, this would come from the Controller
-    var mockNewsData = new[] {
-        new { id = 1, title = "Passport Office Announces New 2-Week Turnaround", summary = "All new passport applications submitted from today will now be processed within a 14-day working period.", link = "#" },
-        new { id = 2, title = "NIA to Open 5 New Registration Centers", summary = "The National Identification Authority has announced new centers in Accra and Kumasi to ease Ghana Card registration queues.", link = "#" },
-        new { id = 3, title = "DVLA Introduces New Digital License", summary = "You can now renew and receive a digital version of your driver's license directly through the new online portal.", link = "#" }
-    };
 }
 
 <div class="section hero">
@@ -34,24 +28,49 @@
     </div>
 </div>
 
-<div class="section latestUpdates">
-    <h2 class="sectionTitle">Latest Updates</h2>
+<section class="section latest-updates-section"> <h2 class="sectionTitle">Latest Updates</h2> <div class="swiper latest-updates-slider"> <div class="swiper-wrapper">
 
-    <div class="slideshowContainer">
-        <div class="swiper">
-            <div class="swiper-wrapper">
-                @foreach (var news in mockNewsData)
-                {
-                    <div class="swiper-slide slide">
-                        <h3 class="slideTitle">@news.title</h3>
-                        <p class="slideSummary">@news.summary</p>
-                        <a href="@news.link" class="readMoreLink">
-                            Read More &rarr;
-                        </a>
-                    </div>
-                }
+            <div class="swiper-slide update-card">
+                <h3>Passport Office Announces New 2-Week Turnaround</h3>
+                <p>All new passport applications submitted from today will now be processed within a 14-day working period...</p>
+                <a href="#" class="read-more-link" data-modal-target="update-1">Read More →</a>
+                <div id="update-1" class="update-full-content" style="display: none;">
+                    <h2>Passport Office Announces New 2-Week Turnaround for Applications</h2>
+                    <p>Accra, Ghana – October 24, 2025 – The Ministry of Foreign Affairs and Regional Integration has announced a significant improvement in passport processing times. Effective immediately, all new standard passport applications submitted through the GovSchedula platform or directly at Passport Application Centers (PACs) will be processed within a guaranteed 14 working days. This expedited turnaround aims to reduce waiting times and improve citizen satisfaction. Applicants are reminded to ensure all required documentation is accurate and complete upon submission to avoid delays. Existing applications already in the system will continue under the previous timeline but may see faster processing where possible.</p>
+                </div>
             </div>
-            <div class="swiper-pagination"></div>
+
+            <div class="swiper-slide update-card">
+                <h3>EC Announces Upcoming Limited Voter Registration Exercise</h3>
+                <p>The Electoral Commission will conduct a limited voter registration exercise starting next month. Check eligibility requirements...</p>
+                <a href="#" class="read-more-link" data-modal-target="update-2">Read More →</a>
+                <div id="update-2" class="update-full-content" style="display: none;">
+                    <h2>Electoral Commission Schedules Limited Voter Registration Exercise</h2>
+                    <p>Accra, Ghana – October 20, 2025 – The Electoral Commission of Ghana has announced dates for its upcoming Limited Voter Registration Exercise. The exercise, scheduled to run from November 10th to November 30th, 2025, is primarily aimed at citizens who have turned 18 since the last registration and those who, for valid reasons, could not register previously. Registration will take place at designated EC district offices nationwide. Prospective registrants are required to present a valid Ghana Card or Ghanaian Passport as proof of identity. Eligible citizens can use GovSchedula to find the nearest registration center and check its operating hours, although appointments are not required for this exercise.</p>
+                </div>
+            </div>
+
+            <div class="swiper-slide update-card">
+                <h3>NHIS Mobile Registration Drive Extended</h3>
+                <p>The National Health Insurance Scheme has extended its mobile registration and renewal drive in rural communities...</p>
+                <a href="#" class="read-more-link" data-modal-target="update-3">Read More →</a>
+                <div id="update-3" class="update-full-content" style="display: none;">
+                    <h2>NHIS Extends Mobile Registration and Renewal Campaign</h2>
+                    <p>Accra, Ghana – October 15, 2025 – The National Health Insurance Authority (NHIA) has announced the extension of its nationwide mobile registration and renewal campaign until December 31st, 2025. The campaign, which targets bringing NHIS services closer to citizens, particularly in remote and underserved areas, allows individuals to register for the scheme or renew their membership using the NHIS mobile app or via designated mobile teams. Integration with GovSchedula allows users to pre-book slots with mobile teams in their vicinity where available. The NHIA encourages all residents to take advantage of this extension to ensure continuous access to healthcare services.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<div id="updateModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <button class="modal-close-button">&times;</button>
+        <h2 id="modalTitle">Update Title</h2>
+        <div id="modalBody">
+            <p>Full update content will go here...</p>
         </div>
     </div>
 </div>
@@ -96,5 +115,58 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/home-swiper.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script>
+        // Initialize Swiper (adjust settings as needed)
+        var swiper = new Swiper('.latest-updates-slider', {
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 20,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                768: { slidesPerView: 2, spaceBetween: 30 },
+                1024: { slidesPerView: 3, spaceBetween: 30 }
+            }
+        });
+
+        // --- MODAL LOGIC ---
+        const modal = document.getElementById('updateModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeButton = modal.querySelector('.modal-close-button');
+        const readMoreLinks = document.querySelectorAll('.read-more-link');
+
+        readMoreLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); 
+                const targetId = this.getAttribute('data-modal-target');
+                const fullContentElement = document.getElementById(targetId);
+
+                if (fullContentElement) {
+                    const contentClone = fullContentElement.cloneNode(true);
+                    contentClone.style.display = 'block'; 
+                    modalTitle.innerText = contentClone.querySelector('h2')?.innerText || 'Update Details';
+                    modalBody.innerHTML = ''; 
+                    const titleElement = contentClone.querySelector('h2');
+                    if (titleElement) contentClone.removeChild(titleElement);
+                    modalBody.appendChild(contentClone); 
+                    modal.style.display = 'block'; 
+                }
+            });
+        });
+
+        function closeModal() {
+            modal.style.display = 'none';
+            modalBody.innerHTML = ''; 
+        }
+
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) closeModal();
+        });
+    </script>
 }

@@ -1,0 +1,155 @@
+@{
+    ViewData["Title"] = "Help Center";
+}
+
+@section Styles {
+    <style>
+        .help-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .help-container h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #003366; /* brand-blue */
+        }
+        .help-container h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827; /* gray-900 */
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+            padding-bottom: 0.5rem;
+        }
+        details {
+            margin-bottom: 1rem;
+            background-color: #f9fafb; /* gray-50 */
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+        summary {
+            font-weight: 600;
+            padding: 1rem;
+            cursor: pointer;
+            list-style: none; /* Remove default marker */
+            position: relative;
+        }
+        summary::after { 
+            /* Use Unicode down arrow */
+            content: '▼'; 
+            /* Remove Font Awesome specific styles */
+            /* font-family: 'Font Awesome 6 Free'; */
+            /* font-weight: 900; */
+            
+            position: absolute;
+            right: 1rem;
+            transition: transform 0.2s;
+            font-size: 0.8em; /* Adjust size if needed */
+            color: #666; /* Adjust color if needed */
+        }
+
+        details[open] summary::after {
+            /* Use Unicode up arrow */
+            content: '▲'; 
+            /* Remove rotation */
+            /* transform: rotate(180deg); */ 
+        }
+        .faq-answer {
+            padding: 0 1rem 1rem 1rem;
+            color: #374151; /* gray-700 */
+            line-height: 1.6;
+        }
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        .contact-info strong {
+             color: #111827;
+        }
+    </style>
+}
+
+<div class="help-container">
+    <h1>Help Center</h1>
+
+    <h2>Booking & Appointments</h2>
+
+    <details>
+        <summary>How do I book an appointment?</summary>
+        <div class="faq-answer">
+            <p>Booking is simple:</p>
+            <ol>
+                <li>Click on "Book Appointments" in the main menu.</li>
+                <li>Select the desired Government Department (e.g., Department of Passport).</li>
+                <li>Choose the specific service you need (e.g., New Passport Application).</li>
+                <li>Select an available date and time slot from the calendar.</li>
+                <li>Fill in the required application form with your details.</li>
+                <li>Review your details carefully on the confirmation page.</li>
+                <li>Click "Confirm & Proceed" to submit your booking request.</li>
+            </ol>
+        </div>
+    </details>
+
+    <details>
+        <summary>What happens after I book?</summary>
+        <div class="faq-answer">
+            <p>After you submit your booking request by clicking "Confirm & Proceed":</p>
+            <ul>
+                <li>Your application is sent for review by the relevant department.</li>
+                <li>Once approved, you will receive a **Confirmation Email**.</li>
+                <li>This email will contain your unique **Booking ID**, **QR Code**, and your confirmed appointment details (Date, Time, Location).</li>
+            </ul>
+            <p>Please keep this email safe as you will need it for your appointment.</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>What do I need for my appointment?</summary>
+        <div class="faq-answer">
+            <p>Please bring the following to your appointment:</p>
+            <ul>
+                <li>Your **Confirmation Email** (either printed or on your phone) showing your Booking ID and QR Code.</li>
+                <li>The original, valid Identification document you used during application (e.g., Ghana Card). Officials need to verify your identity in person.</li>
+                <li>The original copies of any specific documents required for the service (e.g., birth certificate for passport). While you may upload documents online, originals are often required by law for final checks. Check the department's official website for details.</li>
+            </ul>
+        </div>
+    </details>
+
+    <details>
+        <summary>Can I change or cancel my appointment?</summary>
+        <div class="faq-answer">
+            <p>Currently, rescheduling or canceling appointments must be done by contacting our support team. Please use the contact details provided below and include your Booking ID if possible.</p>
+            <p><em>(Note: We are working on adding self-service rescheduling features in the future.)</em></p>
+        </div>
+    </details>
+
+    <details>
+        <summary>What if I didn't get a confirmation email?</summary>
+        <div class="faq-answer">
+            <p>If you haven't received your confirmation email within a reasonable time after your application should have been approved:</p>
+            <ul>
+                <li>First, please check your **Spam or Junk email folders**. Sometimes confirmation emails end up there.</li>
+                <li>If you still can't find it, please contact our support team using the details below. Provide your name and the approximate date you submitted your application.</li>
+            </ul>
+        </div>
+    </details>
+
+
+    <h2>Need More Help?</h2>
+    <div class="contact-info">
+        <p>If your question isn't answered above, please reach out to us:</p>
+        <p><strong>General Support Email:</strong> <a href="mailto:support@govschedula.gov.gh">support@govschedula.gov.gh</a></p>
+        <p><strong>Support Phone Line:</strong> +233 12 345 6789 (Mon-Fri, 9:00 AM - 4:00 PM)</p>
+        <br/>
+        <p><em>(Please note: Contact details provided are examples.)</em></p>
+        </div>
+
+</div>
+
+@section Scripts {
+    }
